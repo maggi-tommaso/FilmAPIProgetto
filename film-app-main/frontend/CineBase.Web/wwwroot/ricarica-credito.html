@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Ricarica Credito</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+  <script src="/js/route-guard.js"></script>
+</head>
+
+<body class="bg-brand-surface text-brand-on-surface font-sans">
+  <div id="navbar-container"></div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-brand-on-surface">Ricarica Credito</h1>
+        <p class="text-sm text-brand-on-surface-variant mt-1">Cerca utenti e ricarica credito piattaforma</p>
+      </div>
+    </div>
+
+    <!-- User Search -->
+    <div class="card-elevated mb-6 p-4">
+      <div class="flex flex-col sm:flex-row gap-3 items-end">
+        <div class="flex-1">
+          <label for="user-search-input" class="block text-sm font-medium text-brand-on-surface mb-1">Cerca Utente per Email</label>
+          <input id="user-search-input" type="email" placeholder="es. mario@email.com" class="ghost-input w-full px-4 py-2" title="Cerca utente per email">
+        </div>
+        <button id="btn-search-user" onclick="searchUser()" class="btn-gold px-4 py-2 rounded-lg text-sm font-medium">
+          <i class="fa-solid fa-search mr-2"></i>Cerca
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Results -->
+    <div id="search-results-area" class="hidden">
+      <h2 class="text-lg font-semibold text-brand-on-surface mb-4">Risultati Ricerca</h2>
+      <div id="search-results" class="space-y-3 mb-6"></div>
+    </div>
+
+    <!-- Selected User Panel -->
+    <div id="selected-user-panel" class="hidden">
+      <div class="card-elevated p-6 mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 class="text-lg font-semibold text-brand-on-surface" id="selected-user-name">-</h2>
+            <p class="text-sm text-brand-on-surface-variant" id="selected-user-email">-</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-brand-on-surface-variant">Saldo Attuale</p>
+            <p class="text-3xl font-bold text-brand-gold" id="selected-user-saldo">&euro;0.00</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top-Up Form -->
+      <div class="card-elevated p-6 mb-6">
+        <h3 class="text-md font-semibold text-brand-on-surface mb-4">Nuova Ricarica</h3>
+        <form id="ricarica-form" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="ricarica-importo" class="block text-sm font-medium text-brand-on-surface mb-1">Importo (&euro;)</label>
+              <input id="ricarica-importo" name="importo" type="number" step="0.01" min="0.01" required class="ghost-input w-full px-4 py-2" placeholder="10.00" title="Importo ricarica">
+            </div>
+            <div>
+              <label for="ricarica-cinema" class="block text-sm font-medium text-brand-on-surface mb-1">Cinema operativo (opzionale)</label>
+              <select id="ricarica-cinema" class="ghost-input w-full px-4 py-2" title="Cinema operativo">
+                <option value="">Nessuno</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label for="ricarica-note" class="block text-sm font-medium text-brand-on-surface mb-1">Note (opzionale)</label>
+            <input id="ricarica-note" name="note" type="text" maxlength="500" class="ghost-input w-full px-4 py-2" placeholder="Note sulla ricarica" title="Note">
+          </div>
+          <button type="submit" class="btn-gold px-6 py-2 rounded-lg text-sm font-medium">
+            <i class="fa-solid fa-coins mr-2"></i>Ricarica Credito
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Ricariche History -->
+    <div class="card-elevated overflow-x-auto" id="history-section">
+      <div class="px-6 py-4 border-b border-brand-outline-variant/10">
+        <h2 class="text-lg font-semibold text-brand-on-surface">Storico Ricariche Recenti</h2>
+      </div>
+      <table class="min-w-full divide-y divide-brand-outline-variant/10">
+        <thead class="bg-brand-surface-container">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Data</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Utente</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Importo</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Operatore</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Note</th>
+          </tr>
+        </thead>
+        <tbody id="history-table-body" class="divide-y divide-brand-outline-variant/10">
+          <tr>
+            <td colspan="5" class="px-6 py-4 text-center text-brand-on-surface-variant">Caricamento...</td>
+            <td style="display:none"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/template-loader.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/form-handlers.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/pages/ricarica-credito.js"></script>
+</body>
+
+</html>

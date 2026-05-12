@@ -1,0 +1,35 @@
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          gold: "var(--brand-gold)",
+          "gold-dark": "var(--brand-gold-dark)",
+          "gold-light": "var(--brand-gold-light)",
+          indigo: "var(--brand-indigo)",
+          "indigo-light": "var(--brand-indigo-light)",
+          cyan: "var(--brand-cyan)",
+          "cyan-light": "var(--brand-cyan-light)",
+          emerald: "var(--brand-emerald)",
+          surface: "var(--brand-surface)",
+          "surface-dim": "var(--brand-surface-dim)",
+          "surface-container": "var(--brand-surface-container)",
+          "surface-container-high": "var(--brand-surface-container-high)",
+          "surface-container-highest": "var(--brand-surface-container-highest)",
+          "surface-container-low": "var(--brand-surface-container-low)",
+          "surface-container-lowest": "var(--brand-surface-container-lowest)",
+          "on-surface": "var(--brand-on-surface)",
+          "on-surface-variant": "var(--brand-on-surface-variant)",
+          outline: "var(--brand-outline)",
+          "outline-variant": "var(--brand-outline-variant)",
+          error: "var(--brand-error)",
+          "error-container": "var(--brand-error-container)",
+          "sidebar-from": "var(--brand-sidebar-from)",
+          "sidebar-to": "var(--brand-sidebar-to)",
+          "sidebar-text": "var(--brand-sidebar-text)",
+        },
+      },
+    },
+  },
+};

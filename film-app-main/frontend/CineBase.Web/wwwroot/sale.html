@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Gestione Sale</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+  <script src="/js/route-guard.js"></script>
+</head>
+
+<body class="bg-brand-surface text-brand-on-surface font-sans">
+  <div id="navbar-container"></div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-brand-on-surface">Gestione Sale</h1>
+        <p class="text-sm text-brand-on-surface-variant mt-1">Gestisci le sale e le piantine posti</p>
+      </div>
+    </div>
+
+    <!-- Cinema Selector -->
+    <div class="card-elevated mb-6 p-4">
+      <div class="flex flex-col md:flex-row gap-4 items-end">
+        <div class="flex-1">
+          <label for="cinema-filter-select" class="block text-sm font-medium text-brand-on-surface mb-1">Cinema</label>
+          <select id="cinema-filter-select" class="ghost-input w-full px-4 py-2" title="Seleziona il cinema">
+            <option value="">Seleziona un cinema...</option>
+          </select>
+        </div>
+        <button id="btn-add-sala" disabled onclick="openCreateSalaModal()"
+          class="btn-gold text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fa-solid fa-plus mr-2"></i>Aggiungi Sala
+        </button>
+      </div>
+    </div>
+
+    <!-- Sale Table -->
+    <div class="card-elevated overflow-x-auto">
+      <table class="min-w-full divide-y divide-brand-outline-variant/10">
+        <thead class="bg-brand-surface-container">
+          <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">N.</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Nome</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Tipologia</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Supplemento</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Stato</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Posti</th>
+            <th class="px-6 py-3 text-left text-xs font-medium label-caps">Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="sale-table-body" class="divide-y divide-brand-outline-variant/10">
+          <tr>
+            <td colspan="7" class="px-6 py-4 text-center text-brand-on-surface-variant">Seleziona un cinema per visualizzare le sale</td>
+            <td style="display:none"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+  <!-- Sala Modal -->
+  <div id="sala-modal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
+            <h3 class="text-lg font-bold text-brand-on-surface" id="modal-title">Aggiungi Sala</h3>
+            <button type="button" class="absolute top-4 right-4 text-brand-on-surface-variant hover:text-brand-on-surface" onclick="closeSalaModal()" title="Chiudi" aria-label="Chiudi modal">
+              <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+          </div>
+          <div class="bg-brand-surface-container-lowest px-6 pb-4">
+            <form id="sala-form" class="space-y-4">
+              <input type="hidden" name="id" value="">
+              <div>
+                <label for="sala-numero" class="block text-sm font-medium text-brand-on-surface mb-1">Numero Progressivo</label>
+                <input id="sala-numero" type="number" name="numeroProgressivo" required min="1" class="ghost-input w-full px-4 py-2" title="Numero progressivo della sala">
+              </div>
+              <div>
+                <label for="sala-tipo" class="block text-sm font-medium text-brand-on-surface mb-1">Tipologia</label>
+                <select id="sala-tipo" name="tipoSala" required class="ghost-input w-full px-4 py-2" title="Tipologia sala">
+                  <option value="0">2D</option>
+                  <option value="1">3D</option>
+                  <option value="2">ISENSE</option>
+                  <option value="3">XL</option>
+                </select>
+              </div>
+              <div>
+                <label for="sala-nome" class="block text-sm font-medium text-brand-on-surface mb-1">Nome (opzionale)</label>
+                <input id="sala-nome" type="text" name="nome" maxlength="100" class="ghost-input w-full px-4 py-2" placeholder="Sala 1" title="Nome della sala">
+              </div>
+              <div>
+                <label for="sala-supplemento" class="block text-sm font-medium text-brand-on-surface mb-1">Supplemento (&euro;)</label>
+                <input id="sala-supplemento" type="number" name="supplemento" step="0.01" min="0" value="0" class="ghost-input w-full px-4 py-2" title="Supplemento prezzo">
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="sala-attiva" type="checkbox" name="isAttiva" checked class="rounded border-brand-outline-variant text-brand-gold focus:ring-brand-gold">
+                <label for="sala-attiva" class="text-sm font-medium text-brand-on-surface">Sala attiva</label>
+              </div>
+            </form>
+          </div>
+          <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeSalaModal()">Annulla</button>
+            <button type="submit" form="sala-form" class="btn-gold">Salva</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seat Layout Editor Modal -->
+  <div id="seat-editor-modal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
+          <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-brand-on-surface" id="seat-editor-title">Editor Piantina</h3>
+            <button type="button" class="text-brand-on-surface-variant hover:text-brand-on-surface" onclick="closeSeatEditor()" title="Chiudi" aria-label="Chiudi modal">
+              <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+          </div>
+          <div class="bg-brand-surface-container-lowest px-6 pb-4">
+            <p class="text-sm text-brand-on-surface-variant mb-4" id="seat-editor-subtitle"></p>
+            <!-- Editor Controls -->
+            <div class="flex flex-col sm:flex-row gap-3 mb-4 p-4 bg-brand-surface-container rounded-xl">
+              <div>
+                <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Settore</label>
+                <input id="seat-sector" type="text" value="PLATEA" class="ghost-input w-full px-3 py-1.5 text-sm" title="Nome settore">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Numero File</label>
+                <input id="seat-rows" type="number" value="5" min="1" max="50" class="ghost-input w-20 px-3 py-1.5 text-sm" title="Numero file">
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Posti per Fila</label>
+                <input id="seat-cols" type="number" value="10" min="1" max="50" class="ghost-input w-20 px-3 py-1.5 text-sm" title="Posti per fila">
+              </div>
+              <div class="flex items-end gap-2">
+                <button onclick="generateSeatGrid()" class="btn-gold px-3 py-1.5 text-sm rounded-lg">
+                  <i class="fa-solid fa-rotate mr-1"></i>Genera
+                </button>
+                <button onclick="clearSeatGrid()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg">
+                  <i class="fa-solid fa-trash mr-1"></i>Svuota
+                </button>
+              </div>
+            </div>
+            <!-- Seat Grid Preview -->
+            <div id="seat-grid-container" class="overflow-auto max-h-96 bg-brand-surface-container rounded-xl p-4 mb-4">
+              <p class="text-sm text-brand-on-surface-variant text-center">Usa i controlli sopra per generare la piantina</p>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-sm text-brand-on-surface-variant" id="seat-count-label"></span>
+              <div class="flex gap-2">
+                <button onclick="toggleWheelchairSeat()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg" title="Attiva/Disattiva posto disabile">
+                  <i class="fa-solid fa-wheelchair mr-1"></i>Posto disabile
+                </button>
+                <button onclick="toggleSeatActive()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg" title="Attiva/Disattiva posto">
+                  <i class="fa-solid fa-toggle-on mr-1"></i>Attiva/Disattiva
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeSeatEditor()">Annulla</button>
+            <button type="button" onclick="saveSeatLayout()" class="btn-gold">
+              <i class="fa-solid fa-save mr-2"></i>Salva Piantina
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Modal -->
+  <div id="delete-modal" class="fixed inset-0 z-50 hidden">
+    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 z-10 overflow-y-auto">
+      <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
+          <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
+            <div class="flex items-center gap-4">
+              <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-brand-error-container">
+                <i class="fa-solid fa-triangle-exclamation text-red-600 text-xl"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-brand-on-surface">Conferma Eliminazione</h3>
+                <p class="text-sm text-brand-on-surface-variant mt-1" id="delete-message">Sei sicuro di voler eliminare questo elemento?</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeDeleteModal()">Annulla</button>
+            <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700" id="confirm-delete-btn">Elimina</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/template-loader.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/form-handlers.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/pages/sale.js"></script>
+  <script>
+    function closeSalaModal() { document.getElementById('sala-modal').classList.add('hidden'); }
+    function closeSeatEditor() { document.getElementById('seat-editor-modal').classList.add('hidden'); }
+    function closeDeleteModal() { document.getElementById('delete-modal').classList.add('hidden'); }
+  </script>
+</body>
+
+</html>

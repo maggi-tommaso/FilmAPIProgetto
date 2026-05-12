@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Test Login</title></head>
+<body>
+<h2>Test Login Diretto</h2>
+<button onclick="test()">Testa Login admin@cinebase.it / Admin123!</button>
+<pre id="out"></pre>
+<script>
+async function test() {
+  const out = document.getElementById('out');
+  out.textContent = 'Chiamando API...';
+  try {
+    const r = await fetch('http://localhost:5000/auth/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email:'admin@cinebase.it',password:'Admin123!',deviceId:'test-'+Date.now()})
+    });
+    const text = await r.text();
+    out.textContent = 'Status: ' + r.status + '\n\n' + text;
+  } catch(e) {
+    out.textContent = 'ERRORE: ' + e.message;
+  }
+}
+</script>
+</body>
+</html>

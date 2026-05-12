@@ -1,0 +1,62 @@
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: film-api-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/FilmAPI/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_NAME: film-api-db
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_USE_AUTODETECT: "true"
+      DB_SERVER_VERSION: "10.11.0-mariadb"
+      JWT_SECRET: CineBaseSuperSecretJWTKey2026_AtLeast256Bits_ForLocalDevelopmentOnly
+      JWT_ISSUER: CineBaseAPI
+      JWT_AUDIENCE: CineBaseWeb
+      JWT_ACCESS_TOKEN_EXPIRY_MINUTES: "15"
+      JWT_REFRESH_TOKEN_EXPIRY_DAYS: "7"
+      ADMIN_SEED_EMAIL: admin@cinebase.it
+      ADMIN_SEED_PASSWORD: Admin123!
+      DEFAULT_TICKET_PRICE: "8.50"
+      HOLD_TTL_MINUTES: "10"
+      MAX_SEATS_PER_ORDER: "10"
+      FRONTEND_BASE_URL: http://localhost:5001
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/CineBase.Web/Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5001
+    depends_on:
+      - backend
+
+volumes:
+  mariadb_data:

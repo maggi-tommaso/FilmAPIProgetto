@@ -1,0 +1,1581 @@
+/*
+ * CineBase - Custom Styles
+ * Cinema Graphite Design System
+ * Light/Dark Theme via CSS Custom Properties
+ */
+
+/* ========================================================================
+   CSS Custom Properties — Design Tokens
+   Light theme in :root, Dark theme in .dark
+   These variables are referenced by Tailwind config as var(--brand-*)
+   ======================================================================== */
+
+:root {
+  /* Primary (Gold) */
+  --brand-gold: #D4AF37;
+  --brand-gold-dark: #735c00;
+  --brand-gold-light: #ffe088;
+
+  /* Secondary (Indigo Dark) */
+  --brand-indigo: #1A1B2E;
+  --brand-indigo-light: #5c5c73;
+
+  /* Tertiary (Cyan/Emerald) */
+  --brand-cyan: #006a6a;
+  --brand-cyan-light: #00c7c7;
+  --brand-emerald: #10B981;
+
+  /* Surfaces */
+  --brand-surface: #fbf8ff;
+  --brand-surface-dim: #d9d8f2;
+  --brand-surface-container: #eeecff;
+  --brand-surface-container-high: #e7e6ff;
+  --brand-surface-container-highest: #e1e0fb;
+  --brand-surface-container-low: #f5f2ff;
+  --brand-surface-container-lowest: #ffffff;
+
+  /* Text */
+  --brand-on-surface: #191a2d;
+  --brand-on-surface-variant: #4d4635;
+
+  /* Borders */
+  --brand-outline: #7f7663;
+  --brand-outline-variant: #d0c5af;
+
+  /* Semantic */
+  --brand-error: #ba1a1a;
+  --brand-error-container: #ffdad6;
+
+  /* Sidebar (glassmorphism — always dark indigo) */
+  --brand-sidebar-from: #1A1B2E;
+  --brand-sidebar-to: #2e2f43;
+  --brand-sidebar-text: #c5c4de;
+  --brand-sidebar-hover: rgba(255, 255, 255, 0.08);
+  --brand-sidebar-active-bg: rgba(255, 255, 255, 0.1);
+  --brand-sidebar-active-text: #D4AF37;
+
+  /* Shadows */
+  --brand-shadow: 0px 10px 30px rgba(25, 26, 45, 0.06);
+  --brand-shadow-sm: 0px 4px 12px rgba(25, 26, 45, 0.04);
+
+  /* Overlay — dark for readability on cinema images */
+  --brand-overlay-from: rgba(10, 10, 18, 0.60);
+  --brand-overlay-to: rgba(10, 10, 18, 0.30);
+}
+
+.dark {
+  /* Primary (Gold) — same in dark */
+  --brand-gold: #D4AF37;
+  --brand-gold-dark: #ffe088;
+  --brand-gold-light: #735c00;
+
+  /* Secondary (Indigo Dark) — lighter in dark */
+  --brand-indigo: #A5A6C4;
+  --brand-indigo-light: #8888AA;
+
+  /* Tertiary */
+  --brand-cyan: #00DDDD;
+  --brand-cyan-light: #00FFFF;
+  --brand-emerald: #34D399;
+
+  /* Surfaces — matching Stitch dark palette */
+  --brand-surface: #1A1B2E;
+  --brand-surface-dim: #1A1B2E;
+  --brand-surface-container: #1A1B2E;
+  --brand-surface-container-high: #222336;
+  --brand-surface-container-highest: #2C2D42;
+  --brand-surface-container-low: #1F2036;
+  --brand-surface-container-lowest: #24253D;
+
+  /* Text */
+  --brand-on-surface: #E8E6F0;
+  --brand-on-surface-variant: #A0A0B8;
+
+  /* Borders */
+  --brand-outline: #6B6B80;
+  --brand-outline-variant: rgba(255, 255, 255, 0.1);
+
+  /* Semantic */
+  --brand-error: #FFB4AB;
+  --brand-error-container: #93000A;
+
+  /* Sidebar (glassmorphism — deeper dark) */
+  --brand-sidebar-from: #0A0A14;
+  --brand-sidebar-to: #16162A;
+  --brand-sidebar-text: #A0A0B8;
+  --brand-sidebar-hover: rgba(255, 255, 255, 0.05);
+  --brand-sidebar-active-bg: rgba(255, 255, 255, 0.08);
+  --brand-sidebar-active-text: #D4AF37;
+
+  /* Shadows */
+  --brand-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+  --brand-shadow-sm: 0px 4px 12px rgba(0, 0, 0, 0.2);
+
+  /* Overlay */
+  --brand-overlay-from: rgba(26, 27, 46, 0.70);
+  --brand-overlay-to: rgba(26, 27, 46, 0.35);
+}
+
+/* ========================================================================
+   Base Styles
+   ======================================================================== */
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--brand-surface);
+  color: var(--brand-on-surface);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========================================================================
+   Scrollbar
+   ======================================================================== */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--brand-surface-container-low);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-outline-variant);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-outline);
+}
+
+/* ========================================================================
+   Animations
+   ======================================================================== */
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ========================================================================
+   Glassmorphism
+   ======================================================================== */
+
+.glass-panel {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.06), rgba(26, 27, 46, 0.04));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.dark .glass-panel {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.04), rgba(10, 10, 18, 0.8));
+}
+
+/* ========================================================================
+   Sidebar Glassmorphism
+   ======================================================================== */
+
+.sidebar-glass {
+  background: linear-gradient(180deg, var(--brand-sidebar-from), var(--brand-sidebar-to));
+  color: var(--brand-sidebar-text);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.sidebar-glass a {
+  color: var(--brand-sidebar-text);
+  transition: all 0.2s ease;
+}
+
+.sidebar-glass a:hover {
+  background: var(--brand-sidebar-hover);
+  color: #ffffff;
+}
+
+.sidebar-glass a.active {
+  background: var(--brand-sidebar-active-bg);
+  color: var(--brand-sidebar-active-text);
+}
+
+/* ========================================================================
+   Ambient Shadows
+   ======================================================================== */
+
+.ambient-shadow {
+  box-shadow: var(--brand-shadow);
+}
+
+.ambient-shadow-sm {
+  box-shadow: var(--brand-shadow-sm);
+}
+
+/* ========================================================================
+   Cards — Tonal Layering
+   ======================================================================== */
+
+.card-elevated {
+  background: var(--brand-surface-container-lowest);
+  border-radius: 0.5rem;
+  box-shadow: var(--brand-shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-container {
+  background: var(--brand-surface-container);
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.dark .card-hover:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================================================================
+   Ghost Input — Minimalist Form Fields
+   ======================================================================== */
+
+.ghost-input {
+  background: var(--brand-surface-container-highest);
+  border: 1px solid var(--brand-outline-variant);
+  border-radius: 0.5rem;
+  color: var(--brand-on-surface);
+  transition: all 0.2s ease;
+}
+
+.ghost-input:focus {
+  border-color: var(--brand-gold);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+}
+
+.ghost-input::placeholder {
+  color: var(--brand-on-surface-variant);
+  opacity: 0.7;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
+
+input[type='password']::-webkit-credentials-auto-fill-button,
+input[type='password']::-webkit-contacts-auto-fill-button,
+input[type='password']::-webkit-textfield-decoration-container {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+select.ghost-input {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%234d4635' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 0.75rem center !important;
+  background-repeat: no-repeat !important;
+  background-size: 1.25em 1.25em !important;
+  padding-right: 2.5rem !important;
+}
+
+.dark select.ghost-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23A0A0B8' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+}
+
+/* Dark mode select dropdown arrow fix */
+.dark select.ghost-input option {
+  background: #1A1B2E;
+  color: #E8E6F0;
+}
+
+/* ========================================================================
+   Labels — All-Caps Editorial Style
+   ======================================================================== */
+
+.label-caps {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand-on-surface-variant);
+}
+
+/* ========================================================================
+   Buttons — Match Stitch "Prestige Controls" style
+   Primary: px-8 py-3 (large), px-6 py-2 (small), px-10 py-4 (CTA)
+   ======================================================================== */
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(to bottom, var(--brand-gold), var(--brand-gold-dark));
+  color: #ffffff;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 4px 12px rgba(115, 92, 0, 0.2);
+}
+
+.btn-gold:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(115, 92, 0, 0.3);
+}
+
+.btn-gold:active {
+  transform: scale(0.97);
+}
+
+.dark .btn-gold {
+  color: #0A0A12;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.2);
+}
+
+.dark .btn-gold:hover {
+  color: #0A0A12;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+}
+
+/* Large CTA buttons (Area Admin, Programmazione) */
+.btn-gold-lg {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--brand-gold);
+  color: #1A1B2E;
+  border-radius: 0.75rem;
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  padding: 1rem 2.5rem;
+  box-shadow: 0 8px 24px rgba(115, 92, 0, 0.25);
+}
+
+.btn-gold-lg:hover {
+  filter: brightness(1.05);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(115, 92, 0, 0.35);
+}
+
+.btn-gold-lg:active {
+  transform: scale(0.96);
+}
+
+/* Small buttons (Login in admin navbar) */
+.btn-gold-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--brand-gold);
+  color: #1A1B2E;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1.5rem;
+  box-shadow: 0 2px 8px rgba(115, 92, 0, 0.15);
+}
+
+.btn-gold-sm:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn-gold-sm:active {
+  transform: scale(0.95);
+}
+
+.dark .btn-gold-sm {
+  box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
+}
+
+/* Outline button */
+.btn-outline-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid var(--brand-outline-variant);
+  color: var(--brand-on-surface);
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0.625rem 1.5rem;
+}
+
+.btn-outline-brand:hover {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+/* Light hero outline button — white border/text on dark overlay */
+.btn-outline-brand-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0.625rem 1.5rem;
+}
+
+.btn-outline-brand-light:hover {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* Ghost text button (text + icon, no bg) */
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: transparent;
+  border: none;
+  color: var(--brand-on-surface-variant);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.btn-ghost:hover {
+  color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.08);
+}
+
+/* ========================================================================
+   Table Row Hover — Stitch "No-Line" philosophy
+   Light: subtle darkening, Dark: transparent white overlay
+   ======================================================================== */
+
+.row-hover,
+.table-row-hover {
+  transition: background-color 0.15s ease;
+}
+
+html:not(.dark) .row-hover:hover,
+html:not(.dark) .table-row-hover:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.dark .row-hover:hover,
+.dark .table-row-hover:hover {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Ghost input dark mode fix */
+.dark .ghost-input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #E8E6F0;
+}
+
+.dark .ghost-input:focus {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: var(--brand-gold);
+}
+
+.dark .ghost-input::placeholder {
+  color: #A0A0B8;
+  opacity: 0.6;
+}
+
+/* Logout action: same hover behavior as nav items, red base text */
+.nav-menu-danger {
+  color: var(--brand-error);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-menu-danger:hover {
+  color: var(--brand-gold);
+  background-color: var(--brand-surface-container-high);
+}
+
+/* ========================================================================
+   Pagination & Small Button Hover — works in both themes
+   ======================================================================== */
+
+.btn-page {
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+html:not(.dark) .btn-page:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .btn-page:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* ========================================================================
+   Status Chips
+   ======================================================================== */
+
+.chip-status {
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
+.chip-active {
+  background: var(--brand-cyan-light);
+  color: #003535;
+}
+
+.dark .chip-active {
+  background: rgba(0, 221, 221, 0.15);
+  color: var(--brand-cyan-light);
+}
+
+.chip-past {
+  background: var(--brand-surface-container-highest);
+  color: var(--brand-on-surface-variant);
+}
+
+/* ========================================================================
+   Hero Overlay
+   ======================================================================== */
+
+.hero-overlay {
+  background: linear-gradient(
+    to right,
+    var(--brand-overlay-from),
+    var(--brand-overlay-to)
+  );
+}
+
+/* Light mode: white text on dark overlay for readability */
+body:not(.dark) .hero-section-text {
+  color: #ffffff;
+}
+
+body:not(.dark) .hero-section-text-accent {
+  color: var(--brand-gold-light);
+}
+
+.dark .hero-section-text-accent {
+  color: #D4AF37 !important;
+}
+
+/* ========================================================================
+   Modal Backdrop
+   ======================================================================== */
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.dark .modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* ========================================================================
+   Form Validation
+   ======================================================================== */
+
+.form-input-error {
+  border-color: var(--brand-error) !important;
+}
+
+.form-input-error:focus {
+  box-shadow: 0 0 0 2px rgba(186, 26, 26, 0.2);
+}
+
+/* ========================================================================
+   Table Striped (kept for backward compat)
+   ======================================================================== */
+
+.table-striped tr:nth-child(even) {
+  background-color: var(--brand-surface-container-low);
+}
+
+/* ========================================================================
+   Responsive Images
+   ======================================================================== */
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ========================================================================
+   Print Styles
+   ======================================================================== */
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* ========================================================================
+   Theme Toggle Button
+   ======================================================================== */
+
+.theme-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--brand-on-surface-variant);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--brand-surface-container-highest);
+  color: var(--brand-gold);
+}
+
+/* Sidebar theme toggle — matches nav link style */
+.sidebar-theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--brand-sidebar-text);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar-theme-toggle:hover {
+  color: var(--brand-gold);
+}
+
+.sidebar-theme-toggle .fa-moon,
+.sidebar-theme-toggle .fa-sun {
+  width: 1.25rem;
+  text-align: center;
+}
+
+/* ========================================================================
+   Smooth Transitions for Theme Switch
+   ======================================================================== */
+
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease !important;
+}
+
+/* ========================================================================
+   Programmazione v2 - Tabs
+   ======================================================================== */
+
+.tab-btn {
+  color: var(--brand-on-surface-variant);
+  background: var(--brand-surface-container);
+}
+
+.tab-btn:hover {
+  color: var(--brand-on-surface);
+  background: var(--brand-surface-container-high);
+}
+
+.active-tab {
+  color: #1A1B2E;
+  background: var(--brand-gold);
+}
+
+.dark .active-tab {
+  color: #0A0A12;
+}
+
+.active-tab:hover {
+  filter: brightness(1.05);
+}
+
+/* ========================================================================
+   Programmazione v2 - Line Clamp
+   ======================================================================== */
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================================================================
+   Programmazione v2 - Modal Scrollbar
+   ======================================================================== */
+
+#cinema-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+#cinema-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#cinema-list::-webkit-scrollbar-thumb {
+  background: var(--brand-outline-variant);
+  border-radius: 10px;
+}
+
+/* ========================================================================
+   Programmazione v2 - Carousel and Load More
+   ======================================================================== */
+
+.programmazione-carousel-shell {
+  display: block;
+}
+
+.programmazione-carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.25rem 0.125rem 0.75rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.programmazione-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.programmazione-carousel-card {
+  flex: 0 0 min(20rem, 82vw);
+}
+
+@media (min-width: 640px) {
+  .programmazione-carousel-card {
+    flex-basis: 18rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .programmazione-carousel-card {
+    flex-basis: 19rem;
+  }
+}
+
+.programmazione-carousel-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  color: var(--brand-on-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.programmazione-carousel-arrow:hover {
+  border-color: var(--brand-gold);
+  background: var(--brand-gold);
+  color: #1A1B2E;
+}
+
+.programmazione-carousel-arrow:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  color: var(--brand-on-surface-variant);
+}
+
+.programmazione-carousel-arrow:disabled:hover {
+  border-color: var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  color: var(--brand-on-surface-variant);
+}
+
+.dark .programmazione-carousel-arrow:hover {
+  color: #0A0A12;
+}
+
+/* ========================================================================
+   FASE 10 - Date Rail (reusable horizontal date scroller)
+   ======================================================================== */
+
+.date-rail-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0.25rem;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.date-rail-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.date-rail-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  padding: 0.625rem 0.5rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  color: var(--brand-on-surface-variant);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.date-rail-btn:hover {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+  background: var(--brand-surface-container);
+}
+
+.date-rail-btn-active {
+  border-color: var(--brand-gold) !important;
+  background: var(--brand-gold) !important;
+  color: #1A1B2E !important;
+}
+
+.dark .date-rail-btn-active {
+  color: #0A0A12 !important;
+}
+
+.date-rail-day-name {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.date-rail-day-num {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.date-rail-month {
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 0.125rem;
+  opacity: 0.8;
+}
+
+.date-rail-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: none;
+  background: var(--brand-surface-container-highest);
+  color: var(--brand-on-surface);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.date-rail-arrow:hover {
+  background: var(--brand-gold);
+  color: #1A1B2E;
+}
+
+.dark .date-rail-arrow:hover {
+  color: #0A0A12;
+}
+
+.date-rail-arrow-left {
+  left: -0.25rem;
+}
+
+.date-rail-arrow-right {
+  right: -0.25rem;
+}
+
+/* ========================================================================
+   FASE 10 - Show Time Buttons (auth-aware)
+   ======================================================================== */
+
+.show-time-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  color: var(--brand-on-surface);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.show-time-btn:hover {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+  background: var(--brand-surface-container);
+}
+
+.show-time-btn .sala-badge {
+  font-size: 0.6rem;
+  font-weight: 500;
+  background: var(--brand-surface-container-highest);
+  color: var(--brand-on-surface-variant);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  margin-left: 0.375rem;
+}
+
+/* ========================================================================
+   FASE 10 - Tipo Sala Group Headers
+   ======================================================================== */
+
+.tipo-sala-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tipo-sala-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tipo-sala-badge-2d {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--brand-emerald);
+}
+
+.tipo-sala-badge-3d {
+  background: rgba(0, 221, 221, 0.15);
+  color: var(--brand-cyan-light);
+}
+
+.tipo-sala-badge-isense {
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--brand-gold);
+}
+
+.tipo-sala-badge-xl {
+  background: rgba(168, 85, 247, 0.15);
+  color: #a855f7;
+}
+
+/* ========================================================================
+   FASE 10 - Film Card (my-cinemas detail view)
+   ======================================================================== */
+
+.film-schedule-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background: var(--brand-surface-container-lowest);
+  border: 1px solid var(--brand-outline-variant);
+  transition: all 0.2s ease;
+}
+
+.film-schedule-card:hover {
+  border-color: var(--brand-gold);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .film-schedule-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.film-schedule-cover {
+  width: 4rem;
+  height: 6rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* ========================================================================
+   FASE 11 - Seat Map (acquista.html)
+   ======================================================================== */
+
+.acquista-page {
+  min-height: calc(100vh - 7rem);
+}
+
+@media (min-width: 1024px) {
+  .acquista-page {
+    max-width: min(96vw, 1800px);
+    min-height: calc(100vh - 6.5rem);
+  }
+
+  .acquista-layout {
+    align-items: stretch;
+    min-height: calc(100vh - 11rem);
+  }
+
+  .acquista-sidebar {
+    align-self: stretch;
+    position: sticky;
+    top: 5.75rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    padding-right: 0.15rem;
+  }
+}
+
+.seat-map-wrapper {
+  overflow-x: auto;
+  padding: 0.1rem;
+  --seat-map-zoom: 1;
+}
+
+.seat-map-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  margin-bottom: 0.45rem;
+}
+
+.seat-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 9999px;
+  border: 1px solid var(--brand-outline-variant);
+  background: var(--brand-surface-container-low);
+  color: var(--brand-on-surface);
+  transition: all 0.15s ease;
+}
+
+.seat-zoom-btn:hover:not(:disabled) {
+  border-color: var(--brand-gold);
+  color: var(--brand-gold);
+}
+
+.seat-zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.seat-zoom-btn-reset {
+  width: 2rem;
+}
+
+.seat-zoom-label {
+  min-width: 3rem;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--brand-on-surface-variant);
+}
+
+.seat-map-screen {
+  text-align: center;
+  padding: 0.35rem 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: min(58%, 22rem);
+  background: linear-gradient(to bottom, var(--brand-gold), var(--brand-gold-dark));
+  color: #1A1B2E;
+  border-radius: 0.45rem 0.45rem 0 0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.dark .seat-map-screen {
+  color: #0A0A12;
+}
+
+.seat-map-grid {
+  display: block;
+}
+
+.seat-map-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-width: max-content;
+  transform-origin: top center;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+.seat-level-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.seat-level-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seat-level-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.16rem 0.55rem;
+  border-radius: 9999px;
+  background: var(--brand-surface-container-high);
+  color: var(--brand-on-surface-variant);
+  font-size: 0.56rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.seat-level-sectors {
+  display: grid;
+  gap: 0.55rem;
+  justify-content: center;
+}
+
+.seat-level-cols-1 {
+  grid-template-columns: max-content;
+}
+
+.seat-level-cols-2 {
+  grid-template-columns: repeat(2, max-content);
+}
+
+.seat-level-cols-3 {
+  grid-template-columns: repeat(3, max-content);
+}
+
+.seat-sector-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.42rem 0.48rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.seat-sector-card-compact {
+  padding-inline: 0.7rem;
+}
+
+.seat-sector-name {
+  text-align: center;
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--brand-on-surface-variant);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.seat-sector-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.seat-row {
+  display: flex;
+  align-items: center;
+  gap: 0.12rem;
+}
+
+.seat-row-numbers {
+  margin-bottom: 0.08rem;
+}
+
+.seat-btn {
+  width: 1.28rem;
+  height: 1.28rem;
+  border-radius: 0.24rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .seat-btn {
+    width: 1.4rem;
+    height: 1.4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .seat-btn {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  .seat-placeholder,
+  .seat-num-label {
+    width: 1.2rem;
+  }
+
+  .fila-label {
+    width: 1.3rem;
+    font-size: 0.5rem;
+  }
+}
+
+.seat-available {
+  background: var(--brand-surface-container-highest);
+  border-color: var(--brand-outline-variant);
+}
+
+.seat-available:hover {
+  border-color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.1);
+  transform: scale(1.1);
+}
+
+.seat-selected {
+  background: var(--brand-gold) !important;
+  border-color: var(--brand-gold-dark) !important;
+  transform: scale(1.03);
+  box-shadow: 0 0 5px rgba(212, 175, 55, 0.32);
+}
+
+.seat-held-other {
+  background: var(--brand-surface-container);
+  border-color: var(--brand-outline-variant);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.seat-held-me {
+  background: var(--brand-gold);
+  border-color: var(--brand-gold-dark);
+  opacity: 0.7;
+}
+
+.seat-sold {
+  background: #dc2626;
+  border-color: #b91c1c;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.seat-wheelchair {
+  background: var(--brand-surface-container-highest);
+  border-color: var(--brand-outline-variant);
+  position: relative;
+}
+
+.seat-wheelchair::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 50%;
+  border: 1px solid var(--brand-on-surface-variant);
+  opacity: 0.5;
+}
+
+.seat-wheelchair.seat-selected::after {
+  border-color: #1A1B2E;
+  opacity: 0.7;
+}
+
+.seat-placeholder {
+  width: 1.28rem;
+  height: 1.28rem;
+  display: inline-block;
+}
+
+.seat-legend {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 0.25rem;
+  border: 2px solid transparent;
+}
+
+.seat-legend.seat-available {
+  background: var(--brand-surface-container-highest);
+  border-color: var(--brand-outline-variant);
+}
+
+.seat-legend.seat-selected {
+  background: var(--brand-gold);
+  border-color: var(--brand-gold-dark);
+}
+
+.seat-legend.seat-held-other {
+  background: var(--brand-surface-container);
+  border-color: var(--brand-outline-variant);
+  opacity: 0.5;
+}
+
+.seat-legend.seat-sold {
+  background: #dc2626;
+  opacity: 0.6;
+}
+
+.seat-legend.seat-wheelchair {
+  background: var(--brand-surface-container-highest);
+  border-color: var(--brand-outline-variant);
+  position: relative;
+}
+
+.fila-label {
+  width: 1.35rem;
+  text-align: right;
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: var(--brand-on-surface-variant);
+  margin-right: 0.15rem;
+  flex-shrink: 0;
+}
+
+.fila-label-header {
+  opacity: 0;
+}
+
+.seat-num-label {
+  width: 1.28rem;
+  text-align: center;
+  font-size: 0.42rem;
+  color: var(--brand-on-surface-variant);
+  flex-shrink: 0;
+}
+
+@media (min-width: 640px) {
+  .fila-label {
+    width: 1.45rem;
+    font-size: 0.52rem;
+  }
+
+  .seat-num-label {
+    width: 1.4rem;
+  }
+
+  .seat-level-cols-2 {
+    grid-template-columns: repeat(2, max-content);
+  }
+
+  .seat-level-cols-3 {
+    grid-template-columns: repeat(3, max-content);
+  }
+}
+
+@media (max-width: 900px) {
+  .seat-level-cols-2,
+  .seat-level-cols-3 {
+    grid-template-columns: max-content;
+  }
+}
+
+
+
+/* ========================================================================
+   FASE 11 - Payment Options (pagamento.html)
+   ======================================================================== */
+
+.payment-option-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.payment-option-card:hover {
+  border-color: var(--brand-gold);
+  background: var(--brand-surface-container);
+}
+
+.payment-option-card:has(input:checked) {
+  border-color: var(--brand-gold);
+  background: rgba(212, 175, 55, 0.05);
+  box-shadow: 0 0 0 1px var(--brand-gold);
+}
+
+.payment-option-card:has(input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.payment-option-card:has(input:disabled):hover {
+  border-color: var(--brand-outline-variant);
+  background: var(--brand-surface-container-lowest);
+}
+
+/* Stripe Elements container styling */
+#stripe-card-element .StripeElement {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+#stripe-card-element .StripeElement--focus {
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+}
+
+/* Credit slider styling */
+input[type="range"] {
+  height: 0.375rem;
+  border-radius: 0.25rem;
+  background: var(--brand-surface-container-highest);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  cursor: pointer;
+  border: 2px solid var(--brand-gold-dark);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background: var(--brand-gold);
+  cursor: pointer;
+  border: 2px solid var(--brand-gold-dark);
+}
+
+/* Seat Editor Styles */
+.seat-btn {
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Inter', sans-serif;
+}
+.seat-btn:hover {
+  transform: scale(1.15);
+  z-index: 2;
+}
+.seat-available {
+  background-color: var(--brand-surface-container-high);
+  color: var(--brand-on-surface-variant);
+  border-color: var(--brand-outline-variant);
+}
+.seat-available:hover {
+  background-color: var(--brand-gold);
+  color: white;
+  border-color: var(--brand-gold-dark);
+}
+.seat-inactive {
+  background-color: #f0f0f0;
+  color: #bbb;
+  border-color: #ddd;
+}
+.seat-wheelchair {
+  background-color: var(--brand-cyan);
+  color: white;
+  border-color: var(--brand-cyan-light);
+}
+.seat-wheelchair:hover {
+  background-color: var(--brand-cyan-light);
+}
+
+/* Scanner area */
+#scanner-container video {
+  border-radius: 0.75rem;
+  max-width: 100%;
+  max-height: 300px;
+}
+
+/* Validazione esito card */
+.validazione-success {
+  background-color: var(--brand-emerald);
+  color: white;
+}
+.validazione-error {
+  background-color: var(--brand-error);
+  color: white;
+}

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Dashboard</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <script src="/js/tailwind-config.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+  <script src="/js/route-guard.js"></script>
+</head>
+
+<body class="bg-brand-surface text-brand-on-surface font-sans">
+  <main class="px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex items-center justify-between gap-4 mb-8">
+        <h2 class="text-xl sm:text-2xl font-bold text-brand-on-surface">Overview</h2>
+      <a href="/shows.html" class="btn-gold whitespace-nowrap inline-block">
+        <span class="hidden sm:inline">Gestisci Show</span>
+        <span class="sm:hidden">Show</span>
+      </a>
+    </div>
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="card-elevated overflow-hidden">
+            <div class="p-5 flex items-center">
+              <div class="flex-shrink-0 bg-brand-gold rounded-md p-3">
+                <i class="fa-solid fa-film text-white text-xl"></i>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-brand-on-surface-variant truncate">Film</dt>
+                  <dd class="text-2xl font-semibold text-brand-on-surface" id="stat-movies">-</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div class="card-elevated overflow-hidden">
+            <div class="p-5 flex items-center">
+              <div class="flex-shrink-0 bg-brand-cyan rounded-md p-3">
+                <i class="fa-solid fa-user text-white text-xl"></i>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-brand-on-surface-variant truncate">Registi</dt>
+                  <dd class="text-2xl font-semibold text-brand-on-surface" id="stat-directors">-</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div class="card-elevated overflow-hidden">
+            <div class="p-5 flex items-center">
+              <div class="flex-shrink-0 bg-brand-emerald rounded-md p-3">
+                <i class="fa-solid fa-building text-white text-xl"></i>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-brand-on-surface-variant truncate">Cinema</dt>
+                  <dd class="text-2xl font-semibold text-brand-on-surface" id="stat-cinemas">-</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div class="card-elevated overflow-hidden">
+            <div class="p-5 flex items-center">
+              <div class="flex-shrink-0 bg-brand-indigo-light rounded-md p-3">
+                <i class="fa-solid fa-clock text-white text-xl"></i>
+              </div>
+              <div class="ml-5 w-0 flex-1">
+                <dl>
+                  <dt class="text-sm font-medium text-brand-on-surface-variant truncate">Show</dt>
+                  <dd class="text-2xl font-semibold text-brand-on-surface" id="stat-screenings">-</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Links Nuove Funzionalità -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <a href="/sale.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
+            <div class="w-10 h-10 bg-brand-cyan rounded-lg flex items-center justify-center text-white shrink-0">
+              <i class="fa-solid fa-chair"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-brand-on-surface">Gestione Sale</p>
+              <p class="text-xs text-brand-on-surface-variant">Sale e piantine posti</p>
+            </div>
+          </a>
+          <a href="/ricarica-credito.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
+            <div class="w-10 h-10 bg-brand-gold rounded-lg flex items-center justify-center text-white shrink-0">
+              <i class="fa-solid fa-coins"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-brand-on-surface">Ricarica Credito</p>
+              <p class="text-xs text-brand-on-surface-variant">Credito utenti piattaforma</p>
+            </div>
+          </a>
+          <a href="/validazione-biglietti.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
+            <div class="w-10 h-10 bg-brand-emerald rounded-lg flex items-center justify-center text-white shrink-0">
+              <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-brand-on-surface">Validazione Biglietti</p>
+              <p class="text-xs text-brand-on-surface-variant">Scanner e verifica ingressi</p>
+            </div>
+          </a>
+        </div>
+
+        <!-- Show in Programma -->
+        <div class="card-elevated overflow-x-auto mb-8">
+          <div class="px-6 py-4 border-b border-brand-outline-variant/10">
+            <h2 class="text-lg font-semibold text-brand-on-surface">Show in Programma</h2>
+          </div>
+          <table class="min-w-full divide-y divide-brand-outline-variant/10">
+            <thead class="bg-brand-surface-container">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">Film</th>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">Cinema</th>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">Data</th>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">Ora</th>
+                <th class="px-6 py-3 text-left text-xs font-medium label-caps">Status</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming-screenings" class="divide-y divide-brand-outline-variant/10">
+              <tr>
+                <td colspan="6" class="px-6 py-4 text-center text-brand-on-surface-variant">Caricamento...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Registi in Evidenza & Analisi Cinema -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="card-elevated overflow-hidden">
+            <div class="px-6 py-4 border-b border-brand-outline-variant/10">
+              <h2 class="text-lg font-semibold text-brand-on-surface">Registi in Evidenza</h2>
+            </div>
+            <div class="p-6">
+              <p class="text-brand-on-surface-variant text-sm">Caricamento in corso...</p>
+            </div>
+          </div>
+          <div class="card-elevated overflow-hidden">
+            <div class="px-6 py-4 border-b border-brand-outline-variant/10">
+              <h2 class="text-lg font-semibold text-brand-on-surface">Analisi Cinema</h2>
+            </div>
+            <div class="p-6">
+              <p class="text-brand-on-surface-variant text-sm">Caricamento in corso...</p>
+            </div>
+          </div>
+        </div>
+  </main>
+
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script>
+    function normalizeCollection(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data?.$values)) return data.$values;
+      if (Array.isArray(data?.items)) return data.items;
+      return [];
+    }
+
+    // Cache per dropdown
+    let cachedFilms = [];
+    let cachedCinemas = [];
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const [filmsRaw, registiRaw, cinemasRaw, showsRaw] = await Promise.all([
+          API.getFilms(),
+          API.getRegisti(),
+          API.getCinemas(),
+          API.getShows()
+        ]);
+
+        const films = normalizeCollection(filmsRaw);
+        const registi = normalizeCollection(registiRaw);
+        const cinemas = normalizeCollection(cinemasRaw);
+        const shows = normalizeCollection(showsRaw);
+
+        cachedFilms = films;
+        cachedCinemas = cinemas;
+
+        document.getElementById('stat-movies').textContent = films.length;
+        document.getElementById('stat-directors').textContent = registi.length;
+        document.getElementById('stat-cinemas').textContent = cinemas.length;
+        document.getElementById('stat-screenings').textContent = shows.length;
+
+        renderUpcomingShows(shows);
+      } catch (error) {
+        console.error('Error loading dashboard:', error);
+      }
+    });
+
+    function getDashboardFilmTitle(filmId) {
+      const film = cachedFilms.find(f => Number(f.id) === Number(filmId));
+      return film ? film.titolo : `ID ${filmId}`;
+    }
+
+    function getDashboardCinemaName(cinemaId) {
+      const cinema = cachedCinemas.find(c => Number(c.id) === Number(cinemaId));
+      return cinema ? cinema.nome : `ID ${cinemaId}`;
+    }
+
+    function renderUpcomingShows(shows) {
+      const tbody = document.getElementById('upcoming-screenings');
+      if (!shows.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-4 text-center text-brand-on-surface-variant">Nessuno show in programma</td></tr>';
+        return;
+      }
+
+      const now = new Date();
+
+      tbody.innerHTML = shows.slice(0, 5).map(s => {
+        let showDate = null;
+        if (s.startAtUtc) showDate = new Date(s.startAtUtc);
+        const isPast = showDate && showDate < now;
+        const statusClass = isPast ? 'chip-past' : 'chip-active';
+        const statusText = isPast ? 'Passato' : 'In programma';
+
+        const formattedDate = showDate ? formatDate(s.startAtUtc) : '-';
+        const formattedTime = showDate ? formatTime(s.startAtUtc) : '-';
+        const filmTitle = s.filmTitolo || getDashboardFilmTitle(s.filmId);
+        const cinemaNome = s.cinemaNome || getDashboardCinemaName(s.cinemaId);
+
+        return `
+    <tr class="row-hover">
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface-variant">${s.id}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-brand-on-surface">${filmTitle}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface">${cinemaNome}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface-variant">${formattedDate}</td>
+      <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface-variant">${formattedTime}</td>
+      <td class="px-6 py-4 whitespace-nowrap">
+        <span class="chip-status ${statusClass}">${statusText}</span>
+      </td>
+    </tr>
+    `;
+      }).join('');
+    }
+
+  </script>
+</body>
+
+</html>
+

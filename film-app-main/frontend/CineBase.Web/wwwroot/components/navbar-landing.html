@@ -1,0 +1,254 @@
+<!-- Tailwind Navbar per Landing Page -->
+<nav class="sticky top-0 z-50 glass-panel ambient-shadow-sm border-b border-brand-outline-variant/20">
+  <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/index.html" class="text-2xl font-bold text-brand-gold tracking-tight flex items-center gap-2">
+      <span class="text-3xl">🎬</span>
+      CineBase
+    </a>
+    
+    <!-- Desktop Links -->
+    <div class="hidden md:flex items-center gap-4">
+      <!-- Selected Cinema -->
+      <div id="navbar-cinema-display" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-brand-surface-container border border-brand-outline-variant/20">
+        <i class="fa-solid fa-location-dot text-brand-gold text-sm"></i>
+        <span id="navbar-selected-cinema" class="text-sm font-medium text-brand-on-surface max-w-32 truncate"></span>
+      </div>
+      <a href="/programmazione.html" class="btn-outline-brand text-sm tracking-widest">
+        Programmazione
+      </a>
+      <button onclick="CineBaseTheme.toggle()" class="theme-toggle-btn" title="Cambia tema">
+        <i class="fa-solid fa-moon theme-toggle-icon-moon text-lg"></i>
+        <i class="fa-solid fa-sun theme-toggle-icon-sun text-lg" style="display:none"></i>
+      </button>
+
+      <!-- Admin entry - shown only for PowerUser/Admin -->
+      <a href="/dashboard.html" id="admin-area-btn" class="hidden btn-gold text-sm tracking-widest admin-only">
+        Area Admin
+      </a>
+
+      <!-- Auth Links - shown when NOT logged in -->
+      <a href="/login.html" id="login-btn" class="btn-outline-brand text-sm">
+        Login
+      </a>
+      <a href="/registrazione.html" id="register-btn" class="btn-gold text-sm">
+        Registrati
+      </a>
+
+      <!-- User Dropdown - shown when logged in -->
+      <div id="user-dropdown" class="hidden relative">
+        <button id="user-menu-toggle" class="flex items-center gap-2 text-brand-on-surface hover:text-brand-gold transition-colors">
+          <span id="user-name" class="font-semibold text-sm"></span>
+          <i class="fa-solid fa-chevron-down text-xs"></i>
+        </button>
+        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-brand-surface-container rounded-xl shadow-lg border border-brand-outline-variant/20 py-2">
+          <a href="/profilo.html" class="block px-4 py-2 text-brand-on-surface hover:text-brand-gold hover:bg-brand-surface-container-high">
+            <i class="fa-solid fa-user mr-2"></i>Profilo
+          </a>
+          <a href="/profilo.html" class="block px-4 py-2 text-brand-on-surface hover:text-brand-gold hover:bg-brand-surface-container-high">
+            <i class="fa-solid fa-ticket mr-2"></i>Biglietti
+          </a>
+          <hr class="my-2 border-brand-outline-variant/30">
+          <button id="logout-btn" class="nav-menu-danger w-full text-left px-4 py-2">
+            <i class="fa-solid fa-sign-out-alt mr-2"></i>Logout
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Toggle -->
+    <div class="md:hidden">
+      <button id="mobile-menu-toggle" class="p-2 text-brand-on-surface">
+        <i class="fa-solid fa-bars text-2xl"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-brand-outline-variant/20">
+    <div class="px-4 py-4 space-y-4">
+      <!-- Selected Cinema Mobile -->
+      <div id="mobile-navbar-cinema-display" class="hidden items-center gap-2 px-3 py-2 rounded-xl bg-brand-surface-container border border-brand-outline-variant/20">
+        <i class="fa-solid fa-location-dot text-brand-gold"></i>
+        <div>
+          <p class="text-xs text-brand-on-surface-variant">Cinema</p>
+          <span id="mobile-navbar-selected-cinema" class="text-sm font-medium text-brand-on-surface"></span>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Navigazione</p>
+        <a href="/programmazione.html" class="block py-2 text-center rounded-xl btn-outline-brand">Programmazione</a>
+        <!-- Admin entry mobile - shown only for PowerUser/Admin -->
+        <a href="/dashboard.html" id="mobile-admin-area-btn" class="hidden block py-2 text-center rounded-xl btn-gold admin-only">Area Admin</a>
+      </div>
+
+      <div class="border-t border-brand-outline-variant/20 pt-3">
+        <!-- Auth Links Mobile - shown when NOT logged in -->
+        <div id="mobile-auth-links" class="space-y-2">
+          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Account</p>
+          <a href="/login.html" class="block py-2 text-center rounded-xl btn-outline-brand">Login</a>
+          <a href="/registrazione.html" class="block py-2 text-center rounded-xl btn-gold">Registrati</a>
+        </div>
+
+        <!-- User Menu Mobile - shown when logged in -->
+        <div id="mobile-user-menu" class="hidden space-y-1">
+          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Account</p>
+          <p id="mobile-user-name" class="py-1 text-brand-gold font-semibold"></p>
+          <a href="/profilo.html" class="block py-2 text-brand-on-surface hover:text-brand-gold">Profilo</a>
+          <a href="/profilo.html" class="block py-2 text-brand-on-surface hover:text-brand-gold">Biglietti</a>
+          <button id="mobile-logout-btn" class="nav-menu-danger w-full text-left py-3 rounded-xl mt-2">Logout</button>
+        </div>
+      </div>
+
+      <div class="border-t border-brand-outline-variant/20 pt-3">
+        <button onclick="CineBaseTheme.toggle()" class="w-full flex items-center gap-3 py-2 text-brand-on-surface hover:text-brand-gold transition-colors" title="Cambia tema">
+          <i class="fa-solid fa-moon theme-toggle-icon-moon text-lg"></i>
+          <i class="fa-solid fa-sun theme-toggle-icon-sun text-lg" style="display:none"></i>
+          <span>Cambia tema</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+(function() {
+  const loginBtn = document.getElementById('login-btn');
+  const registerBtn = document.getElementById('register-btn');
+  const userDropdown = document.getElementById('user-dropdown');
+  const userName = document.getElementById('user-name');
+  const userMenuToggle = document.getElementById('user-menu-toggle');
+  const userMenu = document.getElementById('user-menu');
+  const logoutBtn = document.getElementById('logout-btn');
+  const mobileAuthLinks = document.getElementById('mobile-auth-links');
+  const mobileUserMenu = document.getElementById('mobile-user-menu');
+  const mobileUserName = document.getElementById('mobile-user-name');
+  const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+
+  function normalizeRole(role) {
+    if (role == null) return '';
+    const value = String(role).trim().toLowerCase();
+    if (value === '2' || value === 'admin') return 'admin';
+    if (value === '1' || value === 'poweruser') return 'poweruser';
+    if (value === '0' || value === 'user') return 'user';
+    return value;
+  }
+
+  function updateAuthUI() {
+    if (typeof Auth === 'undefined' || !Auth) {
+      document.querySelectorAll('.admin-only').forEach(el => el.classList.add('hidden'));
+      return;
+    }
+
+    const isLoggedIn = Auth.isLoggedIn();
+    const role = normalizeRole(isLoggedIn ? (Auth.getUserRole() ?? null) : null);
+    const isAdminOrPowerUser = role === 'admin' || role === 'poweruser';
+
+    if (isLoggedIn && Auth.getUser()) {
+      const user = Auth.getUser();
+      if (loginBtn) loginBtn.classList.add('hidden');
+      if (registerBtn) registerBtn.classList.add('hidden');
+      if (userDropdown) {
+        userDropdown.classList.remove('hidden');
+        userName.textContent = user.nome || user.email || 'Utente';
+      }
+      if (mobileAuthLinks) mobileAuthLinks.classList.add('hidden');
+      if (mobileUserMenu) {
+        mobileUserMenu.classList.remove('hidden');
+        mobileUserName.textContent = user.nome || user.email || 'Utente';
+      }
+    } else {
+      if (loginBtn) loginBtn.classList.remove('hidden');
+      if (registerBtn) registerBtn.classList.remove('hidden');
+      if (userDropdown) userDropdown.classList.add('hidden');
+      if (mobileAuthLinks) mobileAuthLinks.classList.remove('hidden');
+      if (mobileUserMenu) mobileUserMenu.classList.add('hidden');
+    }
+
+    document.querySelectorAll('.admin-only').forEach(el => {
+      if (isAdminOrPowerUser) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    });
+  }
+
+  function toggleUserMenu() {
+    if (userMenu) userMenu.classList.toggle('hidden');
+  }
+
+  function handleLogout() {
+    Auth?.logout().then(() => {
+      window.location.href = '/index.html';
+    }).catch(() => {
+      window.location.href = '/index.html';
+    });
+  }
+
+  if (userMenuToggle) {
+    userMenuToggle.addEventListener('click', toggleUserMenu);
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', handleLogout);
+  }
+
+  if (mobileLogoutBtn) {
+    mobileLogoutBtn.addEventListener('click', handleLogout);
+  }
+
+  document.addEventListener('click', (e) => {
+    if (userMenuToggle && userMenu && !userMenuToggle.contains(e.target) && !userMenu.contains(e.target)) {
+      userMenu.classList.add('hidden');
+    }
+  });
+
+  window.updateAuthUI = updateAuthUI;
+
+  function updateCinemaDisplay(cinemaName) {
+    const desktopDisplay = document.getElementById('navbar-cinema-display');
+    const desktopName = document.getElementById('navbar-selected-cinema');
+    const mobileDisplay = document.getElementById('mobile-navbar-cinema-display');
+    const mobileName = document.getElementById('mobile-navbar-selected-cinema');
+
+    if (cinemaName) {
+      if (desktopDisplay) desktopDisplay.classList.remove('hidden');
+      if (desktopDisplay) desktopDisplay.classList.add('flex');
+      if (desktopName) desktopName.textContent = cinemaName;
+      if (mobileDisplay) mobileDisplay.classList.remove('hidden');
+      if (mobileDisplay) mobileDisplay.classList.add('flex');
+      if (mobileName) mobileName.textContent = cinemaName;
+    } else {
+      if (desktopDisplay) {
+        desktopDisplay.classList.add('hidden');
+        desktopDisplay.classList.remove('flex');
+      }
+      if (mobileDisplay) {
+        mobileDisplay.classList.add('hidden');
+        mobileDisplay.classList.remove('flex');
+      }
+    }
+  }
+
+  window.updateNavbarCinema = updateCinemaDisplay;
+
+  if (typeof window.initializeNavbar === 'function') {
+    const originalInitialize = window.initializeNavbar;
+    window.initializeNavbar = function() {
+      originalInitialize();
+      updateAuthUI();
+    };
+  } else {
+    window.initializeNavbar = updateAuthUI;
+  }
+
+  updateAuthUI();
+
+  document.addEventListener('components:loaded', updateAuthUI);
+  document.addEventListener('cinema:changed', (e) => {
+    updateCinemaDisplay(e.detail?.cinemaName || null);
+  });
+})();
+</script>

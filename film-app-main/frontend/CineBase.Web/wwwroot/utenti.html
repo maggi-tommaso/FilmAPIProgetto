@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Gestione Utenti</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+  <script src="/js/route-guard.js"></script>
+  <script src="/js/api.js"></script>
+</head>
+<body class="bg-brand-surface text-brand-on-surface font-sans min-h-screen">
+  <div id="admin-sidebar-container"></div>
+  <div class="ml-64 min-h-screen p-6">
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-brand-on-surface">Gestione Utenti</h1>
+        <p class="text-brand-on-surface-variant text-sm mt-1">Amministra utenti, ruoli e inviti</p>
+      </div>
+      <button onclick="showInviteModal()" class="btn-gold px-5 py-2.5 rounded-xl text-sm font-semibold">
+        <i class="fa-solid fa-user-plus mr-2"></i>Nuovo Invito
+      </button>
+    </header>
+
+    <div class="glass-panel card-elevated p-4 rounded-2xl mb-6 flex gap-4 flex-wrap">
+      <input type="text" id="search-input" placeholder="Cerca per email o nome..." class="ghost-input flex-1 min-w-[200px] px-4 py-2.5 rounded-xl text-sm">
+      <select id="role-filter" class="ghost-input px-4 py-2.5 rounded-xl text-sm min-w-[150px]">
+        <option value="">Tutti i ruoli</option>
+        <option value="Admin">Admin</option>
+        <option value="PowerUser">PowerUser</option>
+        <option value="User">User</option>
+      </select>
+    </div>
+
+    <div class="glass-panel card-elevated rounded-2xl overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="border-b border-brand-outline-variant/20 text-brand-on-surface-variant text-xs uppercase">
+            <tr>
+              <th class="text-left p-4">Utente</th>
+              <th class="text-left p-4">Ruolo</th>
+              <th class="text-left p-4">Password</th>
+              <th class="text-left p-4">Provider</th>
+              <th class="text-left p-4">Ultimo Accesso</th>
+              <th class="text-right p-4">Azioni</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody"></tbody>
+        </table>
+      </div>
+      <div id="pagination" class="flex items-center justify-between px-4 py-3 border-t border-brand-outline-variant/20"></div>
+    </div>
+
+    <div id="invite-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div class="glass-panel card-elevated p-6 rounded-2xl w-full max-w-md mx-4">
+        <h2 class="text-lg font-bold mb-4">Invita Nuovo Utente</h2>
+        <div id="invite-error" class="hidden bg-brand-error-container border border-brand-error/30 text-brand-error px-4 py-3 rounded-xl mb-4 text-sm"></div>
+        <form id="invite-form" class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Email</label>
+            <input type="email" id="invite-email" class="ghost-input w-full px-4 py-2.5 rounded-xl text-sm" required>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Nome</label>
+              <input type="text" id="invite-nome" class="ghost-input w-full px-4 py-2.5 rounded-xl text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Cognome</label>
+              <input type="text" id="invite-cognome" class="ghost-input w-full px-4 py-2.5 rounded-xl text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Ruolo</label>
+            <select id="invite-ruolo" class="ghost-input w-full px-4 py-2.5 rounded-xl text-sm">
+              <option value="PowerUser">PowerUser</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="flex gap-3 justify-end pt-2">
+            <button type="button" onclick="hideInviteModal()" class="px-4 py-2.5 rounded-xl border border-brand-outline-variant/50 text-sm">Annulla</button>
+            <button type="submit" class="btn-gold px-5 py-2.5 rounded-xl text-sm font-semibold">Invia Invito</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/auth.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/pages/utenti.js"></script>
+</body>
+</html>

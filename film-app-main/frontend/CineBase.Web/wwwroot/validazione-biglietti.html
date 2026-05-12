@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Validazione Biglietti</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+  <script src="/js/route-guard.js"></script>
+</head>
+
+<body class="bg-brand-surface text-brand-on-surface font-sans">
+  <div id="navbar-container"></div>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-bold text-brand-on-surface">Validazione Biglietti</h1>
+        <p class="text-sm text-brand-on-surface-variant mt-1" id="mode-description">Valida i biglietti all'ingresso del cinema</p>
+      </div>
+    </div>
+
+    <!-- Mode Toggle & Cinema -->
+    <div class="card-elevated mb-6 p-4">
+      <div class="flex flex-col sm:flex-row gap-4 items-end">
+        <div class="flex-1">
+          <label for="validazione-cinema" class="block text-sm font-medium text-brand-on-surface mb-1">Cinema Operativo</label>
+          <select id="validazione-cinema" class="ghost-input w-full px-4 py-2" title="Seleziona il cinema operativo">
+            <option value="">Seleziona cinema...</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2 bg-brand-surface-container rounded-xl p-2">
+          <span class="text-xs text-brand-on-surface-variant font-medium mr-1">Modalità:</span>
+          <button id="btn-mode-normal" onclick="setValidationMode('normal')"
+            class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors btn-gold">
+            <i class="fa-solid fa-hand-pointer mr-1"></i>Normale
+          </button>
+          <button id="btn-mode-auto" onclick="setValidationMode('auto')"
+            class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors btn-outline-brand">
+            <i class="fa-solid fa-bolt mr-1"></i>Auto Click
+          </button>
+        </div>
+      </div>
+      <div id="auto-mode-hint" class="hidden mt-3 p-3 bg-brand-gold/10 rounded-lg border border-brand-gold/30">
+        <p class="text-xs text-brand-on-surface-variant">
+          <i class="fa-solid fa-circle-info text-brand-gold mr-1"></i>
+          <strong>Modalità Auto Click attiva:</strong> seleziona il cinema e inserisci/scansiona il codice — la validazione parte automaticamente senza click aggiuntivi. Supporta scanner barcode, QR code e redirect via <code class="text-brand-gold">?codice=</code>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Validation Input -->
+    <div class="card-elevated p-6 mb-6">
+      <div class="flex flex-col sm:flex-row gap-3 items-end">
+        <div class="flex-1">
+          <label for="ticket-code-input" class="block text-sm font-medium text-brand-on-surface mb-1">Codice Biglietto</label>
+          <div class="relative">
+            <input id="ticket-code-input" type="text" placeholder="Inserisci codice biglietto o scansiona QR/barcode"
+              class="ghost-input w-full px-4 py-3 text-lg" title="Codice biglietto" autofocus>
+            <button id="btn-scan-toggle" onclick="toggleScanner()"
+              class="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-brand-on-surface-variant hover:text-brand-gold transition-colors"
+              title="Scansiona QR/Barcode" aria-label="Avvia scansione">
+              <i class="fa-solid fa-qrcode text-xl"></i>
+            </button>
+          </div>
+        </div>
+        <button id="btn-lookup" onclick="lookupTicket()" class="btn-gold px-6 py-3 rounded-lg text-sm font-medium">
+          <i class="fa-solid fa-search mr-2"></i>Verifica
+        </button>
+      </div>
+
+      <!-- Auto-validate status -->
+      <div id="auto-validate-status" class="hidden mt-3 p-3 bg-brand-gold/10 rounded-lg flex items-center gap-3">
+        <i class="fa-solid fa-spinner fa-spin text-brand-gold"></i>
+        <span class="text-sm text-brand-on-surface-variant">Validazione automatica in corso...</span>
+      </div>
+
+      <!-- Scanner Area -->
+      <div id="scanner-container" class="hidden mt-4">
+        <div class="relative rounded-xl overflow-hidden bg-brand-surface-container">
+          <video id="scanner-video" class="w-full max-h-72 object-cover" autoplay playsinline></video>
+          <div class="p-3 flex justify-between items-center bg-brand-surface-container-low">
+            <span class="text-sm text-brand-on-surface-variant">Inquadra il QR code o barcode del biglietto</span>
+            <button onclick="stopScanner()" class="btn-outline-brand px-3 py-1 text-sm rounded-lg">
+              <i class="fa-solid fa-stop mr-1"></i>Ferma
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Lookup Result (used in Normal mode) -->
+    <div id="lookup-result" class="hidden card-elevated p-6 mb-6">
+      <h3 class="text-lg font-semibold text-brand-on-surface mb-4">Dettaglio Biglietto</h3>
+      <div id="lookup-detail" class="space-y-3"></div>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3" id="lookup-actions"></div>
+    </div>
+
+    <!-- Validation Result -->
+    <div id="validation-result" class="hidden"></div>
+
+    <!-- Recently Validated -->
+    <div class="card-elevated overflow-x-auto">
+      <div class="px-6 py-4 border-b border-brand-outline-variant/10">
+        <h2 class="text-lg font-semibold text-brand-on-surface">Validazioni Recenti</h2>
+      </div>
+      <div id="recent-validations" class="p-4 text-sm text-brand-on-surface-variant">
+        Nessuna validazione recente
+      </div>
+    </div>
+  </main>
+
+  <div id="footer-container"></div>
+  <div id="toast-container" class="fixed bottom-4 right-4 z-50"></div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/template-loader.js"></script>
+  <script src="/js/admin-shell.js"></script>
+  <script src="/js/form-handlers.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script src="/js/pages/validazione-biglietti.js"></script>
+</body>
+
+</html>
