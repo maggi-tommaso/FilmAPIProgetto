@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sala Luce - Registrazione</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#1152d4", "background-light": "#f6f6f8" },
+            fontFamily: { display: ["Inter", "sans-serif"] }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="bg-background-light font-display text-slate-900">
+    <div class="min-h-screen">
+      <div id="layout-header"></div>
+
+      <main class="mx-auto max-w-lg px-4 pb-10 pt-8 lg:px-8">
+        <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h1 class="text-3xl font-black">Crea il tuo account</h1>
+          <p class="mt-2 text-sm text-slate-600">Registrati per acquistare biglietti e gestire le tue prenotazioni.</p>
+
+          <form id="register-form" class="mt-6 space-y-4">
+            <div class="grid grid-cols-2 gap-3">
+              <label class="block text-sm font-semibold text-slate-700">
+                Nome
+                <input required type="text" name="nome" class="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
+              </label>
+              <label class="block text-sm font-semibold text-slate-700">
+                Cognome
+                <input required type="text" name="cognome" class="mt-1 w-full rounded border border-slate-300 px-3 py-2" />
+              </label>
+            </div>
+            <label class="block text-sm font-semibold text-slate-700">
+              Username
+              <input required type="text" name="username" class="mt-1 w-full rounded border border-slate-300 px-3 py-2" placeholder="es. mario.rossi" />
+            </label>
+            <label class="block text-sm font-semibold text-slate-700">
+              Email
+              <input required type="email" name="email" class="mt-1 w-full rounded border border-slate-300 px-3 py-2" placeholder="es. mario@gmail.com" />
+            </label>
+            <label class="block text-sm font-semibold text-slate-700">
+              Password
+              <input required type="password" name="password" class="mt-1 w-full rounded border border-slate-300 px-3 py-2" placeholder="minimo 3 caratteri" />
+            </label>
+            <p id="register-feedback" class="text-xs text-red-600 hidden"></p>
+            <button type="submit" class="w-full rounded bg-slate-900 px-4 py-2.5 text-sm font-bold text-white hover:bg-slate-800 transition">Registrati</button>
+          </form>
+
+          <div class="my-5 flex items-center gap-3">
+            <span class="h-px flex-1 bg-slate-200"></span>
+            <span class="text-xs font-semibold uppercase tracking-wide text-slate-500">Oppure</span>
+            <span class="h-px flex-1 bg-slate-200"></span>
+          </div>
+
+          <div class="space-y-2">
+            <div data-google-button class="flex justify-center"></div>
+            <p class="text-center text-xs text-slate-500" data-google-status></p>
+          </div>
+
+          <p class="mt-5 text-center text-sm text-slate-600">
+            Hai già un account?
+            <button type="button" id="go-login-btn" class="font-semibold text-primary hover:underline">Accedi</button>
+          </p>
+        </section>
+      </main>
+
+      <div id="layout-footer"></div>
+    </div>
+    <script type="module" src="/js/pages/register.js?v=3"></script>
+  </body>
+</html>

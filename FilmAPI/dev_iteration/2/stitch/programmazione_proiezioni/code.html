@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>Sala Luce - Programmazione</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex flex-col shrink-0">
+<div class="p-6 flex flex-col gap-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary/10 rounded-full p-2">
+<span class="material-symbols-outlined text-primary">movie</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-slate-900 dark:text-white text-base font-bold leading-none">Sala Luce</h1>
+<p class="text-slate-500 dark:text-slate-400 text-xs font-medium">Management System</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white" href="#">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+<span class="text-sm font-medium">Programmazione</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-[24px]">movie_filter</span>
+<span class="text-sm font-medium">Film</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-[24px]">meeting_room</span>
+<span class="text-sm font-medium">Sale</span>
+</a>
+<div class="mt-4 border-t border-slate-100 dark:border-slate-800 pt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800" href="#">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-sm font-medium">Impostazioni</span>
+</a>
+</div>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- Header -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-8 py-4 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Cinema Management System</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-64 pl-10 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/50 text-slate-900 dark:text-white placeholder-slate-400" placeholder="Cerca proiezioni..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-8">
+<!-- Page Title & Actions -->
+<div class="flex flex-wrap items-end justify-between gap-4">
+<div class="space-y-1">
+<h3 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Programmazione Proiezioni</h3>
+<p class="text-slate-500 dark:text-slate-400">Gestisci il calendario delle proiezioni cinematografiche del tuo circuito.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                        Pianifica Nuova Proiezione
+                    </button>
+</div>
+<!-- Tabs & Filters -->
+<div class="space-y-4">
+<div class="flex border-b border-slate-200 dark:border-slate-800 gap-8">
+<button class="border-b-2 border-primary text-primary pb-3 px-1 text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">list_alt</span>
+                            Vista Tabella
+                        </button>
+<button class="border-b-2 border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300 pb-3 px-1 text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_view_day</span>
+                            Vista Calendario
+                        </button>
+</div>
+<div class="flex flex-wrap gap-3 items-center">
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-slate-400">event</span>
+<span>Oggi</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-slate-400">domain</span>
+<span>Tutti i Cinema</span>
+<span class="material-symbols-outlined text-[16px]">expand_more</span>
+</div>
+<div class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-3 py-1.5 rounded-lg text-sm font-medium cursor-pointer">
+<span class="material-symbols-outlined text-[18px] text-slate-400">filter_list</span>
+<span>Filtri Avanzati</span>
+</div>
+<div class="ml-auto text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                            Mostrando 24 proiezioni
+                        </div>
+</div>
+</div>
+<!-- Content: Table/List -->
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<!-- Date Header 1 -->
+<div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Lunedì, 24 Maggio</span>
+<span class="bg-primary/10 text-primary text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Oggi</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-400 uppercase tracking-widest bg-slate-50/30 dark:bg-slate-800/20">
+<th class="px-6 py-4">ID</th>
+<th class="px-6 py-4">Cinema</th>
+<th class="px-6 py-4">Film</th>
+<th class="px-6 py-4">Data</th>
+<th class="px-6 py-4">Ora</th>
+<th class="px-6 py-4 text-right">Azioni</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-500">#PRJ-8821</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">The Space Cinema - Roma</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-12 bg-slate-200 rounded shrink-0 bg-cover bg-center" data-alt="Locandina film poster 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhYpThOpDh1H4VNw-3501ly784v2P0_ojb3F53tu3P98GJ5EHbIYEhsu0Cn06AlCLXEkbm1PuimVIl_n0iGr5S3qMR326b7Axcyhz7K-TLV3OnynCCbmVrPEJmE8UI_5CI83sQLuvG8BVagjmuVfrepfWWuI1fG8obBkvdihHR4QKgYVR5vMXNDFVpiCOAtHs3_megfh8PjL0gRK9cW3Myatzo7IWhiibudSnT2HMo1CGDMATKVFX_Y-0JzI3cBMZwNnC1B_z_7vg');"></div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Dune: Part Two</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">24 Mag 2024</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded">20:30</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-500">#PRJ-8822</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">UCI Cinemas Milano</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-12 bg-slate-200 rounded shrink-0 bg-cover bg-center" data-alt="Locandina film poster 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAs6uysxce_GG12qEvjo0f8h3oKwu0Nj1hkIMs8IP76aEe2nTGmE1dyAy5gtvfAN0UHyPEHx_TMUzXvKGKQRVrfD-2O4Ho-jXsrjGXq__TnjrGZlnoNyJvEtpQdmh_wUzKXFwu2A6e8LyA_pS3XKPjYtZZWh6CIORhoKMBHClAhSsJUs_4dRZTtrS7-_DjNFUoW5rqlfPEocXJEHcTTFLyiK0X2446rSqj9VNEnR1yxzuwIG_FZ2dgeH3rKD2Ypcr4BWUAEFmhWK7U');"></div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Oppenheimer</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">24 Mag 2024</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold rounded">21:15</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Date Header 2 -->
+<div class="bg-slate-50 dark:bg-slate-800/50 px-6 py-3 border-y border-slate-200 dark:border-slate-800 flex items-center">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Martedì, 25 Maggio</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-500 w-[100px]">#PRJ-8840</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white w-[250px]">The Space Cinema - Roma</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-12 bg-slate-200 rounded shrink-0 bg-cover bg-center" data-alt="Locandina film poster 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCUgebfEryPtdIBgOTthufspZSEA7ps8_FBx0h6ql4wvrA7rTc3a2aEBX5M_TqenOtxXh9iXR0AVCez4mdIB_3tir4Z7sX9BjKd2CYFK2sgQcImQt-hPA9al-AEzWsgUWY257ewM41HL68OF5EhQMUWIhKr3mW4J7OWTvWkiIFM0nk7uhgvYnAf1gGNA_DRe_wk0G4dxUbEppEmkm_xL14KNBoptg55676qfGY_0XIaxe2ouhU5c7Ncwe9jD8iv0p8b3u9OSCSWgoU');"></div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Poor Things</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400 w-[150px]">25 Mag 2024</td>
+<td class="px-6 py-4 w-[100px]">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded">17:45</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/30 transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-500">#PRJ-8841</td>
+<td class="px-6 py-4 text-sm font-bold text-slate-900 dark:text-white">Multisala Astra - Firenze</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-12 bg-slate-200 rounded shrink-0 bg-cover bg-center" data-alt="Locandina film poster 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCCuEjPRnpKIQyhbuxzibrx84oxeKQ_BwlWwDn50WYRIiaR1zedrC7FbZc3zHtK81OeFGvhCK7UIWtUuEK3VcDYr8lQlmgeSsD0IidrXIbBAOvxCSusnn_tCduh5Z48UAPO4ROdOIuT-py9w4It-ms_lIz8Xmg_YcDgs4YP0rRXiLQj181pD55XwsP4nj1SP9F4V-eQGSU7OWJfI60fn-tjZ6-S46l4KTdfe2uRSodHCZXBMACzt6fdMz3MfI0P6C3m7ailMfhs80k');"></div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">Challengers</span>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-400">25 Mag 2024</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded">22:00</span>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2">
+<button class="p-1.5 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-1.5 text-slate-400 hover:text-red-500 transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Pagination footer -->
+<div class="flex items-center justify-between">
+<p class="text-sm text-slate-500">Mostra 1 a 10 di 24 proiezioni</p>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors disabled:opacity-50" disabled="">Precedente</button>
+<button class="px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-primary/90 transition-colors">1</button>
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">2</button>
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">3</button>
+<button class="px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg text-sm font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Successivo</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

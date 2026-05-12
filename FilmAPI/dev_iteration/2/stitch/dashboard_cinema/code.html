@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html lang="it"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cinema Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col fixed h-full">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-2 text-white flex items-center justify-center">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<div>
+<h1 class="text-lg font-bold leading-tight">Sala Luce</h1>
+<p class="text-xs text-slate-500 dark:text-slate-400">Management System</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary font-semibold" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">movie_filter</span>
+<span>Film &amp; Registi</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">theater_comedy</span>
+<span>Cinema</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined text-[22px]">calendar_month</span>
+<span>Proiezioni</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer">
+<div class="size-10 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User profile picture of a manager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr8W3zhCDNa34yb_AQcxMzhtqhs0Bk1r7xOTlFkVXHkeyKYIKUwHffqCuPnqW48Kq68YgyPou_1HGBlmVvw9kU48qyMdrRWKHB64QlBsbu4BdTH9mDeb17p31kKjjDOECjY1smmHTC-maESvHj_A0VTpr2YX1J3fA5h-zyGujcpqREUb6b3lV-hlkmbsScmDyRHSQCrLnKF14LI5qEDGSsajeeIy7jAqsCe4tDU3TJdOeGJI11qxKOCkaobNQ4UXtbTGO8oDqPFZk"/>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold truncate">Marco Rossi</p>
+<p class="text-xs text-slate-500 truncate">Administrator</p>
+</div>
+<span class="material-symbols-outlined text-slate-400">more_vert</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-72 flex-1 flex flex-col">
+<!-- Header -->
+<header class="h-16 border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-primary/20 text-sm" placeholder="Cerca film, registi o sale..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="p-8 space-y-8">
+<!-- Welcome Message -->
+<div class="flex flex-col gap-1">
+<h2 class="text-3xl font-extrabold tracking-tight">Benvenuto nel Gestore Cinema</h2>
+<p class="text-slate-500 dark:text-slate-400">Ecco cosa sta succedendo nel tuo network oggi.</p>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 rounded-lg material-symbols-outlined">movie</span>
+<span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">+12%</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Film in Database</p>
+<h3 class="text-2xl font-bold">124</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="p-2 bg-purple-50 dark:bg-purple-900/20 text-purple-600 rounded-lg material-symbols-outlined">person</span>
+<span class="text-xs font-bold text-slate-400 bg-slate-50 dark:bg-slate-800 px-2 py-1 rounded">Stabile</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Registi Registrati</p>
+<h3 class="text-2xl font-bold">45</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 rounded-lg material-symbols-outlined">stadium</span>
+<span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded">+2</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Cinema Attivi</p>
+<h3 class="text-2xl font-bold">12</h3>
+</div>
+</div>
+<div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="p-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 rounded-lg material-symbols-outlined">confirmation_number</span>
+<span class="text-xs font-bold text-blue-500 bg-blue-50 dark:bg-blue-900/20 px-2 py-1 rounded">Oggi</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Proiezioni Oggi</p>
+<h3 class="text-2xl font-bold">8</h3>
+</div>
+</div>
+</div>
+<!-- Recent Films Table Section -->
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div>
+<h3 class="text-lg font-bold">Recenti Film Aggiunti</h3>
+<p class="text-sm text-slate-500">Gli ultimi caricamenti effettuati nel sistema centrale</p>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Aggiungi Film
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider font-semibold">
+<th class="px-6 py-4">Titolo</th>
+<th class="px-6 py-4">Regista</th>
+<th class="px-6 py-4">Anno</th>
+<th class="px-6 py-4">Stato</th>
+<th class="px-6 py-4 text-right">Azioni</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-200 dark:divide-slate-800">
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Cinematic movie poster abstract" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8hcxXLi4PU0rYsE6MMf5uO_lY6iBf1CdJrS9CNCMcB2g3wObt7oWait9noBQyLB6z_nTzxBN68o50mwNuZ92oL48KfZxDbFYy02KJEojIx8t-Zw6SIV9JfLqio2Nwn2LA5iEWPe1ehBk9FVR83H1uM8o-h8WPZAb4tPSBCq77hB9V6KIgg9nEf3yn22j7mAxEJAWBYEekXaKBaG9xXLgidpFWD7L7OH7shOnhhedNkffENlinpy6FB0FAfrvgDQl1I_QoAd5GQVA"/>
+</div>
+<span class="font-semibold">Oppenheimer</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">Christopher Nolan</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Disponibile</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Abstract artistic movie poster" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC1MWMKwf-SRTfrGC1NasRYCKyrSffkAsp08BvNvAAIVjumtQplcoOGi9fXTnv1fEDtJPYkobKegX5mWsoNAtxknEhUBqR4vQL7MuPQW0OHtFgP_U-YS_BUfJv3qoFeqFk8HgVPeeuRVJpxzGd4Z_nDf2U4WvL8DbkM9CSzS_iv2qZkcBH1QmheWz10OT1835UCi3ZYB1zU12jQf9xnbdytsWWGwFKQYSS56X5oh4Z4b27DqN5h9E_06PWNyixdh5cPiWnSjiZPzk"/>
+</div>
+<span class="font-semibold">Dune: Part Two</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">Denis Villeneuve</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">2024</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">Disponibile</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Modern cinema concept art" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWYGaXI_3eBRNhKEiZlYpv2yDcxWqlnlDoXW5BPa9AmuW8zcw58j9nRgfMrW6mtXG8hHbENHR5iV12dBpz_5ikESS1StpQP7ZJOozTF3o6f20UrshqaIu7yRSlb19OFbdMRvY8c9RUjv5j0ZTl-hv1kphxS6tJ8erVt4j28rccCNRuu6gH1ONe-bHZ4lA2Eo384ZiCvn67g-opkmxQ6YgjKJU_kzq9gMFRZW9WOJZIa6rluieFxc-c3ac4IMv6dULWnN-rrwOPKMQ"/>
+</div>
+<span class="font-semibold">Poor Things</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">Yorgos Lanthimos</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">In Arrivo</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+<td class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-14 bg-slate-200 dark:bg-slate-700 rounded overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Classic film poster design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ-Oz1KP35Ij4EE4l8nclcOBBxdvsx5eJCSLxM8AyU99nN2cktq_omP8PCKxrKsDTJRXNrQr_XX9B0idDQd8u7L_VH8zQOVxC0yByHWz_O-iZHkC5alBsXhq8ChvxdDqnmJ_KpQ0iW61LT48U2c9PdxxImyjL-_srPFaWuskWyIs78RGsX8i6QPyD5HLucv-jyDbwmR0g_8CBo2w3-S2ANeThsnRjAskw1EhKKPm2K58D9ZOJLhr35oIACWoEZImvokWWMhi3IHsE"/>
+</div>
+<span class="font-semibold">The Killer</span>
+</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">David Fincher</td>
+<td class="px-6 py-4 text-slate-600 dark:text-slate-400">2023</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400">Archiviato</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-slate-50 dark:bg-slate-800/50 flex items-center justify-between">
+<span class="text-sm text-slate-500">Mostrando 4 di 124 film</span>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-sm disabled:opacity-50" disabled="">Precedente</button>
+<button class="px-3 py-1 border border-slate-200 dark:border-slate-700 rounded bg-white dark:bg-slate-900 text-sm hover:bg-slate-50 transition-colors">Successivo</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

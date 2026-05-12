@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.2.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
+    <PackageReference Include="MailKit" Version="4.11.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.11">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NSwag.AspNetCore" Version="14.7.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="SalaLuce.Web\**\*.cs" />
+    <Content Remove="SalaLuce.Web\**\*" />
+    <EmbeddedResource Remove="SalaLuce.Web\**\*" />
+    <None Remove="SalaLuce.Web\**\*" />
+  </ItemGroup>
+
+</Project>
