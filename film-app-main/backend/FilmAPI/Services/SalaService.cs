@@ -174,6 +174,7 @@ public class SalaService : ISalaService
             Nome = sala.Nome,
             Supplemento = sala.Supplemento,
             IsAttiva = sala.IsAttiva,
+            ImmagineUrl = sala.ImmagineUrl,
             Posti = sala.Posti.Select(MapPostoToDTO).ToList()
         };
     }

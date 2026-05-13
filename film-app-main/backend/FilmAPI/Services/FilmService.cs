@@ -147,7 +147,14 @@ public class FilmService : IFilmService
             FilmatoPath = dto.FilmatoPath,
             DescrizioneLunga = dto.DescrizioneLunga,
             CastText = dto.CastText,
-            DataRilascio = dto.DataRilascio
+            DataRilascio = dto.DataRilascio,
+            TmdbId = dto.TmdbId,
+            TitoloOriginale = dto.TitoloOriginale,
+            LinguaOriginale = dto.LinguaOriginale,
+            PosterUrl = dto.PosterUrl,
+            BackdropUrl = dto.BackdropUrl,
+            TrailerUrl = dto.TrailerUrl,
+            VotoMedio = dto.VotoMedio
         };
 
         if (dto.CategorieIds != null && dto.CategorieIds.Count > 0)
@@ -183,6 +190,13 @@ public class FilmService : IFilmService
         film.DescrizioneLunga = dto.DescrizioneLunga;
         film.CastText = dto.CastText;
         film.DataRilascio = dto.DataRilascio;
+        film.TmdbId = dto.TmdbId;
+        film.TitoloOriginale = dto.TitoloOriginale;
+        film.LinguaOriginale = dto.LinguaOriginale;
+        film.PosterUrl = dto.PosterUrl;
+        film.BackdropUrl = dto.BackdropUrl;
+        film.TrailerUrl = dto.TrailerUrl;
+        film.VotoMedio = dto.VotoMedio;
 
         if (dto.CategorieIds != null)
         {
@@ -262,6 +276,13 @@ public class FilmService : IFilmService
             DescrizioneLunga = film.DescrizioneLunga,
             CastText = film.CastText,
             DataRilascio = film.DataRilascio,
+            TmdbId = film.TmdbId,
+            TitoloOriginale = film.TitoloOriginale,
+            LinguaOriginale = film.LinguaOriginale,
+            PosterUrl = film.PosterUrl,
+            BackdropUrl = film.BackdropUrl,
+            TrailerUrl = film.TrailerUrl,
+            VotoMedio = film.VotoMedio,
             Categorie = film.FilmCategorie.Select(fc => new CategoriaDTO
             {
                 Id = fc.Categoria!.Id,
@@ -291,6 +312,13 @@ public class FilmService : IFilmService
             DescrizioneLunga = film.DescrizioneLunga,
             CastText = film.CastText,
             DataRilascio = film.DataRilascio,
+            TmdbId = film.TmdbId,
+            TitoloOriginale = film.TitoloOriginale,
+            LinguaOriginale = film.LinguaOriginale,
+            PosterUrl = film.PosterUrl,
+            BackdropUrl = film.BackdropUrl,
+            TrailerUrl = film.TrailerUrl,
+            VotoMedio = film.VotoMedio,
             Categorie = filmWithCategories?.FilmCategorie.Select(fc => new CategoriaDTO
             {
                 Id = fc.Categoria!.Id,

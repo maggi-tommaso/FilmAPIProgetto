@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Net.Http.Headers;
 using System.Text;
 using FilmAPI.Data;
 using FilmAPI.Endpoints;
@@ -84,6 +85,29 @@ builder.Services.AddScoped<IUserSecurityAuditService, UserSecurityAuditService>(
 builder.Services.AddHttpClient<GoogleExternalAuthProvider>();
 builder.Services.AddHttpClient<MicrosoftExternalAuthProvider>();
 builder.Services.AddScoped<IExternalAuthService, ExternalAuthService>();
+builder.Services.AddScoped<INotificheService, NotificheService>();
+
+var tmdbBearerToken = builder.Configuration["TMDB:BearerToken"];
+if (!string.IsNullOrWhiteSpace(tmdbBearerToken))
+{
+    builder.Services.AddHttpClient<ITmdbService, TmdbService>(client =>
+    {
+        client.DefaultRequestHeaders.Add("Accept", "application/json");
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", tmdbBearerToken);
+        client.Timeout = TimeSpan.FromSeconds(15);
+    });
+
+    builder.Services.AddHttpClient("TmdbImport", client =>
+    {
+        client.DefaultRequestHeaders.Add("Accept", "application/json");
+        client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", tmdbBearerToken);
+        client.Timeout = TimeSpan.FromSeconds(30);
+    });
+}
+
+builder.Services.AddScoped<ITmdbImportService, TmdbImportService>();
 
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
@@ -193,6 +217,9 @@ app.MapCheckoutEndpoints();
 app.MapCreditoEndpoints();
 app.MapPagamentoEndpoints();
 app.MapValidazioneBigliettiEndpoints();
+app.MapTmdbEndpoints();
+app.MapTmdbImportEndpoints();
+app.MapNotificheEndpoints();
 
 app.MapGet("/config/frontend", (FrontendRuntimeConfig config) => Results.Ok(new
 {
@@ -201,8 +228,15 @@ app.MapGet("/config/frontend", (FrontendRuntimeConfig config) => Results.Ok(new
 
 using (var scope = app.Services.CreateScope())
 {
-    var seeder = new DataSeeder(scope.ServiceProvider.GetRequiredService<FilmDbContext>());
+    var db = scope.ServiceProvider.GetRequiredService<FilmDbContext>();
+    var seeder = new DataSeeder(db);
     await seeder.SeedAsync();
+
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<WeeklyShowPlanner>>();
+    var planner = new WeeklyShowPlanner(db, logger);
+    await planner.PlanCurrentWeekAsync();
+
+    await DataSeeder.UpdateSalaImmaginiAsync(db);
 }
 
 app.Run();

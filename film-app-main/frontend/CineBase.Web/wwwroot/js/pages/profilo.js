@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadOrdini(),
     loadBiglietti(),
     loadSecurity(),
+    loadNotifiche(),
   ]);
 
   setupProfiloForm();
@@ -461,3 +462,92 @@ async function requestSetPassword() {
     btnLoader.classList.add('hidden');
   }
 }
+
+async function loadNotifiche() {
+  console.log('[NOTIFICHE] Caricamento iniziato');
+  const container = document.getElementById('notifiche-content');
+  const badge = document.getElementById('notifiche-badge');
+  console.log('[NOTIFICHE] Container trovato:', !!container);
+  try {
+    const notifiche = await API.getNotifiche();
+    console.log('[NOTIFICHE] Ricevute:', notifiche?.length || 0, 'notifiche');
+    if (!notifiche || !notifiche.length) {
+      container.innerHTML = '<div class="text-center py-4 text-brand-on-surface-variant"><i class="fa-regular fa-bell text-3xl mb-2 opacity-40"></i><p class="text-sm">Nessuna notifica</p></div>';
+      if (badge) badge.classList.add('hidden');
+      return;
+    }
+
+    if (badge) {
+      badge.textContent = notifiche.length;
+      badge.classList.remove('hidden');
+    }
+
+    var html = '<div class="space-y-3">';
+    notifiche.forEach(function(n) {
+      if (n.tipo === 'valutazione_film') {
+        html += renderValutazioneCard(n);
+      } else {
+        var priorityColor = n.priorita === 'alta' ? 'border-l-red-500 bg-red-500/5' : 'border-l-brand-gold bg-brand-surface-container-high/50';
+        var icon = n.tipo === 'email_verifica' ? 'fa-envelope' : n.tipo === 'validazione_biglietto' ? 'fa-qrcode' : 'fa-bell';
+        var iconColor = n.priorita === 'alta' ? 'text-red-400' : 'text-brand-gold';
+        html += '<div class="border-l-4 ' + priorityColor + ' rounded-lg p-4">' +
+          '<div class="flex items-start gap-3">' +
+            '<i class="fa-solid ' + icon + ' ' + iconColor + ' mt-0.5"></i>' +
+            '<div class="flex-1 min-w-0">' +
+              '<p class="text-sm text-brand-on-surface">' + n.messaggio + '</p>' +
+              (n.azioneUrl && n.azioneLabel ? '<a href="' + n.azioneUrl + '" class="inline-block mt-2 text-sm font-medium text-brand-gold hover:text-brand-gold-light">' + n.azioneLabel + ' <i class="fa-solid fa-arrow-right ml-1"></i></a>' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  } catch {
+    container.innerHTML = '<p class="text-sm text-brand-error text-center py-4">Errore caricamento notifiche</p>';
+  }
+}
+
+function renderValutazioneCard(n) {
+  var coverHtml = n.filmCopertina
+    ? '<img src="' + n.filmCopertina + '" alt="' + n.filmTitolo + '" class="w-12 h-16 rounded object-cover" loading="lazy">'
+    : '<div class="w-12 h-16 rounded bg-brand-surface-container flex items-center justify-center text-brand-on-surface-variant"><i class="fa-solid fa-film"></i></div>';
+
+  return '<div class="border-l-4 border-l-amber-500 bg-amber-500/5 rounded-lg p-4">' +
+    '<div class="flex items-start gap-3">' +
+      coverHtml +
+      '<div class="flex-1 min-w-0">' +
+        '<p class="text-sm text-brand-on-surface mb-2">' + n.messaggio + '</p>' +
+        '<div class="flex items-center gap-1 star-rating" data-film-id="' + n.filmId + '">' +
+          renderStars(n.filmId, 0) +
+        '</div>' +
+        '<p class="text-xs text-emerald-500 mt-2 hidden valutazione-confirm" id="confirm-' + n.filmId + '"><i class="fa-solid fa-check mr-1"></i>Valutazione salvata!</p>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderStars(filmId, currentRating) {
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    html += '<button onclick="submitRating(' + filmId + ', ' + i + ')" class="star-btn text-xl ' + (i <= currentRating ? 'text-amber-400' : 'text-brand-on-surface-variant/30') + ' hover:text-amber-400 transition-colors" title="' + i + ' stelle"><i class="fa-solid fa-star"></i></button>';
+  }
+  return html;
+}
+
+async function submitRating(filmId, rating) {
+  try {
+    var result = await API.valutaFilm({ filmId: filmId, rating: rating });
+    var starsContainer = document.querySelector('.star-rating[data-film-id="' + filmId + '"]');
+    if (starsContainer) {
+      starsContainer.innerHTML = renderStars(filmId, rating);
+    }
+    var confirmEl = document.getElementById('confirm-' + filmId);
+    if (confirmEl) confirmEl.classList.remove('hidden');
+    showToast(result.messaggio || 'Valutazione salvata!', 'success');
+  } catch (error) {
+    handleApiError(error);
+  }
+}
+
+window.submitRating = submitRating;

@@ -28,6 +28,7 @@ public class FilmDbContext : DbContext
     public DbSet<ExternalAuthState> ExternalAuthStates { get; set; }
     public DbSet<ExternalAuthExchangeCode> ExternalAuthExchangeCodes { get; set; }
     public DbSet<UserSecurityAuditLog> UserSecurityAuditLogs { get; set; }
+    public DbSet<ValutazioneFilm> ValutazioniFilm { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -310,6 +311,21 @@ public class FilmDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(a => a.ActorUserId)
                   .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<ValutazioneFilm>(entity =>
+        {
+            entity.HasIndex(v => new { v.UserId, v.FilmId }).IsUnique();
+
+            entity.HasOne(v => v.User)
+                  .WithMany()
+                  .HasForeignKey(v => v.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(v => v.Film)
+                  .WithMany()
+                  .HasForeignKey(v => v.FilmId)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

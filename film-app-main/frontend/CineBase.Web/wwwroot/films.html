@@ -32,6 +32,10 @@
         <button class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium">
           <i class="fa-solid fa-download mr-2"></i>Export
         </button>
+        <button onclick="importFromTmdb()" id="btn-import-tmdb"
+          class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium">
+          <i class="fa-solid fa-cloud-arrow-down mr-2"></i>Importa da TMDB
+        </button>
         <button onclick="openModal('film-modal', 'Aggiungi Film')"
           class="btn-gold text-white px-4 py-2 rounded-lg text-sm font-medium">
           <i class="fa-solid fa-plus mr-2"></i>Aggiungi Film
@@ -227,6 +231,11 @@
             </form>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
+            <button type="button" id="btn-tmdb-autofill"
+              class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium"
+              title="Compila automaticamente i campi con i dati da TMDB">
+              <i class="fa-solid fa-magnifying-glass mr-2"></i>Compila da TMDB
+            </button>
             <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium"
               onclick="closeModal('film-modal')">Annulla</button>
             <button type="submit" form="film-form" class="btn-gold">Salva</button>

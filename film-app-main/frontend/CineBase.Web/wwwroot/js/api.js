@@ -560,5 +560,13 @@ deleteFilm: (id) => apiFetch(`/films/${id}`, { method: 'DELETE' }),
   requestSetPassword: () => apiFetch('/auth/set-password/request', {
     method: 'POST'
   }),
-  getExternalProviders: () => apiFetch('/auth/external/providers')
+  getExternalProviders: () => apiFetch('/auth/external/providers'),
+
+  // TMDB Integration
+  searchTmdb: (title) => apiFetch(`/tmdb/search?title=${encodeURIComponent(title)}`),
+  importTmdb: (params = {}) => apiFetch(`/admin/import-tmdb?${new URLSearchParams(params)}`, { method: 'POST' }),
+
+  // Notifiche e Valutazioni
+  getNotifiche: () => apiFetch('/profilo/notifiche'),
+  valutaFilm: (data) => apiFetch('/profilo/notifiche/valuta', { method: 'POST', body: JSON.stringify(data) })
 };

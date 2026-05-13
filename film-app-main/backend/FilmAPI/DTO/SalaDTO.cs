@@ -11,6 +11,7 @@ public class SalaDTO
     public string? Nome { get; set; }
     public decimal Supplemento { get; set; }
     public bool IsAttiva { get; set; }
+    public string? ImmagineUrl { get; set; }
     public List<SalaPostoDTO> Posti { get; set; } = new();
 }
 

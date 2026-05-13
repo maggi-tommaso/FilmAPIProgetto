@@ -38,6 +38,26 @@ public class Film
 
     public DateOnly? DataRilascio { get; set; }
 
+    public int? TmdbId { get; set; }
+
+    [MaxLength(200)]
+    public string? TitoloOriginale { get; set; }
+
+    [MaxLength(10)]
+    public string? LinguaOriginale { get; set; }
+
+    [MaxLength(500)]
+    public string? PosterUrl { get; set; }
+
+    [MaxLength(500)]
+    public string? BackdropUrl { get; set; }
+
+    [MaxLength(500)]
+    public string? TrailerUrl { get; set; }
+
+    [Column(TypeName = "decimal(65,30)")]
+    public decimal? VotoMedio { get; set; }
+
     public ICollection<FilmCategoria> FilmCategorie { get; set; } = new List<FilmCategoria>();
     public ICollection<Show> Shows { get; set; } = new List<Show>();
 }

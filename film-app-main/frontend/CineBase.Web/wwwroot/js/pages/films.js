@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   populateCategorieCheckboxes();
   setupFilters();
   setupFormSubmit();
+  setupTmdbAutofill();
   await loadFilms();
 });
 
@@ -403,3 +404,105 @@ window.goToFirstPage = goToFirstPage;
 window.goToPrevPage = goToPrevPage;
 window.goToNextPage = goToNextPage;
 window.goToLastPage = goToLastPage;
+window.importFromTmdb = importFromTmdb;
+window.setupTmdbAutofill = setupTmdbAutofill;
+
+function setupTmdbAutofill() {
+    const btn = document.getElementById('btn-tmdb-autofill');
+    if (!btn) return;
+
+    btn.addEventListener('click', async () => {
+        const form = document.getElementById('film-form');
+        const titoloInput = form.querySelector('[name="titolo"]');
+        const title = titoloInput?.value?.trim();
+        if (!title) {
+            showToast('Inserisci prima un titolo nel campo Titolo', 'warning');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Ricerca TMDB...';
+
+        try {
+            const result = await API.searchTmdb(title);
+            if (!result) {
+                showToast('Nessun film trovato su TMDB', 'warning');
+                return;
+            }
+            fillFormFromTmdb(result);
+            showToast('Dati TMDB caricati! Controlla e clicca Salva', 'success');
+        } catch (error) {
+            handleApiError(error);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-magnifying-glass mr-2"></i>Compila da TMDB';
+        }
+    });
+}
+
+function fillFormFromTmdb(result) {
+    const form = document.getElementById('film-form');
+
+    if (result.titolo)
+        form.querySelector('[name="titolo"]').value = result.titolo;
+    if (result.anno) {
+        const anno = result.anno;
+        form.querySelector('[name="dataProduzione"]').value = `${anno}-01-01`;
+    }
+    if (result.durata)
+        form.querySelector('[name="durata"]').value = result.durata;
+    if (result.copertinaPath || result.posterUrl) {
+        const copertinaInput = document.getElementById('copertina-path');
+        if (copertinaInput) copertinaInput.value = result.posterUrl || result.copertinaPath;
+    }
+    if (result.trailerUrl) {
+        form.querySelector('[name="filmatoPath"]').value = result.trailerUrl;
+    }
+    if (result.registaId) {
+        form.querySelector('[name="registaId"]').value = result.registaId;
+    } else if (result.registaNome && result.registaCognome) {
+        const select = form.querySelector('[name="registaId"]');
+        for (const opt of select.options) {
+            if (opt.textContent.toLowerCase().includes(result.registaCognome.toLowerCase())) {
+                select.value = opt.value;
+                break;
+            }
+        }
+    }
+    if (result.categorieIds?.length > 0) {
+        form.querySelectorAll('input[name="categoria"]').forEach(cb => {
+            cb.checked = result.categorieIds.includes(Number(cb.value));
+        });
+    }
+    if (result.descrizioneLunga) {
+        let descField = form.querySelector('[name="descrizioneLunga"]');
+        if (descField) descField.value = result.descrizioneLunga;
+    }
+    if (result.castText) {
+        let castField = form.querySelector('[name="castText"]');
+        if (castField) castField.value = result.castText;
+    }
+    if (result.votoMedio) {
+        let votoField = form.querySelector('[name="votoMedio"]');
+        if (votoField) votoField.value = result.votoMedio;
+    }
+}
+
+async function importFromTmdb() {
+    const btn = document.getElementById('btn-import-tmdb');
+    if (!btn) return;
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Importazione in corso...';
+
+    try {
+        const result = await API.importTmdb({ movieCount: 20, showDays: 15 });
+        showToast(`Import completato! Film: ${result.filmImportati} nuovi, ${result.filmAggiornati} aggiornati, ${result.proiezioniGenerate} proiezioni generate`, 'success');
+        await loadFilms();
+    } catch (error) {
+        handleApiError(error);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-down mr-2"></i>Importa da TMDB';
+    }
+}

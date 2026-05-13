@@ -14,6 +14,13 @@ public class FilmDTO
     public string? DescrizioneLunga { get; set; }
     public string? CastText { get; set; }
     public DateOnly? DataRilascio { get; set; }
+    public int? TmdbId { get; set; }
+    public string? TitoloOriginale { get; set; }
+    public string? LinguaOriginale { get; set; }
+    public string? PosterUrl { get; set; }
+    public string? BackdropUrl { get; set; }
+    public string? TrailerUrl { get; set; }
+    public decimal? VotoMedio { get; set; }
     public List<CategoriaDTO> Categorie { get; set; } = new();
 }
 
@@ -37,6 +44,13 @@ public class FilmCreateDTO
     public string? DescrizioneLunga { get; set; }
     public string? CastText { get; set; }
     public DateOnly? DataRilascio { get; set; }
+    public int? TmdbId { get; set; }
+    public string? TitoloOriginale { get; set; }
+    public string? LinguaOriginale { get; set; }
+    public string? PosterUrl { get; set; }
+    public string? BackdropUrl { get; set; }
+    public string? TrailerUrl { get; set; }
+    public decimal? VotoMedio { get; set; }
     public List<int>? CategorieIds { get; set; }
 }
 
@@ -51,5 +65,12 @@ public class FilmUpdateDTO
     public string? DescrizioneLunga { get; set; }
     public string? CastText { get; set; }
     public DateOnly? DataRilascio { get; set; }
+    public int? TmdbId { get; set; }
+    public string? TitoloOriginale { get; set; }
+    public string? LinguaOriginale { get; set; }
+    public string? PosterUrl { get; set; }
+    public string? BackdropUrl { get; set; }
+    public string? TrailerUrl { get; set; }
+    public decimal? VotoMedio { get; set; }
     public List<int>? CategorieIds { get; set; }
 }

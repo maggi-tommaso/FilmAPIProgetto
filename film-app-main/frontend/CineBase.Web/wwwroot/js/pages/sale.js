@@ -66,7 +66,7 @@ async function loadSale() {
     renderSale(allSale);
   } catch (error) {
     handleApiError(error);
-    if (tableBody) tableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-brand-error">Errore nel caricamento delle sale</td></tr>';
+    if (tableBody) tableBody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-brand-error">Errore nel caricamento delle sale</td></tr>';
   }
 }
 
@@ -75,7 +75,7 @@ function renderSale(sale) {
   if (!tableBody) return;
 
   if (!sale.length) {
-    tableBody.innerHTML = '<tr><td colspan="7" class="px-6 py-4 text-center text-brand-on-surface-variant">Nessuna sala configurata per questo cinema</td></tr>';
+    tableBody.innerHTML = '<tr><td colspan="8" class="px-6 py-4 text-center text-brand-on-surface-variant">Nessuna sala configurata per questo cinema</td></tr>';
     return;
   }
 
@@ -85,9 +85,13 @@ function renderSale(sale) {
     const statusBadge = s.isAttiva
       ? '<span class="chip-active inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Attiva</span>'
       : '<span class="chip-past inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium">Non attiva</span>';
+    const imgCell = s.immagineUrl
+      ? `<img src="${s.immagineUrl}" alt="${s.nome}" class="w-20 h-12 rounded-lg object-cover" loading="lazy">`
+      : `<div class="w-20 h-12 rounded-lg bg-brand-surface-container flex items-center justify-center text-brand-on-surface-variant text-xs">-</div>`;
 
     return `
       <tr class="row-hover">
+        <td class="px-3 py-3">${imgCell}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface font-medium">${s.numeroProgressivo}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface">${s.nome || `Sala ${s.numeroProgressivo}`}</td>
         <td class="px-6 py-4 whitespace-nowrap text-sm text-brand-on-surface">${tipoLabel}</td>

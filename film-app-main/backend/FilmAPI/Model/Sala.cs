@@ -30,6 +30,9 @@ public class Sala
     [Required]
     public bool IsAttiva { get; set; } = true;
 
+    [MaxLength(2000)]
+    public string? ImmagineUrl { get; set; }
+
     public ICollection<SalaPosto> Posti { get; set; } = new List<SalaPosto>();
     public ICollection<Show> Shows { get; set; } = new List<Show>();
 }
