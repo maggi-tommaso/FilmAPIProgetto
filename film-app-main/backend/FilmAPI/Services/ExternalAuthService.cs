@@ -86,8 +86,9 @@ public class ExternalAuthService : IExternalAuthService
     public async Task<(User User, string RedirectPath)> CallbackAsync(ExternalLoginProvider provider, string state, string code)
     {
         var stateHash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(state)));
+        var utcNow = DateTime.UtcNow;
         var authState = await _context.ExternalAuthStates
-            .FirstOrDefaultAsync(s => s.StateHash == stateHash && s.Provider == provider && !s.IsConsumed && !s.IsExpired);
+            .FirstOrDefaultAsync(s => s.StateHash == stateHash && s.Provider == provider && s.ConsumedAtUtc == null && s.ExpiresAtUtc > utcNow);
         if (authState is null)
             throw new UnauthorizedAccessException("State non valido o scaduto.");
 
@@ -127,7 +128,8 @@ public class ExternalAuthService : IExternalAuthService
                 Ruolo = UserRole.User,
                 DataRegistrazione = DateTime.UtcNow,
                 CreditoResiduo = 0,
-                AuthVersion = 1
+                AuthVersion = 1,
+                EmailVerifiedAtUtc = DateTime.UtcNow
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -169,15 +171,19 @@ public class ExternalAuthService : IExternalAuthService
 
         await _context.SaveChangesAsync();
 
-        return (user, $"/social-login-complete.html?code={Uri.EscapeDataString(exchangeRaw)}");
+        var redirectParam = !string.IsNullOrEmpty(authState.RedirectPath) && authState.RedirectPath != "/"
+            ? $"&redirect={Uri.EscapeDataString(authState.RedirectPath)}"
+            : "";
+        return (user, $"/social-login-complete.html?code={Uri.EscapeDataString(exchangeRaw)}{redirectParam}");
     }
 
     public async Task<AuthResponseDTO> ExchangeAsync(string code, string? deviceId)
     {
         var codeHash = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(code)));
+        var utcNow = DateTime.UtcNow;
         var exchangeCode = await _context.ExternalAuthExchangeCodes
             .Include(e => e.User)
-            .FirstOrDefaultAsync(e => e.CodeHash == codeHash && !e.IsConsumed && !e.IsExpired);
+            .FirstOrDefaultAsync(e => e.CodeHash == codeHash && e.ConsumedAtUtc == null && e.ExpiresAtUtc > utcNow);
         if (exchangeCode is null)
             throw new UnauthorizedAccessException("Exchange code non valido o scaduto.");
 

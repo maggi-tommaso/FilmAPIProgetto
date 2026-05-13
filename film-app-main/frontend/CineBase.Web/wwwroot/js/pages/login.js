@@ -15,9 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const expired = params.get('expired');
   const redirect = params.get('redirect');
+  const errorParam = params.get('error');
 
   if (expired === 'true' && expiredAlert) {
     expiredAlert.classList.remove('hidden');
+  }
+
+  if (errorParam && errorAlert && errorMessage) {
+    errorMessage.textContent = decodeURIComponent(errorParam);
+    errorAlert.classList.remove('hidden');
   }
 
   if (Auth.isLoggedIn()) {

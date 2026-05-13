@@ -114,6 +114,32 @@ public static class AuthEndpoints
             }
         }).AllowAnonymous();
 
+        group.MapPost("/set-password", async (ResetPasswordRequestDTO dto, IAuthService service) =>
+        {
+            try
+            {
+                var result = await service.SetPasswordAsync(dto, dto.DeviceId);
+                return Results.Ok(result);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        }).AllowAnonymous();
+
+        group.MapPost("/verify-email", async (VerifyEmailRequestDTO dto, IAuthService service) =>
+        {
+            try
+            {
+                await service.VerifyEmailAsync(dto.Token);
+                return Results.Ok(new { message = "Email verificata con successo." });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+        }).AllowAnonymous();
+
         group.MapGet("/security/me", async (HttpContext context, IAuthService service) =>
         {
             var userIdClaim = context.User.FindFirst("sub")?.Value

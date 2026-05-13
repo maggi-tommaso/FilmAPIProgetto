@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBase - Verifica Email</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="/js/tailwind-config.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="/css/styles.css" rel="stylesheet">
+  <script src="/js/theme.js"></script>
+</head>
+<body class="bg-brand-surface text-brand-on-surface font-sans min-h-screen flex flex-col">
+  <div class="flex-1 flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+      <div class="text-center mb-8">
+        <a href="/index.html" class="text-3xl font-bold text-brand-gold tracking-tight inline-flex items-center gap-2">
+          <span class="text-4xl">🎬</span>CineBase
+        </a>
+      </div>
+      <div class="glass-panel card-elevated p-8 rounded-2xl text-center">
+        <div id="loading-state">
+          <i class="fa-solid fa-spinner fa-spin text-3xl text-brand-gold mb-4"></i>
+          <p class="text-brand-on-surface-variant">Verifica in corso...</p>
+        </div>
+        <div id="success-state" class="hidden">
+          <i class="fa-solid fa-circle-check text-4xl text-green-400 mb-4 block"></i>
+          <h1 class="text-xl font-bold text-brand-on-surface mb-2">Email Verificata!</h1>
+          <p class="text-brand-on-surface-variant text-sm mb-6">Il tuo indirizzo email e stato verificato con successo. Ora puoi acquistare biglietti.</p>
+          <a href="/login.html" class="btn-gold inline-block px-6 py-2 rounded-xl font-medium text-sm">Vai al Login</a>
+        </div>
+        <div id="error-state" class="hidden">
+          <i class="fa-solid fa-circle-exclamation text-4xl text-brand-error mb-4 block"></i>
+          <h1 class="text-xl font-bold text-brand-on-surface mb-2">Errore</h1>
+          <p id="error-message" class="text-brand-error text-sm mb-6"></p>
+          <a href="/login.html" class="text-brand-gold hover:text-brand-gold-light text-sm">Torna al Login</a>
+        </div>
+        <div id="already-verified-state" class="hidden">
+          <i class="fa-solid fa-check-circle text-4xl text-brand-gold mb-4 block"></i>
+          <h1 class="text-xl font-bold text-brand-on-surface mb-2">Email Gia Verificata</h1>
+          <p class="text-brand-on-surface-variant text-sm mb-6">Il tuo indirizzo email risulta gia verificato.</p>
+          <a href="/login.html" class="btn-gold inline-block px-6 py-2 rounded-xl font-medium text-sm">Vai al Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (async function() {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+
+      if (!token) {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+        document.getElementById('error-message').textContent = 'Token mancante. Usa il link ricevuto via email.';
+        return;
+      }
+
+      try {
+        const r = await fetch('http://localhost:5000/auth/verify-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token })
+        });
+        const data = await r.json().catch(() => ({}));
+        document.getElementById('loading-state').classList.add('hidden');
+
+        if (r.ok) {
+          document.getElementById('success-state').classList.remove('hidden');
+        } else {
+          const msg = data.message || '';
+          if (msg.includes('gia')) {
+            document.getElementById('already-verified-state').classList.remove('hidden');
+          } else {
+            document.getElementById('error-state').classList.remove('hidden');
+            document.getElementById('error-message').textContent = msg || 'Token non valido o scaduto. Richiedi una nuova verifica.';
+          }
+        }
+      } catch {
+        document.getElementById('loading-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+        document.getElementById('error-message').textContent = 'Impossibile connettersi al server. Riprova.';
+      }
+    })();
+  </script>
+</body>
+</html>

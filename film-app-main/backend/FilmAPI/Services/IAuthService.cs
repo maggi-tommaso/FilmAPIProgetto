@@ -15,5 +15,7 @@ public interface IAuthService
     Task<AuthResponseDTO> ResetPasswordAsync(ResetPasswordRequestDTO dto, string? deviceId);
     Task<AccountSecurityDTO> GetAccountSecurityAsync(int userId);
     Task RequestSetPasswordAsync(int userId);
+    Task<AuthResponseDTO> SetPasswordAsync(ResetPasswordRequestDTO dto, string? deviceId);
+    Task VerifyEmailAsync(string token);
     Task<AuthResponseDTO> GenerateTokensAsync(User user, string? deviceId);
 }

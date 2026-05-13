@@ -84,8 +84,9 @@ public class AccountTokenService : IAccountTokenService
 
     public async Task RevokeActiveTokensAsync(int userId, AccountActionTokenPurpose purpose)
     {
+        var utcNow = DateTime.UtcNow;
         var activeTokens = await _context.AccountActionTokens
-            .Where(t => t.UserId == userId && t.Purpose == purpose && !t.IsConsumed && !t.IsExpired)
+            .Where(t => t.UserId == userId && t.Purpose == purpose && t.UsedAtUtc == null && t.RevokedAtUtc == null && t.ExpiresAtUtc > utcNow)
             .ToListAsync();
 
         foreach (var token in activeTokens)

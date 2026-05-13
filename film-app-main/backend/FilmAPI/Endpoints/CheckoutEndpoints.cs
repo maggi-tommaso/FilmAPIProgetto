@@ -48,6 +48,10 @@ public static class CheckoutEndpoints
                 }
                 return Results.Ok(result);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Results.Json(new { message = ex.Message }, statusCode: 403);
+            }
             catch (ArgumentException ex)
             {
                 return Results.BadRequest(ex.Message);

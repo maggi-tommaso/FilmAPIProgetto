@@ -8,4 +8,5 @@ public interface IAccountEmailService
     Task SendSetPasswordAsync(User user, string setupUrl, CancellationToken ct = default);
     Task SendAdminInviteAsync(User user, string inviteUrl, string ruolo, CancellationToken ct = default);
     Task SendPasswordChangedAsync(User user, CancellationToken ct = default);
+    Task SendEmailVerificationAsync(User user, string verifyUrl, CancellationToken ct = default);
 }

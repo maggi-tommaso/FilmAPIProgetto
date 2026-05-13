@@ -73,6 +73,11 @@ public class AuthService : IAuthService
         var refreshToken = await GenerateRefreshTokenAsync(user.Id, dto.DeviceId);
         await _context.SaveChangesAsync();
 
+        var verifyTtl = TimeSpan.FromHours(24);
+        var verifyRawToken = await _tokenService.CreateTokenAsync(user.Id, AccountActionTokenPurpose.EmailVerification, verifyTtl);
+        var verifyUrl = $"{_frontendBaseUrl}/verifica-email.html?token={Uri.EscapeDataString(verifyRawToken)}";
+        _ = _accountEmail.SendEmailVerificationAsync(user, verifyUrl);
+
         return new AuthResponseDTO
         {
             AccessToken = accessToken,
@@ -234,7 +239,8 @@ public class AuthService : IAuthService
             Cognome = user.Cognome,
             Telefono = user.Telefono,
             Ruolo = user.Ruolo.ToString(),
-            DataRegistrazione = user.DataRegistrazione
+            DataRegistrazione = user.DataRegistrazione,
+            EmailVerified = user.EmailVerifiedAtUtc != null
         };
     }
 
@@ -346,10 +352,58 @@ public class AuthService : IAuthService
         var ttl = TimeSpan.FromMinutes(int.Parse(Environment.GetEnvironmentVariable("SET_PASSWORD_TOKEN_TTL_MINUTES") ?? "60"));
         var token = await _tokenService.CreateTokenAsync(user.Id, AccountActionTokenPurpose.SetPassword, ttl);
 
-        var setupUrl = $"{_frontendBaseUrl}/reimposta-password.html?token={Uri.EscapeDataString(token)}";
+        var setupUrl = $"{_frontendBaseUrl}/reimposta-password.html?token={Uri.EscapeDataString(token)}&type=setpassword";
         await _accountEmail.SendSetPasswordAsync(user, setupUrl);
 
         await _audit.LogAsync(userId, null, "SetPasswordRequested");
+    }
+
+    public async Task<AuthResponseDTO> SetPasswordAsync(ResetPasswordRequestDTO dto, string? deviceId)
+    {
+        var (userId, token) = await _tokenService.ValidateTokenAsync(dto.Token, AccountActionTokenPurpose.SetPassword);
+        var user = await _context.Users.FindAsync(userId);
+        if (user is null || user.IsDisabled)
+            throw new UnauthorizedAccessException("Utente non valido.");
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        user.LocalCredentialsEnabled = true;
+        user.PasswordChangedAtUtc = DateTime.UtcNow;
+        user.AuthVersion++;
+        user.MustChangePassword = false;
+
+        await RevokeAllRefreshTokensAsync(userId);
+        await _tokenService.ConsumeTokenAsync(token.Id);
+
+        var accessToken = GenerateAccessToken(user);
+        var refreshToken = await GenerateRefreshTokenAsync(user.Id, deviceId);
+
+        await _audit.LogAsync(userId, null, "SetPasswordCompleted");
+
+        await _context.SaveChangesAsync();
+
+        return new AuthResponseDTO
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken.Token,
+            ExpiresAt = refreshToken.ExpiresAt,
+            User = MapUserInfo(user)
+        };
+    }
+
+    public async Task VerifyEmailAsync(string token)
+    {
+        var (userId, tokenEntity) = await _tokenService.ValidateTokenAsync(token, AccountActionTokenPurpose.EmailVerification);
+        var user = await _context.Users.FindAsync(userId);
+        if (user is null || user.IsDisabled)
+            throw new UnauthorizedAccessException("Utente non valido.");
+
+        if (user.EmailVerifiedAtUtc != null)
+            return;
+
+        user.EmailVerifiedAtUtc = DateTime.UtcNow;
+        await _tokenService.ConsumeTokenAsync(tokenEntity.Id);
+        await _audit.LogAsync(userId, null, "EmailVerified");
+        await _context.SaveChangesAsync();
     }
 
     public async Task<AuthResponseDTO> GenerateTokensAsync(User user, string? deviceId)

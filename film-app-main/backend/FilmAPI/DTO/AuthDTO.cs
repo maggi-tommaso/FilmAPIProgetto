@@ -56,6 +56,7 @@ public class UserInfoDTO
     public string? Telefono { get; set; }
     public string Ruolo { get; set; } = string.Empty;
     public DateTime DataRegistrazione { get; set; }
+    public bool EmailVerified { get; set; }
 }
 
 public class RefreshTokenRequestDTO
@@ -122,6 +123,12 @@ public class ExternalExchangeRequestDTO
 
     [MaxLength(128)]
     public string? DeviceId { get; set; }
+}
+
+public class VerifyEmailRequestDTO
+{
+    [Required]
+    public string Token { get; set; } = string.Empty;
 }
 
 public class UserExternalLoginDTO

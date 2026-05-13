@@ -69,6 +69,17 @@ public class AccountEmailService : IAccountEmailService
         await SendEmailAsync(user.Email, "CineBase - Password Modificata", sb.ToString(), ct);
     }
 
+    public async Task SendEmailVerificationAsync(User user, string verifyUrl, CancellationToken ct = default)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"<h2>Ciao {user.Nome},</h2>");
+        sb.AppendLine("<p>Benvenuto su CineBase! Per completare la registrazione e poter acquistare biglietti, verifica il tuo indirizzo email.</p>");
+        sb.AppendLine($"<p>Clicca il link qui sotto (scade tra 24 ore):</p>");
+        sb.AppendLine($"<p><a href=\"{verifyUrl}\" style=\"display:inline-block;padding:12px 24px;background:#d4a017;color:#0d0d0d;border-radius:8px;text-decoration:none;font-weight:bold;\">Verifica Email</a></p>");
+        sb.AppendLine("<p>Se non hai creato tu questo account, ignora questa email.</p>");
+        await SendEmailAsync(user.Email, "CineBase - Verifica il tuo indirizzo email", sb.ToString(), ct);
+    }
+
     private async Task SendEmailAsync(string to, string subject, string htmlBody, CancellationToken ct)
     {
         if (!HasCompleteConfiguration())

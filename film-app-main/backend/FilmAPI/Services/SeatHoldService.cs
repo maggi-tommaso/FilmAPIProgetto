@@ -112,6 +112,12 @@ public class SeatHoldService : ISeatHoldService
         if (salaPostoIds.Count > MaxSeatsPerOrder)
             throw new ArgumentException($"Massimo {MaxSeatsPerOrder} posti per ordine.");
 
+        var user = await _db.Users.FindAsync(userId);
+        if (user is null || user.IsDisabled)
+            throw new UnauthorizedAccessException("Utente non valido.");
+        if (user.EmailVerifiedAtUtc == null)
+            throw new UnauthorizedAccessException("Devi verificare il tuo indirizzo email prima di poter acquistare biglietti. Controlla la tua casella di posta.");
+
         var now = DateTime.UtcNow;
         var expiresAt = now.Add(_holdTtl);
 
