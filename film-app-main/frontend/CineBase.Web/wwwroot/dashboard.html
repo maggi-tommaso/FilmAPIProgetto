@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Dashboard</title>
+  <title>RedCurtain â€” Dashboard</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -19,19 +19,19 @@
 </head>
 
 <body class="bg-brand-surface text-brand-on-surface font-sans">
-  <main class="px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
     <div class="flex items-center justify-between gap-4 mb-8">
-        <h2 class="text-xl sm:text-2xl font-bold text-brand-on-surface">Overview</h2>
-      <a href="/shows.html" class="btn-gold whitespace-nowrap inline-block">
+        <h2 class="text-xl sm:text-2xl font-bold text-brand-on-surface tracking-tight">Overview</h2>
+      <a href="/shows.html" class="btn-gold whitespace-nowrap inline-block transition-colors duration-200">
         <span class="hidden sm:inline">Gestisci Show</span>
         <span class="sm:hidden">Show</span>
       </a>
     </div>
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="p-5 flex items-center">
-              <div class="flex-shrink-0 bg-brand-gold rounded-md p-3">
+              <div class="flex-shrink-0 bg-brand-red rounded-xl p-3">
                 <i class="fa-solid fa-film text-white text-xl"></i>
               </div>
               <div class="ml-5 w-0 flex-1">
@@ -42,9 +42,9 @@
               </div>
             </div>
           </div>
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="p-5 flex items-center">
-              <div class="flex-shrink-0 bg-brand-cyan rounded-md p-3">
+              <div class="flex-shrink-0 bg-brand-cyan rounded-xl p-3">
                 <i class="fa-solid fa-user text-white text-xl"></i>
               </div>
               <div class="ml-5 w-0 flex-1">
@@ -55,9 +55,9 @@
               </div>
             </div>
           </div>
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="p-5 flex items-center">
-              <div class="flex-shrink-0 bg-brand-emerald rounded-md p-3">
+              <div class="flex-shrink-0 bg-brand-emerald rounded-xl p-3">
                 <i class="fa-solid fa-building text-white text-xl"></i>
               </div>
               <div class="ml-5 w-0 flex-1">
@@ -68,9 +68,9 @@
               </div>
             </div>
           </div>
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="p-5 flex items-center">
-              <div class="flex-shrink-0 bg-brand-indigo-light rounded-md p-3">
+              <div class="flex-shrink-0 bg-brand-red rounded-xl p-3">
                 <i class="fa-solid fa-clock text-white text-xl"></i>
               </div>
               <div class="ml-5 w-0 flex-1">
@@ -85,8 +85,8 @@
 
         <!-- Quick Links Nuove Funzionalità -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          <a href="/sale.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
-            <div class="w-10 h-10 bg-brand-cyan rounded-lg flex items-center justify-center text-white shrink-0">
+          <a href="/sale.html" class="card-elevated p-4 flex items-center gap-3 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+            <div class="w-10 h-10 bg-brand-cyan rounded-xl flex items-center justify-center text-white shrink-0">
               <i class="fa-solid fa-chair"></i>
             </div>
             <div>
@@ -94,8 +94,8 @@
               <p class="text-xs text-brand-on-surface-variant">Sale e piantine posti</p>
             </div>
           </a>
-          <a href="/ricarica-credito.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
-            <div class="w-10 h-10 bg-brand-gold rounded-lg flex items-center justify-center text-white shrink-0">
+          <a href="/ricarica-credito.html" class="card-elevated p-4 flex items-center gap-3 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+            <div class="w-10 h-10 bg-brand-red rounded-xl flex items-center justify-center text-white shrink-0">
               <i class="fa-solid fa-coins"></i>
             </div>
             <div>
@@ -103,8 +103,8 @@
               <p class="text-xs text-brand-on-surface-variant">Credito utenti piattaforma</p>
             </div>
           </a>
-          <a href="/validazione-biglietti.html" class="card-elevated p-4 flex items-center gap-3 hover:ring-2 hover:ring-brand-gold/30 transition-all">
-            <div class="w-10 h-10 bg-brand-emerald rounded-lg flex items-center justify-center text-white shrink-0">
+          <a href="/validazione-biglietti.html" class="card-elevated p-4 flex items-center gap-3 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+            <div class="w-10 h-10 bg-brand-emerald rounded-xl flex items-center justify-center text-white shrink-0">
               <i class="fa-solid fa-qrcode"></i>
             </div>
             <div>
@@ -115,9 +115,9 @@
         </div>
 
         <!-- Show in Programma -->
-        <div class="card-elevated overflow-x-auto mb-8">
+        <div class="card-elevated overflow-x-auto mb-8 border border-transparent hover:border-brand-red/50 transition-all duration-200">
           <div class="px-6 py-4 border-b border-brand-outline-variant/10">
-            <h2 class="text-lg font-semibold text-brand-on-surface">Show in Programma</h2>
+            <h2 class="text-lg font-semibold text-brand-on-surface tracking-tight">Show in Programma</h2>
           </div>
           <table class="min-w-full divide-y divide-brand-outline-variant/10">
             <thead class="bg-brand-surface-container">
@@ -140,17 +140,17 @@
 
         <!-- Registi in Evidenza & Analisi Cinema -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="px-6 py-4 border-b border-brand-outline-variant/10">
-              <h2 class="text-lg font-semibold text-brand-on-surface">Registi in Evidenza</h2>
+              <h2 class="text-lg font-semibold text-brand-on-surface tracking-tight">Registi in Evidenza</h2>
             </div>
             <div class="p-6">
               <p class="text-brand-on-surface-variant text-sm">Caricamento in corso...</p>
             </div>
           </div>
-          <div class="card-elevated overflow-hidden">
+          <div class="card-elevated overflow-hidden border border-transparent hover:border-brand-red/50 transition-all duration-200">
             <div class="px-6 py-4 border-b border-brand-outline-variant/10">
-              <h2 class="text-lg font-semibold text-brand-on-surface">Analisi Cinema</h2>
+              <h2 class="text-lg font-semibold text-brand-on-surface tracking-tight">Analisi Cinema</h2>
             </div>
             <div class="p-6">
               <p class="text-brand-on-surface-variant text-sm">Caricamento in corso...</p>
@@ -255,4 +255,3 @@
 </body>
 
 </html>
-

@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const cognomeInput = document.getElementById('cognome');
   const emailInput = document.getElementById('email');
   const telefonoInput = document.getElementById('telefono');
+  const cinemaSelect = document.getElementById('cinema-preferito');
+  const cinemaLoading = document.getElementById('cinema-loading');
   const passwordInput = document.getElementById('password');
   const confirmPasswordInput = document.getElementById('confirm-password');
   const submitBtn = document.getElementById('submit-btn');
@@ -106,6 +108,27 @@ document.addEventListener('DOMContentLoaded', () => {
     passwordInput.addEventListener('input', updatePasswordStrength);
   }
 
+  async function loadCinemasForRegister() {
+    if (!cinemaSelect) return;
+    try {
+      const cinemas = await API.getMyCinemas();
+      const cinemaList = Array.isArray(cinemas) ? cinemas : (Array.isArray(cinemas?.$values) ? cinemas.$values : []);
+      cinemaList.forEach(c => {
+        const option = document.createElement('option');
+        option.value = c.id;
+        option.textContent = `${c.nome} - ${c.citta}`;
+        cinemaSelect.appendChild(option);
+      });
+      if (cinemaLoading) cinemaLoading.classList.add('hidden');
+    } catch {
+      if (cinemaLoading) {
+        cinemaLoading.textContent = 'Cinema non disponibili';
+      }
+    }
+  }
+
+  loadCinemasForRegister();
+
   function showError(message) {
     if (errorAlert && errorMessage) {
       errorMessage.textContent = message;
@@ -202,7 +225,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       await Auth.register(registerData);
-      
+
+      const selectedCinemaId = cinemaSelect?.value;
+      if (selectedCinemaId) {
+        localStorage.setItem('cb_selected_cinema', selectedCinemaId);
+        try {
+          await API.setCinemaPreferito(parseInt(selectedCinemaId, 10));
+        } catch {
+          // ignore sync error, preference is saved locally
+        }
+      }
+
       if (successAlert) successAlert.classList.remove('hidden');
       
       setTimeout(() => {

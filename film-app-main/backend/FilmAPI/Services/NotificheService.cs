@@ -35,14 +35,13 @@ public class NotificheService : INotificheService
             });
         }
 
-        // 2) Biglietti da convalidare (Issued, show futuro o in corso)
+        // 2) Biglietti da convalidare (Issued, show non ancora terminato)
         var bigliettiDaValidare = await _db.Biglietti
             .Include(b => b.Show).ThenInclude(s => s!.Film)
             .Include(b => b.Show).ThenInclude(s => s!.Cinema)
             .Where(b => b.UserId == userId
                         && b.Stato == BigliettoState.Issued
-                        && b.Show!.StartAtUtc <= now.AddHours(2)
-                        && b.Show.StartAtUtc.AddMinutes(b.Show.DurataMinutiSnapshot) >= now)
+                        && b.Show!.StartAtUtc.AddMinutes(b.Show.DurataMinutiSnapshot) >= now)
             .OrderBy(b => b.Show!.StartAtUtc)
             .Take(5)
             .ToListAsync();
@@ -52,12 +51,16 @@ public class NotificheService : INotificheService
             notificaId++;
             var filmTitolo = b.Show?.Film?.Titolo ?? "Film";
             var startDate = b.Show!.StartAtUtc;
+            var isImminent = startDate <= now.AddHours(2);
+            var messaggio = isImminent
+                ? $"Ricordati di convalidare il biglietto per \"{filmTitolo}\" delle {startDate:HH:mm}!"
+                : $"Hai un biglietto per \"{filmTitolo}\" il {startDate:dd/MM} alle {startDate:HH:mm}";
             notifiche.Add(new NotificaDTO
             {
                 Id = notificaId,
                 Tipo = "validazione_biglietto",
-                Priorita = "alta",
-                Messaggio = $"Ricordati di convalidare il biglietto per \"{filmTitolo}\" del {startDate:dd/MM HH:mm}",
+                Priorita = isImminent ? "alta" : "normale",
+                Messaggio = messaggio,
                 AzioneLabel = "Vai alla validazione",
                 AzioneUrl = $"/validazione-biglietti.html?codice={Uri.EscapeDataString(b.CodiceBiglietto)}",
                 FilmId = b.Show!.FilmId,

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Acquista Biglietti</title>
+  <title>RedCurtain â€” Acquista Biglietti</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -21,19 +21,19 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="acquista-page max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-3 lg:py-4">
+  <main class="acquista-page max-w-7xl mx-auto px-3 sm:px-4 lg:px-5 py-3 lg:py-4 animate-fade-in">
     <!-- Loading State -->
     <div id="loading-state" class="text-center py-16">
-      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-gold"></i>
+      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-on-surface-variant"></i>
       <p class="text-brand-on-surface-variant">Caricamento piantina posti...</p>
     </div>
 
     <!-- Error State -->
     <div id="error-state" class="hidden text-center py-16">
       <i class="fa-solid fa-circle-exclamation text-6xl text-brand-error mb-4"></i>
-      <h3 class="text-xl font-semibold text-brand-on-surface mb-2">Errore</h3>
+      <h3 class="text-xl font-semibold text-brand-on-surface tracking-tight mb-2">Errore</h3>
       <p class="text-brand-on-surface-variant mb-4" id="error-message">Impossibile caricare la piantina</p>
-      <button onclick="window.history.back()" class="btn-outline-brand">
+      <button onclick="window.history.back()" class="btn-outline-brand transition-colors duration-200">
         <i class="fa-solid fa-arrow-left mr-1"></i>Torna indietro
       </button>
     </div>
@@ -43,9 +43,9 @@
       <div class="acquista-layout flex flex-col lg:flex-row gap-4 lg:gap-5">
         <!-- Seat Map Section -->
         <div class="flex-1 min-w-0">
-          <div class="card-elevated p-3 lg:p-4 mb-4 h-full">
-            <h1 class="text-lg lg:text-xl font-bold text-brand-on-surface mb-2.5">
-              <i class="fa-solid fa-couch text-brand-gold mr-2"></i>Seleziona Posti
+          <div class="card-elevated p-3 lg:p-4 mb-4 h-full border border-transparent hover:border-brand-red/50 transition-all duration-200">
+            <h1 class="text-lg lg:text-xl font-bold text-brand-on-surface tracking-tight mb-2.5">
+              <i class="fa-solid fa-couch text-brand-red mr-2"></i>Seleziona Posti
             </h1>
 
             <!-- Show Info -->
@@ -57,7 +57,7 @@
                 <span id="show-datetime"><i class="fa-regular fa-calendar mr-1"></i></span>
               </div>
               <div class="flex flex-wrap gap-2 mt-1.5 text-[11px] lg:text-xs">
-                <span id="show-prezzo" class="text-brand-gold font-semibold"></span>
+                <span id="show-prezzo" class="text-brand-gold-light font-semibold"></span>
               </div>
             </div>
 
@@ -118,9 +118,9 @@
           </div>
 
           <!-- Selected Seats -->
-          <div class="card-elevated p-4 lg:p-4 mb-4">
-            <h3 class="text-sm lg:text-base font-bold text-brand-on-surface mb-2.5">
-              <i class="fa-solid fa-ticket text-brand-gold mr-2"></i>Riepilogo
+          <div class="card-elevated p-4 lg:p-4 mb-4 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+            <h3 class="text-sm lg:text-base font-bold text-brand-on-surface tracking-tight mb-2.5">
+              <i class="fa-solid fa-ticket text-brand-red mr-2"></i>Riepilogo
             </h3>
             <div id="selected-seats-list" class="space-y-1.5 mb-4 max-h-52 overflow-y-auto pr-1">
               <p class="text-sm text-brand-on-surface-variant text-center py-4">
@@ -148,7 +148,7 @@
                 <i class="fa-solid fa-credit-card mr-2"></i>Continua al pagamento
               </button>
               <button id="btn-back"
-                class="w-full btn-outline-brand py-3 text-center">
+                class="w-full btn-outline-brand py-3 text-center transition-colors duration-200">
                 <i class="fa-solid fa-arrow-left mr-2"></i>Torna allo show
               </button>
             </div>

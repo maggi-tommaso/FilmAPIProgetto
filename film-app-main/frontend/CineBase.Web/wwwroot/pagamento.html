@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Pagamento</title>
+  <title>RedCurtain â€” Pagamento</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -21,10 +21,10 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Loading State -->
     <div id="loading-state" class="text-center py-16">
-      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-gold"></i>
+      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-red"></i>
       <p class="text-brand-on-surface-variant">Caricamento ordine...</p>
     </div>
 
@@ -39,9 +39,9 @@
     </div>
 
     <!-- Main Content -->
-    <div id="main-content" class="hidden">
+    <div id="main-content" class="hidden animate-fade-in max-w-3xl mx-auto">
       <h1 class="text-2xl font-bold text-brand-on-surface mb-6">
-        <i class="fa-solid fa-credit-card text-brand-gold mr-2"></i>Pagamento
+        <i class="fa-solid fa-credit-card text-brand-red mr-2"></i>Pagamento
       </h1>
 
       <!-- Order Summary -->
@@ -61,13 +61,13 @@
         <h2 class="text-lg font-bold text-brand-on-surface mb-4">Metodo di Pagamento</h2>
 
         <!-- Credit Balance -->
-        <div id="credit-balance-card" class="mb-4 p-4 rounded-xl bg-brand-surface-container">
+        <div id="credit-balance-card" class="mb-4 p-4 rounded-xl bg-black/30 border border-white/[0.04]">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm text-brand-on-surface-variant">Il tuo credito</p>
-              <p id="credit-balance" class="text-xl font-bold text-brand-gold"></p>
+              <p id="credit-balance" class="text-xl font-bold text-brand-red"></p>
             </div>
-            <i class="fa-solid fa-wallet text-brand-gold text-2xl"></i>
+            <i class="fa-solid fa-wallet text-brand-red text-2xl"></i>
           </div>
         </div>
 
@@ -105,7 +105,7 @@
         </div>
 
         <!-- Credit slider for mixed payment -->
-        <div id="credit-slider-section" class="hidden mt-4 p-4 rounded-xl bg-brand-surface-container">
+        <div id="credit-slider-section" class="hidden mt-4 p-4 rounded-xl bg-black/30 border border-white/[0.04]">
           <label class="block text-sm font-medium text-brand-on-surface mb-2">
             Quanto credito vuoi usare?
           </label>

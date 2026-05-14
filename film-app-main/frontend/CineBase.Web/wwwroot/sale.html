@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Gestione Sale</title>
+  <title>RedCurtain â€” Gestione Sale</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="/js/tailwind-config.js"></script>
@@ -18,7 +18,7 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
       <div>
@@ -28,7 +28,7 @@
     </div>
 
     <!-- Cinema Selector -->
-    <div class="card-elevated mb-6 p-4">
+    <div class="card-elevated mb-6 p-4 rounded-2xl">
       <div class="flex flex-col md:flex-row gap-4 items-end">
         <div class="flex-1">
           <label for="cinema-filter-select" class="block text-sm font-medium text-brand-on-surface mb-1">Cinema</label>
@@ -37,14 +37,14 @@
           </select>
         </div>
         <button id="btn-add-sala" disabled onclick="openCreateSalaModal()"
-          class="btn-gold text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+          class="btn-gold text-white px-4 py-2 rounded-xl text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
           <i class="fa-solid fa-plus mr-2"></i>Aggiungi Sala
         </button>
       </div>
     </div>
 
     <!-- Sale Table -->
-    <div class="card-elevated overflow-x-auto">
+    <div class="card-elevated overflow-x-auto rounded-2xl">
       <table class="min-w-full divide-y divide-brand-outline-variant/10">
         <thead class="bg-brand-surface-container">
           <tr>
@@ -73,10 +73,10 @@
 
   <!-- Sala Modal -->
   <div id="sala-modal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 bg-black/70 modal-backdrop"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="relative transform overflow-hidden rounded-2xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-brand-outline-variant/10">
           <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
             <h3 class="text-lg font-bold text-brand-on-surface" id="modal-title">Aggiungi Sala</h3>
             <button type="button" class="absolute top-4 right-4 text-brand-on-surface-variant hover:text-brand-on-surface" onclick="closeSalaModal()" title="Chiudi" aria-label="Chiudi modal">
@@ -108,13 +108,13 @@
                 <input id="sala-supplemento" type="number" name="supplemento" step="0.01" min="0" value="0" class="ghost-input w-full px-4 py-2" title="Supplemento prezzo">
               </div>
               <div class="flex items-center gap-2">
-                <input id="sala-attiva" type="checkbox" name="isAttiva" checked class="rounded border-brand-outline-variant text-brand-gold focus:ring-brand-gold">
+                <input id="sala-attiva" type="checkbox" name="isAttiva" checked class="rounded border-brand-outline-variant text-brand-red focus:ring-brand-red">
                 <label for="sala-attiva" class="text-sm font-medium text-brand-on-surface">Sala attiva</label>
               </div>
             </form>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
-            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeSalaModal()">Annulla</button>
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-xl text-sm font-medium" onclick="closeSalaModal()">Annulla</button>
             <button type="submit" form="sala-form" class="btn-gold">Salva</button>
           </div>
         </div>
@@ -124,10 +124,10 @@
 
   <!-- Seat Layout Editor Modal -->
   <div id="seat-editor-modal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 bg-black/70 modal-backdrop"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl">
+        <div class="relative transform overflow-hidden rounded-2xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-4xl border border-brand-outline-variant/10">
           <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4 flex justify-between items-center">
             <h3 class="text-lg font-bold text-brand-on-surface" id="seat-editor-title">Editor Piantina</h3>
             <button type="button" class="text-brand-on-surface-variant hover:text-brand-on-surface" onclick="closeSeatEditor()" title="Chiudi" aria-label="Chiudi modal">
@@ -137,7 +137,7 @@
           <div class="bg-brand-surface-container-lowest px-6 pb-4">
             <p class="text-sm text-brand-on-surface-variant mb-4" id="seat-editor-subtitle"></p>
             <!-- Editor Controls -->
-            <div class="flex flex-col sm:flex-row gap-3 mb-4 p-4 bg-brand-surface-container rounded-xl">
+            <div class="flex flex-col sm:flex-row gap-3 mb-4 p-4 bg-brand-surface-container rounded-2xl">
               <div>
                 <label class="block text-xs font-medium text-brand-on-surface-variant mb-1">Settore</label>
                 <input id="seat-sector" type="text" value="PLATEA" class="ghost-input w-full px-3 py-1.5 text-sm" title="Nome settore">
@@ -151,32 +151,32 @@
                 <input id="seat-cols" type="number" value="10" min="1" max="50" class="ghost-input w-20 px-3 py-1.5 text-sm" title="Posti per fila">
               </div>
               <div class="flex items-end gap-2">
-                <button onclick="generateSeatGrid()" class="btn-gold px-3 py-1.5 text-sm rounded-lg">
+                <button onclick="generateSeatGrid()" class="btn-gold px-3 py-1.5 text-sm rounded-xl">
                   <i class="fa-solid fa-rotate mr-1"></i>Genera
                 </button>
-                <button onclick="clearSeatGrid()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg">
+                <button onclick="clearSeatGrid()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-xl">
                   <i class="fa-solid fa-trash mr-1"></i>Svuota
                 </button>
               </div>
             </div>
             <!-- Seat Grid Preview -->
-            <div id="seat-grid-container" class="overflow-auto max-h-96 bg-brand-surface-container rounded-xl p-4 mb-4">
+            <div id="seat-grid-container" class="overflow-auto max-h-96 bg-brand-surface-container rounded-2xl p-4 mb-4">
               <p class="text-sm text-brand-on-surface-variant text-center">Usa i controlli sopra per generare la piantina</p>
             </div>
             <div class="flex justify-between items-center">
               <span class="text-sm text-brand-on-surface-variant" id="seat-count-label"></span>
               <div class="flex gap-2">
-                <button onclick="toggleWheelchairSeat()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg" title="Attiva/Disattiva posto disabile">
+                <button onclick="toggleWheelchairSeat()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-xl" title="Attiva/Disattiva posto disabile">
                   <i class="fa-solid fa-wheelchair mr-1"></i>Posto disabile
                 </button>
-                <button onclick="toggleSeatActive()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-lg" title="Attiva/Disattiva posto">
+                <button onclick="toggleSeatActive()" class="btn-outline-brand px-3 py-1.5 text-sm rounded-xl" title="Attiva/Disattiva posto">
                   <i class="fa-solid fa-toggle-on mr-1"></i>Attiva/Disattiva
                 </button>
               </div>
             </div>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
-            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeSeatEditor()">Annulla</button>
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-xl text-sm font-medium" onclick="closeSeatEditor()">Annulla</button>
             <button type="button" onclick="saveSeatLayout()" class="btn-gold">
               <i class="fa-solid fa-save mr-2"></i>Salva Piantina
             </button>
@@ -188,14 +188,14 @@
 
   <!-- Delete Modal -->
   <div id="delete-modal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 bg-black/70 modal-backdrop"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-        <div class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
+        <div class="relative transform overflow-hidden rounded-2xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-brand-outline-variant/10">
           <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
             <div class="flex items-center gap-4">
               <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-brand-error-container">
-                <i class="fa-solid fa-triangle-exclamation text-red-600 text-xl"></i>
+                <i class="fa-solid fa-triangle-exclamation text-brand-red text-xl"></i>
               </div>
               <div>
                 <h3 class="text-lg font-bold text-brand-on-surface">Conferma Eliminazione</h3>
@@ -204,8 +204,8 @@
             </div>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
-            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium" onclick="closeDeleteModal()">Annulla</button>
-            <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700" id="confirm-delete-btn">Elimina</button>
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-xl text-sm font-medium" onclick="closeDeleteModal()">Annulla</button>
+            <button type="button" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700" id="confirm-delete-btn">Elimina</button>
           </div>
         </div>
       </div>

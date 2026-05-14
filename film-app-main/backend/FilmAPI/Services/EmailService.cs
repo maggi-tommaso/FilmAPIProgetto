@@ -27,7 +27,7 @@ public class EmailService : IEmailService
         _smtpUser = ReadSetting("SMTP_USER");
         _smtpPassword = ReadSetting("SMTP_PASSWORD");
         _fromEmail = ReadSetting("SMTP_FROM_EMAIL");
-        _fromName = ReadSetting("SMTP_FROM_NAME") ?? "CineBase";
+        _fromName = ReadSetting("SMTP_FROM_NAME") ?? "RedCurtain";
     }
 
     public async Task<EmailSendResult> SendOrderTicketsAsync(OrdineTicketDocumentDTO orderDocument, byte[] pdfBytes, string fileName, CancellationToken cancellationToken = default)
@@ -60,7 +60,7 @@ public class EmailService : IEmailService
             var message = new MimeMessage();
             message.From.Add(new MailboxAddress(_fromName, fromEmail));
             message.To.Add(MailboxAddress.Parse(orderDocument.RecipientEmail));
-            message.Subject = $"CineBase - Biglietti ordine {orderDocument.CodiceOrdine}";
+            message.Subject = $"RedCurtain - Biglietti ordine {orderDocument.CodiceOrdine}";
 
             var bodyBuilder = new BodyBuilder
             {
@@ -138,7 +138,7 @@ public class EmailService : IEmailService
         return $"""
 <html>
   <body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
-    <h1 style="margin-bottom: 8px;">Conferma acquisto CineBase</h1>
+    <h1 style="margin-bottom: 8px;">Conferma acquisto RedCurtain</h1>
     <p>Ordine <strong>{orderCode}</strong> completato con successo.</p>
     <p><strong>Film:</strong> {title}<br />
        <strong>Cinema:</strong> {cinema}<br />

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Gestione Registi</title>
+  <title>RedCurtain â€” Gestione Registi</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -21,7 +21,7 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
     <!-- Page Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
       <div>
@@ -30,7 +30,7 @@
       </div>
       <div class="mt-4 md:mt-0">
         <button onclick="openModal('regista-modal', 'Aggiungi Regista')"
-          class="btn-gold text-white px-4 py-2 rounded-lg text-sm font-medium">
+          class="btn-gold text-white px-4 py-2 rounded-xl text-sm font-medium">
           <i class="fa-solid fa-plus mr-2"></i>Aggiungi Regista
         </button>
       </div>
@@ -38,9 +38,9 @@
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-      <div class="card-elevated overflow-hidden">
+      <div class="card-elevated overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
         <div class="p-5 flex items-center">
-          <div class="flex-shrink-0 bg-brand-gold rounded-md p-3">
+          <div class="flex-shrink-0 bg-brand-gold rounded-xl p-3">
             <i class="fa-solid fa-user text-white text-xl"></i>
           </div>
           <div class="ml-5 w-0 flex-1">
@@ -51,9 +51,9 @@
           </div>
         </div>
       </div>
-      <div class="card-elevated overflow-hidden">
+      <div class="card-elevated overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
         <div class="p-5 flex items-center">
-          <div class="flex-shrink-0 bg-brand-cyan rounded-md p-3">
+          <div class="flex-shrink-0 bg-brand-cyan rounded-xl p-3">
             <i class="fa-solid fa-globe text-white text-xl"></i>
           </div>
           <div class="ml-5 w-0 flex-1">
@@ -64,9 +64,9 @@
           </div>
         </div>
       </div>
-      <div class="card-elevated overflow-hidden">
+      <div class="card-elevated overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
         <div class="p-5 flex items-center">
-          <div class="flex-shrink-0 bg-brand-emerald rounded-md p-3">
+          <div class="flex-shrink-0 bg-brand-emerald rounded-xl p-3">
             <i class="fa-solid fa-film text-white text-xl"></i>
           </div>
           <div class="ml-5 w-0 flex-1">
@@ -80,7 +80,7 @@
     </div>
 
     <!-- Table Controls -->
-    <div class="card-elevated mb-6 p-4">
+    <div class="card-elevated mb-6 p-4 rounded-2xl">
       <div class="flex flex-col md:flex-row gap-4">
         <div class="flex-1 relative">
           <input type="text" id="search-input" placeholder="Cerca registi..." class="ghost-input px-4 py-2 w-full">
@@ -95,7 +95,7 @@
     </div>
 
     <!-- Table -->
-    <div class="card-elevated overflow-x-auto">
+    <div class="card-elevated overflow-x-auto rounded-2xl">
       <table class="min-w-full divide-y divide-brand-outline-variant/10">
         <thead class="bg-brand-surface-container">
           <tr>
@@ -119,23 +119,23 @@
         <div class="flex items-center gap-2">
           <button id="pagination-first" onclick="goToFirstPage()" type="button" title="Prima pagina"
             aria-label="Vai alla prima pagina"
-            class="px-3 py-1.5 border border-brand-outline-variant rounded-lg text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
+            class="px-3 py-1.5 border border-brand-outline-variant rounded-xl text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
             <i class="fa-solid fa-angles-left"></i>
           </button>
           <button id="pagination-prev" onclick="goToPrevPage()" type="button" title="Pagina precedente"
             aria-label="Vai alla pagina precedente"
-            class="px-3 py-1.5 border border-brand-outline-variant rounded-lg text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
+            class="px-3 py-1.5 border border-brand-outline-variant rounded-xl text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
             <i class="fa-solid fa-chevron-left"></i>
           </button>
           <span id="page-indicator" class="text-sm text-brand-on-surface px-2">Pagina 1 di 1</span>
           <button id="pagination-next" onclick="goToNextPage()" type="button" title="Pagina successiva"
             aria-label="Vai alla pagina successiva"
-            class="px-3 py-1.5 border border-brand-outline-variant rounded-lg text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
+            class="px-3 py-1.5 border border-brand-outline-variant rounded-xl text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
             <i class="fa-solid fa-chevron-right"></i>
           </button>
           <button id="pagination-last" onclick="goToLastPage()" type="button" title="Ultima pagina"
             aria-label="Vai all'ultima pagina"
-            class="px-3 py-1.5 border border-brand-outline-variant rounded-lg text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
+            class="px-3 py-1.5 border border-brand-outline-variant rounded-xl text-sm text-brand-on-surface btn-page disabled:opacity-50 disabled:cursor-not-allowed">
             <i class="fa-solid fa-angles-right"></i>
           </button>
         </div>
@@ -151,11 +151,11 @@
   <!-- Modal -->
   <div id="regista-modal" class="fixed inset-0 z-50 hidden" aria-labelledby="modal-title" role="dialog"
     aria-modal="true">
-    <div class="fixed inset-0 bg-gray-500/75 transition-opacity modal-backdrop"></div>
+    <div class="fixed inset-0 bg-black/70 transition-opacity modal-backdrop"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
         <div
-          class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+          class="relative transform overflow-hidden rounded-2xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-brand-outline-variant/10">
           <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
             <h3 class="text-lg font-bold text-brand-on-surface" id="modal-title">Aggiungi Regista</h3>
             <button type="button"
@@ -187,7 +187,7 @@
             </form>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
-            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium"
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-xl text-sm font-medium"
               onclick="closeModal('regista-modal')">Annulla</button>
             <button type="submit" form="regista-form" class="btn-gold">Salva</button>
           </div>
@@ -198,15 +198,15 @@
 
   <!-- Delete Modal -->
   <div id="delete-modal" class="fixed inset-0 z-50 hidden">
-    <div class="fixed inset-0 bg-gray-500/75 modal-backdrop"></div>
+    <div class="fixed inset-0 bg-black/70 modal-backdrop"></div>
     <div class="fixed inset-0 z-10 overflow-y-auto">
       <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
         <div
-          class="relative transform overflow-hidden rounded-xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
+          class="relative transform overflow-hidden rounded-2xl bg-brand-surface-container-lowest text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md border border-brand-outline-variant/10">
           <div class="bg-brand-surface-container-lowest px-6 pt-6 pb-4">
             <div class="flex items-center gap-4">
-              <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-                <i class="fa-solid fa-triangle-exclamation text-red-600 text-xl"></i>
+              <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-brand-error-container">
+                <i class="fa-solid fa-triangle-exclamation text-brand-red text-xl"></i>
               </div>
               <div>
                 <h3 class="text-lg font-bold text-brand-on-surface">Conferma Eliminazione</h3>
@@ -216,10 +216,10 @@
             </div>
           </div>
           <div class="bg-brand-surface-container-low px-6 py-4 flex justify-end gap-3">
-            <button type="button" class="btn-outline-brand px-4 py-2 rounded-lg text-sm font-medium"
+            <button type="button" class="btn-outline-brand px-4 py-2 rounded-xl text-sm font-medium"
               onclick="closeDeleteModal()">Annulla</button>
             <button type="button"
-              class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700"
+              class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700"
               id="confirm-delete-btn">Elimina</button>
           </div>
         </div>
@@ -263,4 +263,3 @@
 </body>
 
 </html>
-

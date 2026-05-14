@@ -444,56 +444,75 @@ function renderFilmsCarousel(films) {
 
 function renderFilmCard(film) {
   const categorie = film.categorie || [];
-  const categorieBadges = categorie.slice(0, 3).map(c =>
-    `<span class="inline-block bg-brand-surface-container text-brand-on-surface text-xs px-2 py-0.5 rounded-full">${c.nome}</span>`
+  const categorieBadges = categorie.slice(0, 2).map(c =>
+    `<span class="inline-block bg-white/10 backdrop-blur-sm text-white text-[10px] px-2 py-0.5 rounded-full font-medium">${c.nome}</span>`
   ).join('');
 
-  let availabilityBadge;
-  if (film.disponibileNelCinemaSelezionato) {
-    const prossimoShow = film.prossimoShowNelCinemaSelezionato;
-    availabilityBadge = `
-      <div class="flex items-center gap-1 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-        <i class="fa-solid fa-circle-check"></i>
-        <span>Disponibile${prossimoShow ? ` - Prossimo: ${formatDateTimeLocal(prossimoShow)}` : ''}</span>
-      </div>
-    `;
-  } else if (film.inUscita) {
-    availabilityBadge = `
-      <div class="flex items-center gap-1 text-amber-600 dark:text-amber-400 text-xs font-medium">
-        <i class="fa-solid fa-clock"></i>
-        <span>In uscita${film.dataRilascio ? ` - ${formatDateOnly(film.dataRilascio)}` : ''}</span>
-      </div>
-    `;
-  } else {
-    availabilityBadge = `
-      <div class="flex items-center gap-1 text-brand-on-surface-variant text-xs">
-        <i class="fa-solid fa-circle-xmark"></i>
-        <span>Non disponibile in questo cinema</span>
-      </div>
-    `;
+  const prossimoShow = film.prossimoShowNelCinemaSelezionato;
+  const hasShow = film.disponibileNelCinemaSelezionato;
+  const isUpcoming = film.inUscita;
+
+  let statusPill = '';
+  if (hasShow && prossimoShow) {
+    statusPill = `<span class="inline-flex items-center gap-1 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-ticket text-[8px]"></i>${formatDateTimeLocal(prossimoShow)}</span>`;
+  } else if (isUpcoming) {
+    statusPill = `<span class="inline-flex items-center gap-1 bg-brand-gold/90 text-black text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-clock text-[8px]"></i>In uscita</span>`;
+  } else if (hasShow) {
+    statusPill = `<span class="inline-flex items-center gap-1 bg-brand-red text-white text-[10px] font-bold px-2.5 py-1 rounded-full"><i class="fa-solid fa-ticket text-[8px]"></i>Disponibile</span>`;
   }
 
+  function renderRatingStars(media, count) {
+    if (!media || count === 0) return '';
+    var rounded = Math.floor(media);
+    var html = '<div class="flex items-center gap-1.5 mt-1.5">';
+    html += '<span class="text-xs text-brand-on-surface-variant">Rating</span>';
+    html += '<div class="flex gap-0.5">';
+    for (var i = 1; i <= 5; i++) {
+      html += '<i class="fa-solid fa-star text-[10px] ' + (i <= rounded ? 'text-amber-400' : 'text-brand-outline-variant/40') + '"></i>';
+    }
+    html += '</div>';
+    html += '<span class="text-xs font-semibold text-brand-on-surface-variant">' + media.toFixed(1) + '</span>';
+    html += '</div>';
+    return html;
+  }
+
+  const ratingHtml = renderRatingStars(film.mediaValutazione, film.numeroValutazioni);
+
   return `
-    <div class="card-elevated overflow-hidden card-hover cursor-pointer group h-full" onclick="goToSchedaFilm(${film.id})">
-      <div class="aspect-[2/3] bg-slate-700 relative overflow-hidden">
-        <img src="${getCoverImage(film.copertinaPath)}"
-              alt="${film.titolo}"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-              decoding="async"
-              fetchpriority="low"
-              referrerpolicy="no-referrer">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
-        <div class="absolute top-3 left-3 right-3 flex flex-wrap gap-1">
-          ${categorieBadges}
+    <div class="group cursor-pointer h-full" onclick="goToSchedaFilm(${film.id})">
+      <div class="relative overflow-hidden rounded-2xl bg-brand-surface-container-lowest border border-brand-outline-variant/20 hover:border-brand-red/40 transition-all duration-300 hover:shadow-2xl hover:shadow-brand-red/5 hover:-translate-y-1">
+        <!-- Poster -->
+        <div class="aspect-[2/3] bg-brand-surface-container relative overflow-hidden">
+          <img src="${getCoverImage(film.copertinaPath)}"
+                alt="${film.titolo}"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+                referrerpolicy="no-referrer">
+          <!-- Gradient overlays -->
+          <div class="absolute inset-0 bg-gradient-to-t from-brand-surface via-brand-surface/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300"></div>
+          <!-- Top badges -->
+          <div class="absolute top-3 left-3 right-3 flex justify-between items-start gap-2">
+            <div class="flex flex-wrap gap-1">${categorieBadges}</div>
+            <span class="bg-brand-gold text-black text-[10px] font-bold px-2 py-1 rounded-full flex-shrink-0">${film.durata || '-'} min</span>
+          </div>
+          <!-- Status pill -->
+          <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+            <div>${statusPill || ''}</div>
+          </div>
+          <!-- Hover reveal info -->
+          <div class="absolute inset-0 bg-brand-surface/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-center items-center p-6 text-center">
+            <i class="fa-solid fa-circle-play text-brand-red text-4xl mb-3 transform group-hover:scale-110 transition-transform duration-300"></i>
+            <p class="text-brand-on-surface-variant text-xs uppercase tracking-widest font-semibold mb-1">Scopri di piu</p>
+            <p class="text-brand-on-surface text-sm font-medium line-clamp-2">${film.titolo}</p>
+          </div>
         </div>
-        <div class="absolute bottom-3 left-3 right-3">
-          <span class="bg-brand-gold text-black text-xs font-bold px-2 py-1 rounded-full">${film.durata || '-'} min</span>
+        <!-- Card footer -->
+        <div class="p-4">
+          <h3 class="text-brand-on-surface font-bold text-sm leading-tight line-clamp-2 group-hover:text-brand-red-light transition-colors duration-200">${film.titolo}</h3>
+          ${ratingHtml}
         </div>
-      </div>
-      <div class="p-4">
-        <h3 class="text-brand-on-surface font-semibold text-lg mb-2 line-clamp-2">${film.titolo}</h3>
-        ${availabilityBadge}
       </div>
     </div>
   `;

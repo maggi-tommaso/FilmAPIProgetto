@@ -1,6 +1,5 @@
 let profiloData = null;
 let creditoData = null;
-let cinemaPreferito = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (!Auth?.isLoggedIn?.()) {
@@ -11,13 +10,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   await Promise.all([
     loadProfilo(),
     loadCredito(),
-    loadCinemaPreferito(),
     loadOrdini(),
     loadBiglietti(),
     loadSecurity(),
     loadNotifiche(),
   ]);
 
+  await loadCinemaSelect();
   setupProfiloForm();
 });
 
@@ -42,6 +41,9 @@ function setupProfiloForm() {
   const form = document.getElementById('profilo-form');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const cinemaSelect = document.getElementById('profilo-cinema');
+    const cinemaId = cinemaSelect?.value ? parseInt(cinemaSelect.value, 10) : null;
+
     const data = {
       nome: document.getElementById('profilo-nome').value.trim(),
       cognome: document.getElementById('profilo-cognome').value.trim(),
@@ -50,6 +52,7 @@ function setupProfiloForm() {
 
     try {
       profiloData = await API.updateProfilo(data);
+      await API.setCinemaPreferito(cinemaId);
       fillProfiloForm();
       const user = Auth.getUser();
       if (user) {
@@ -70,21 +73,32 @@ function setupProfiloForm() {
   });
 }
 
-async function loadCinemaPreferito() {
-  const container = document.getElementById('cinema-preferito-content');
+async function loadCinemaSelect() {
+  const select = document.getElementById('profilo-cinema');
+  if (!select) return;
+
   try {
-    const result = await API.getCinemaPreferito();
-    cinemaPreferito = result;
+    const [cinemaPref, cinemas] = await Promise.all([
+      API.getCinemaPreferito(),
+      API.getMyCinemas()
+    ]);
 
-    if (!result || !result.cinemaId) {
-      container.innerHTML = '<div class="text-center py-4"><p class="text-sm text-brand-on-surface-variant mb-3">Nessun cinema preferito impostato</p><a href="/my-cinemas.html" class="btn-gold-sm"><i class="fa-solid fa-location-dot mr-1"></i>Scegli cinema</a></div>';
-      return;
-    }
+    const cinemaList = Array.isArray(cinemas) ? cinemas
+      : Array.isArray(cinemas?.$values) ? cinemas.$values
+      : Array.isArray(cinemas?.items) ? cinemas.items
+      : [];
 
-    const cinema = result.cinema;
-    container.innerHTML = '<div class="flex items-start gap-4"><div class="flex-shrink-0 w-12 h-12 rounded-xl bg-brand-gold/15 flex items-center justify-center"><i class="fa-solid fa-location-dot text-brand-gold text-xl"></i></div><div class="flex-1 min-w-0"><h3 class="font-semibold text-brand-on-surface truncate">' + cinema.nome + '</h3><p class="text-sm text-brand-on-surface-variant">' + cinema.citta + (cinema.indirizzo ? ' - ' + cinema.indirizzo : '') + '</p>' + (cinema.telefono ? '<p class="text-xs text-brand-on-surface-variant mt-1"><i class="fa-solid fa-phone mr-1"></i>' + cinema.telefono + '</p>' : '') + '</div><a href="/my-cinemas.html" class="btn-ghost text-xs" title="Cambia cinema preferito"><i class="fa-solid fa-pen"></i></a></div>';
+    cinemaList.sort((a, b) => (a.nome || '').localeCompare(b.nome || '')).forEach(c => {
+      const option = document.createElement('option');
+      option.value = c.id;
+      option.textContent = c.nome + ' — ' + c.citta;
+      if (cinemaPref?.cinemaId && Number(c.id) === Number(cinemaPref.cinemaId)) {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
   } catch {
-    container.innerHTML = '<p class="text-sm text-brand-on-surface-variant">Errore caricamento cinema preferito</p>';
+    // silent fail, dropdown will just show "Nessuna preferenza"
   }
 }
 

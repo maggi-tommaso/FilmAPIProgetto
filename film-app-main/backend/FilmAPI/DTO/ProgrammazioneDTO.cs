@@ -13,6 +13,8 @@ public class ProgrammazioneFilmDTO
     public int ShowCountNext7Days { get; set; }
     public bool DisponibileNelCinemaSelezionato { get; set; }
     public DateTime? ProssimoShowNelCinemaSelezionato { get; set; }
+    public double? MediaValutazione { get; set; }
+    public int NumeroValutazioni { get; set; }
 }
 
 public class ProgrammazioneFilmPagedResultDTO
@@ -42,6 +44,8 @@ public class FilmSchedaDTO
     public string? RegistaCognome { get; set; }
     public CinemaSintesiDTO? CinemaSelezionato { get; set; }
     public List<FilmSchedaShowGroupDTO> ShowCalendar { get; set; } = new();
+    public double? MediaValutazione { get; set; }
+    public int NumeroValutazioni { get; set; }
 }
 
 public class FilmSchedaShowGroupDTO
@@ -122,4 +126,17 @@ public class CinemaPreferitoDTO
 {
     public int? CinemaId { get; set; }
     public CinemaSintesiDTO? Cinema { get; set; }
+}
+
+public class FilmPreferitoDTO
+{
+    public int? FilmId { get; set; }
+    public FilmSintesiDTO? Film { get; set; }
+}
+
+public class FilmSintesiDTO
+{
+    public int Id { get; set; }
+    public string Titolo { get; set; } = string.Empty;
+    public string? CopertinaPath { get; set; }
 }

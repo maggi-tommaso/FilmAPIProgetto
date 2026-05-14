@@ -57,6 +57,11 @@ public class User
     [ForeignKey(nameof(CinemaPreferitoId))]
     public Cinema? CinemaPreferito { get; set; }
 
+    public int? FilmPreferitoId { get; set; }
+
+    [ForeignKey(nameof(FilmPreferitoId))]
+    public Film? FilmPreferito { get; set; }
+
     [Required]
     [Column(TypeName = "decimal(10,2)")]
     public decimal CreditoResiduo { get; set; }

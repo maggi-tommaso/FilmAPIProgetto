@@ -251,6 +251,11 @@ public class FilmDbContext : DbContext
                   .WithMany()
                   .HasForeignKey(u => u.CinemaPreferitoId)
                   .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(u => u.FilmPreferito)
+                  .WithMany()
+                  .HasForeignKey(u => u.FilmPreferitoId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
         modelBuilder.Entity<UserExternalLogin>(entity =>

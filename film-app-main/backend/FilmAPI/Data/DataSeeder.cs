@@ -27,7 +27,7 @@ public class DataSeeder
         if (_context.Users.Any())
             return;
 
-        var adminEmail = Environment.GetEnvironmentVariable("ADMIN_SEED_EMAIL") ?? "admin@cinebase.it";
+        var adminEmail = Environment.GetEnvironmentVariable("ADMIN_SEED_EMAIL") ?? "admin@redcurtain.it";
         var adminPassword = Environment.GetEnvironmentVariable("ADMIN_SEED_PASSWORD") ?? "Admin123!";
 
         var admin = new User
@@ -37,7 +37,7 @@ public class DataSeeder
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(adminPassword),
             LocalCredentialsEnabled = true,
             Nome = "Admin",
-            Cognome = "CineBase",
+            Cognome = "RedCurtain",
             Ruolo = UserRole.Admin,
             DataRegistrazione = DateTime.UtcNow,
             CreditoResiduo = 0,
@@ -88,16 +88,16 @@ public class DataSeeder
     {
         var cinemas = new[]
         {
-            new Cinema { Nome = "CineBase Roma Centro", Citta = "Roma", Indirizzo = "Via del Corso 123", Latitudine = 41.9028, Longitudine = 12.4964, Telefono = "06 1234567", CodiceLocale = "CBR001" },
-            new Cinema { Nome = "CineBase Milano Duomo", Citta = "Milano", Indirizzo = "Corso Buenos Aires 45", Latitudine = 45.4642, Longitudine = 9.1900, Telefono = "02 1234567", CodiceLocale = "CBM001" },
-            new Cinema { Nome = "CineBase Napoli Centro", Citta = "Napoli", Indirizzo = "Via Toledo 78", Latitudine = 40.8518, Longitudine = 14.2681, Telefono = "081 1234567", CodiceLocale = "CBN001" },
-            new Cinema { Nome = "CineBase Bologna", Citta = "Bologna", Indirizzo = "Via Indipendenza 22", Latitudine = 44.4949, Longitudine = 11.3426, Telefono = "051 1234567", CodiceLocale = "CBB001" },
-            new Cinema { Nome = "CineBase Firenze", Citta = "Firenze", Indirizzo = "Via de' Calzaiuoli 15", Latitudine = 43.7696, Longitudine = 11.2558, Telefono = "055 1234567", CodiceLocale = "CBF001" },
-            new Cinema { Nome = "CineBase Torino", Citta = "Torino", Indirizzo = "Via Garibaldi 30", Latitudine = 45.0703, Longitudine = 7.6869, Telefono = "011 1234567", CodiceLocale = "CBT001" },
-            new Cinema { Nome = "CineBase Palermo", Citta = "Palermo", Indirizzo = "Via della Libertà 56", Latitudine = 38.1157, Longitudine = 13.3615, Telefono = "091 1234567", CodiceLocale = "CBP001" },
-            new Cinema { Nome = "CineBase Bari", Citta = "Bari", Indirizzo = "Corso Cavour 89", Latitudine = 41.1171, Longitudine = 16.8719, Telefono = "080 1234567", CodiceLocale = "CBB002" },
-            new Cinema { Nome = "CineBase Verona", Citta = "Verona", Indirizzo = "Via Mazzini 12", Latitudine = 45.4384, Longitudine = 10.9916, Telefono = "045 1234567", CodiceLocale = "CBV001" },
-            new Cinema { Nome = "CineBase Genova", Citta = "Genova", Indirizzo = "Via XX Settembre 34", Latitudine = 44.4056, Longitudine = 8.9463, Telefono = "010 1234567", CodiceLocale = "CBG001" }
+            new Cinema { Nome = "RedCurtain Roma Centro", Citta = "Roma", Indirizzo = "Via del Corso 123", Latitudine = 41.9028, Longitudine = 12.4964, Telefono = "06 1234567", CodiceLocale = "CBR001" },
+            new Cinema { Nome = "RedCurtain Milano Duomo", Citta = "Milano", Indirizzo = "Corso Buenos Aires 45", Latitudine = 45.4642, Longitudine = 9.1900, Telefono = "02 1234567", CodiceLocale = "CBM001" },
+            new Cinema { Nome = "RedCurtain Napoli Centro", Citta = "Napoli", Indirizzo = "Via Toledo 78", Latitudine = 40.8518, Longitudine = 14.2681, Telefono = "081 1234567", CodiceLocale = "CBN001" },
+            new Cinema { Nome = "RedCurtain Bologna", Citta = "Bologna", Indirizzo = "Via Indipendenza 22", Latitudine = 44.4949, Longitudine = 11.3426, Telefono = "051 1234567", CodiceLocale = "CBB001" },
+            new Cinema { Nome = "RedCurtain Firenze", Citta = "Firenze", Indirizzo = "Via de' Calzaiuoli 15", Latitudine = 43.7696, Longitudine = 11.2558, Telefono = "055 1234567", CodiceLocale = "CBF001" },
+            new Cinema { Nome = "RedCurtain Torino", Citta = "Torino", Indirizzo = "Via Garibaldi 30", Latitudine = 45.0703, Longitudine = 7.6869, Telefono = "011 1234567", CodiceLocale = "CBT001" },
+            new Cinema { Nome = "RedCurtain Palermo", Citta = "Palermo", Indirizzo = "Via della Libertà 56", Latitudine = 38.1157, Longitudine = 13.3615, Telefono = "091 1234567", CodiceLocale = "CBP001" },
+            new Cinema { Nome = "RedCurtain Bari", Citta = "Bari", Indirizzo = "Corso Cavour 89", Latitudine = 41.1171, Longitudine = 16.8719, Telefono = "080 1234567", CodiceLocale = "CBB002" },
+            new Cinema { Nome = "RedCurtain Verona", Citta = "Verona", Indirizzo = "Via Mazzini 12", Latitudine = 45.4384, Longitudine = 10.9916, Telefono = "045 1234567", CodiceLocale = "CBV001" },
+            new Cinema { Nome = "RedCurtain Genova", Citta = "Genova", Indirizzo = "Via XX Settembre 34", Latitudine = 44.4056, Longitudine = 8.9463, Telefono = "010 1234567", CodiceLocale = "CBG001" }
         };
 
         _context.Cinemas.AddRange(cinemas);
@@ -283,7 +283,7 @@ public class DataSeeder
 
     private static string GenerateSvgDataUri(string label, string bg1, string bg2, string accent)
     {
-        var svg = $"<svg xmlns='http://www.w3.org/2000/svg' width='800' height='400'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:{bg1}'/><stop offset='100%' style='stop-color:{bg2}'/></linearGradient></defs><rect width='800' height='400' fill='url(#g)'/><text x='400' y='170' text-anchor='middle' fill='white' font-size='56' font-family='Arial,sans-serif' font-weight='bold'>{label}</text><text x='400' y='230' text-anchor='middle' fill='{accent}' font-size='22' font-family='Arial,sans-serif' letter-spacing='8'>CINEBASE</text><rect x='250' y='260' width='300' height='3' rx='2' fill='{accent}' opacity='0.5'/></svg>";
+        var svg = $"<svg xmlns='http://www.w3.org/2000/svg' width='800' height='400'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:{bg1}'/><stop offset='100%' style='stop-color:{bg2}'/></linearGradient></defs><rect width='800' height='400' fill='url(#g)'/><text x='400' y='170' text-anchor='middle' fill='white' font-size='56' font-family='Arial,sans-serif' font-weight='bold'>{label}</text><text x='400' y='230' text-anchor='middle' fill='{accent}' font-size='22' font-family='Arial,sans-serif' letter-spacing='8'>REDCURTAIN</text><rect x='250' y='260' width='300' height='3' rx='2' fill='{accent}' opacity='0.5'/></svg>";
         var bytes = System.Text.Encoding.UTF8.GetBytes(svg);
         return $"data:image/svg+xml;base64,{Convert.ToBase64String(bytes)}";
     }

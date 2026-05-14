@@ -2,16 +2,21 @@ tailwind.config = {
   darkMode: "class",
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["'Inter'", "system-ui", "-apple-system", "sans-serif"],
+      },
       colors: {
         brand: {
+          red: "var(--brand-red)",
+          "red-dark": "var(--brand-red-dark)",
+          "red-light": "var(--brand-red-light)",
           gold: "var(--brand-gold)",
           "gold-dark": "var(--brand-gold-dark)",
           "gold-light": "var(--brand-gold-light)",
-          indigo: "var(--brand-indigo)",
-          "indigo-light": "var(--brand-indigo-light)",
           cyan: "var(--brand-cyan)",
           "cyan-light": "var(--brand-cyan-light)",
           emerald: "var(--brand-emerald)",
+          purple: "var(--brand-purple)",
           surface: "var(--brand-surface)",
           "surface-dim": "var(--brand-surface-dim)",
           "surface-container": "var(--brand-surface-container)",
@@ -25,8 +30,6 @@ tailwind.config = {
           "outline-variant": "var(--brand-outline-variant)",
           error: "var(--brand-error)",
           "error-container": "var(--brand-error-container)",
-          "sidebar-from": "var(--brand-sidebar-from)",
-          "sidebar-to": "var(--brand-sidebar-to)",
           "sidebar-text": "var(--brand-sidebar-text)",
         },
       },

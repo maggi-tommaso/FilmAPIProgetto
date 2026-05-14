@@ -208,6 +208,24 @@ function renderFilm() {
     ).join('');
   }
 
+  // Rating
+  const rating = document.getElementById('film-rating');
+  if (rating && filmData.mediaValutazione != null && filmData.numeroValutazioni > 0) {
+    rating.classList.remove('hidden');
+    const starsContainer = document.getElementById('film-rating-stars');
+    if (starsContainer) {
+      var rounded = Math.floor(filmData.mediaValutazione);
+      var starsHtml = '<div class="flex gap-0.5">';
+      for (var i = 1; i <= 5; i++) {
+        starsHtml += '<i class="fa-solid fa-star text-lg ' + (i <= rounded ? 'text-amber-400' : 'text-brand-outline-variant/30') + '"></i>';
+      }
+      starsHtml += '</div>';
+      starsHtml += '<span class="text-lg font-bold text-brand-on-surface">' + filmData.mediaValutazione.toFixed(1) + '</span>';
+      starsHtml += '<span class="text-xs text-brand-on-surface-variant">(' + filmData.numeroValutazioni + ' voti)</span>';
+      starsContainer.innerHTML = starsHtml;
+    }
+  }
+
   // Director
   const director = document.getElementById('film-director');
   if (director) {

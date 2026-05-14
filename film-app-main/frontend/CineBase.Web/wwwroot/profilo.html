@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Il Mio Profilo</title>
+  <title>RedCurtain â€” Il Mio Profilo</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -21,9 +21,9 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
     <div class="mb-8">
-      <h1 class="text-3xl font-bold text-brand-on-surface">Il Mio Profilo</h1>
+      <h1 class="text-3xl font-bold text-brand-on-surface tracking-tight">Il Mio Profilo</h1>
       <p class="text-sm text-brand-on-surface-variant mt-1">Gestisci i tuoi dati, biglietti, ordini e credito</p>
     </div>
 
@@ -40,9 +40,9 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Dati Personali -->
-      <div class="card-elevated p-6">
-        <h2 class="text-xl font-bold text-brand-on-surface mb-6">
-          <i class="fa-solid fa-user text-brand-gold mr-2"></i>Dati Personali
+      <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+        <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-6">
+          <i class="fa-solid fa-user text-brand-red mr-2"></i>Dati Personali
         </h2>
         <form id="profilo-form" class="space-y-4">
           <div>
@@ -64,6 +64,12 @@
             <input type="tel" id="profilo-telefono" class="ghost-input w-full px-4 py-2" maxlength="20"
               placeholder="Opzionale">
           </div>
+          <div>
+            <label for="profilo-cinema" class="block text-sm font-medium text-brand-on-surface mb-1">Cinema preferito</label>
+            <select id="profilo-cinema" class="ghost-input w-full px-4 py-2 rounded-xl">
+              <option value="">Nessuna preferenza</option>
+            </select>
+          </div>
           <div class="flex items-center gap-4 pt-2">
             <button type="submit" class="btn-gold px-6 py-2">
               <i class="fa-solid fa-floppy-disk mr-2"></i>Salva Modifiche
@@ -75,12 +81,12 @@
         </form>
       </div>
 
-      <!-- Cinema Preferito + Credito + Sicurezza -->
+      <!-- Credito + Sicurezza -->
       <div class="space-y-8">
         <!-- Sicurezza Account -->
-        <div class="card-elevated p-6">
-          <h2 class="text-xl font-bold text-brand-on-surface mb-4">
-            <i class="fa-solid fa-shield-halved text-brand-gold mr-2"></i>Sicurezza Account
+        <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+          <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-4">
+            <i class="fa-solid fa-shield-halved text-brand-red mr-2"></i>Sicurezza Account
           </h2>
           <div id="security-content">
             <div class="text-center py-4 text-brand-on-surface-variant">
@@ -90,23 +96,10 @@
           </div>
         </div>
 
-        <!-- Cinema Preferito -->
-        <div class="card-elevated p-6">
-          <h2 class="text-xl font-bold text-brand-on-surface mb-4">
-            <i class="fa-solid fa-location-dot text-brand-gold mr-2"></i>Cinema Preferito
-          </h2>
-          <div id="cinema-preferito-content">
-            <div class="text-center py-4 text-brand-on-surface-variant">
-              <i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i>
-              <p class="text-sm">Caricamento...</p>
-            </div>
-          </div>
-        </div>
-
         <!-- Credito -->
-        <div class="card-elevated p-6">
-          <h2 class="text-xl font-bold text-brand-on-surface mb-4">
-            <i class="fa-solid fa-wallet text-brand-gold mr-2"></i>Credito Piattaforma
+        <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+          <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-4">
+            <i class="fa-solid fa-wallet text-brand-red mr-2"></i>Credito Piattaforma
           </h2>
           <div id="credito-content">
             <div class="text-center py-4 text-brand-on-surface-variant">
@@ -119,10 +112,10 @@
     </div>
 
     <!-- Ordini -->
-    <div class="mt-8 card-elevated p-6">
+    <div class="mt-8 card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-brand-on-surface">
-          <i class="fa-solid fa-receipt text-brand-gold mr-2"></i>I Miei Ordini
+        <h2 class="text-xl font-bold text-brand-on-surface tracking-tight">
+          <i class="fa-solid fa-receipt text-brand-red mr-2"></i>I Miei Ordini
         </h2>
       </div>
       <div id="ordini-list">
@@ -134,10 +127,10 @@
     </div>
 
     <!-- Biglietti -->
-    <div class="mt-8 card-elevated p-6">
+    <div class="mt-8 card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
       <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-brand-on-surface">
-          <i class="fa-solid fa-ticket text-brand-gold mr-2"></i>I Miei Biglietti
+        <h2 class="text-xl font-bold text-brand-on-surface tracking-tight">
+          <i class="fa-solid fa-ticket text-brand-red mr-2"></i>I Miei Biglietti
         </h2>
       </div>
       <div id="biglietti-list">

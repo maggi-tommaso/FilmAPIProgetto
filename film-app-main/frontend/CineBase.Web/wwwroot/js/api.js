@@ -368,6 +368,15 @@ deleteFilm: (id) => apiFetch(`/films/${id}`, { method: 'DELETE' }),
     return apiFetch(`/profilo/cinema-preferito/${cinemaId}`, { method: 'PUT' });
   },
 
+  // Film preferito
+  getFilmPreferito: () => apiFetch('/profilo/film-preferito'),
+  setFilmPreferito: (filmId) => {
+    if (filmId == null) {
+      return apiFetch('/profilo/film-preferito', { method: 'PUT' });
+    }
+    return apiFetch(`/profilo/film-preferito/${filmId}`, { method: 'PUT' });
+  },
+
   // Scheda film
   getFilmScheda: (filmId, cinemaId) => {
     const query = cinemaId ? `?cinemaId=${cinemaId}` : '';

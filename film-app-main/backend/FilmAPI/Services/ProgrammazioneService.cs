@@ -47,6 +47,12 @@ public class ProgrammazioneService : IProgrammazioneService
 
         var filmIds = films.Select(f => f.Id).ToList();
 
+        var ratingsByFilm = await _context.ValutazioniFilm
+            .Where(v => filmIds.Contains(v.FilmId))
+            .GroupBy(v => v.FilmId)
+            .Select(g => new { FilmId = g.Key, Media = g.Average(v => v.Rating), Count = g.Count() })
+            .ToDictionaryAsync(g => g.FilmId, g => new { g.Media, g.Count });
+
         var showCountsByFilm = await _context.Shows
             .Where(s => filmIds.Contains(s.FilmId) && s.StartAtUtc >= nowUtc && s.StartAtUtc <= next7DaysUtc)
             .GroupBy(s => s.FilmId)
@@ -118,25 +124,40 @@ public class ProgrammazioneService : IProgrammazioneService
                 InUscita = isInUscita,
                 ShowCountNext7Days = showCount,
                 DisponibileNelCinemaSelezionato = availableInSelectedCinema,
-                ProssimoShowNelCinemaSelezionato = cinemaId.HasValue ? prossimoShowByFilm.GetValueOrDefault(film.Id) : null
+                ProssimoShowNelCinemaSelezionato = cinemaId.HasValue ? prossimoShowByFilm.GetValueOrDefault(film.Id) : null,
+                MediaValutazione = ratingsByFilm.TryGetValue(film.Id, out var rating) ? Math.Round(rating.Media, 1) : null,
+                NumeroValutazioni = ratingsByFilm.TryGetValue(film.Id, out var rc) ? rc.Count : 0
             };
 
             results.Add(dto);
         }
 
-        results = tab switch
+        results = (tab, cinemaId.HasValue) switch
         {
-            "evidenza" => results
-                .OrderByDescending(r => r.ShowCountNext7Days)
-                .ThenByDescending(r => r.DisponibileNelCinemaSelezionato)
-                .ThenBy(r => r.ProssimoShowNelCinemaSelezionato)
+            ("evidenza", true) => results
+                .OrderBy(r => r.ProssimoShowNelCinemaSelezionato ?? DateTime.MaxValue)
+                .ThenByDescending(r => r.ShowCountNext7Days)
                 .ThenBy(r => r.Titolo)
                 .ToList(),
-            "uscita" => results
+            ("evidenza", false) => results
+                .OrderByDescending(r => r.ShowCountNext7Days)
+                .ThenBy(r => r.Titolo)
+                .ToList(),
+            ("uscita", true) => results
+                .OrderBy(r => r.DataRilascio)
+                .ThenBy(r => r.ProssimoShowNelCinemaSelezionato ?? DateTime.MaxValue)
+                .ThenBy(r => r.Titolo)
+                .ToList(),
+            ("uscita", false) => results
                 .OrderBy(r => r.DataRilascio)
                 .ThenBy(r => r.Titolo)
                 .ToList(),
-            "tutti" => results
+            ("tutti", true) => results
+                .OrderBy(r => r.ProssimoShowNelCinemaSelezionato ?? DateTime.MaxValue)
+                .ThenByDescending(r => r.DisponibileNelCinemaSelezionato)
+                .ThenBy(r => r.Titolo)
+                .ToList(),
+            ("tutti", false) => results
                 .OrderBy(r => r.Titolo)
                 .ToList(),
             _ => results
@@ -243,6 +264,15 @@ public class ProgrammazioneService : IProgrammazioneService
             RegistaNome = film.Regista?.Nome,
             RegistaCognome = film.Regista?.Cognome
         };
+
+        var ratingAgg = await _context.ValutazioniFilm
+            .Where(v => v.FilmId == filmId)
+            .GroupBy(v => v.FilmId)
+            .Select(g => new { Media = g.Average(v => v.Rating), Count = g.Count() })
+            .FirstOrDefaultAsync();
+
+        dto.MediaValutazione = ratingAgg is null ? null : Math.Round(ratingAgg.Media, 1);
+        dto.NumeroValutazioni = ratingAgg?.Count ?? 0;
 
         if (cinemaId.HasValue)
         {
@@ -371,7 +401,11 @@ public class ProgrammazioneService : IProgrammazioneService
 
         var scheduleFilms = new List<CinemaScheduleFilmDTO>();
 
-        foreach (var film in films.OrderBy(f => f.Titolo))
+        var filmFirstShowTime = shows
+            .GroupBy(s => s.FilmId)
+            .ToDictionary(g => g.Key, g => g.Min(s => s.StartAtUtc));
+
+        foreach (var film in films.OrderBy(f => filmFirstShowTime.GetValueOrDefault(f.Id, DateTime.MaxValue)).ThenBy(f => f.Titolo))
         {
             var filmShows = shows.Where(s => s.FilmId == film.Id).ToList();
             var descriptionExtract = string.IsNullOrWhiteSpace(film.DescrizioneLunga)

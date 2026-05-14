@@ -81,24 +81,28 @@ function renderCinemaList() {
 
   grid.innerHTML = allCinemas.map(cinema => {
     const tipologie = (cinema.tipologieSalePresenti || []).map(t =>
-      `<span class="inline-block bg-brand-surface-container text-brand-on-surface text-xs px-2 py-0.5 rounded-full">${formatTipoSalaLabel(t)}</span>`
+      `<span class="inline-block bg-brand-red/10 text-brand-red-light text-[10px] px-2 py-0.5 rounded-full font-medium">${formatTipoSalaLabel(t)}</span>`
     ).join('');
 
     const distance = cinema.distanzaKm != null ? `${cinema.distanzaKm.toFixed(1)} km` : '';
 
     return `
-      <div class="card-elevated p-5 card-hover cursor-pointer group" onclick="goToCinemaDetail(${cinema.id})">
-        <div class="flex items-start gap-3 mb-3">
-          <i class="fa-solid fa-film text-brand-gold text-xl mt-1"></i>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-semibold text-lg text-brand-on-surface group-hover:text-brand-gold transition-colors truncate">${cinema.nome}</h3>
-            <p class="text-sm text-brand-on-surface-variant">
-              <i class="fa-solid fa-location-dot mr-1"></i>${cinema.citta}${cinema.indirizzo ? ` - ${cinema.indirizzo}` : ''}
-            </p>
-            ${distance ? `<p class="text-xs text-brand-on-surface-variant mt-1"><i class="fa-solid fa-location-crosshairs mr-1"></i>${distance}</p>` : ''}
+      <div class="rounded-2xl overflow-hidden border border-brand-outline-variant/20 bg-brand-surface-container-lowest hover:border-brand-red/40 hover:shadow-xl hover:shadow-brand-red/5 hover:-translate-y-1 cursor-pointer transition-all duration-300 group" onclick="goToCinemaDetail(${cinema.id})">
+        <div class="p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-red/10 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-red group-hover:text-white transition-all duration-300">
+              <i class="fa-solid fa-film text-brand-red text-lg group-hover:text-white"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-lg text-brand-on-surface group-hover:text-brand-red-light transition-colors truncate">${cinema.nome}</h3>
+              <p class="text-sm text-brand-on-surface-variant mt-0.5">
+                <i class="fa-solid fa-location-dot mr-1.5 text-brand-red text-xs"></i>${cinema.citta}${cinema.indirizzo ? ` · ${cinema.indirizzo}` : ''}
+              </p>
+              ${distance ? `<p class="text-xs text-brand-on-surface-variant mt-1.5"><i class="fa-solid fa-location-crosshairs mr-1"></i>${distance}</p>` : ''}
+            </div>
           </div>
+          ${tipologie ? `<div class="flex flex-wrap gap-1.5 mt-4 pt-4 border-t border-brand-outline-variant/10">${tipologie}</div>` : ''}
         </div>
-        ${tipologie ? `<div class="flex flex-wrap gap-1 mt-3 pt-3 border-t border-brand-outline-variant/20">${tipologie}</div>` : ''}
       </div>
     `;
   }).join('');

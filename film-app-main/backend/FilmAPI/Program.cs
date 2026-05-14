@@ -114,7 +114,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowCineBaseFrontend", policy =>
+    options.AddPolicy("AllowRedCurtainFrontend", policy =>
     {
         policy.WithOrigins("http://localhost:5001", "http://127.0.0.1:5001")
               .AllowAnyHeader()
@@ -142,9 +142,9 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "SuperSecretKeyForCineBaseJWTAuth2026!";
-var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "CineBaseAPI";
-var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "CineBaseWeb";
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "SuperSecretKeyForRedCurtainJWTAuth2026!";
+var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "RedCurtainAPI";
+var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "RedCurtainWeb";
 
 builder.Services.AddAuthentication(options =>
 {
@@ -184,7 +184,7 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowCineBaseFrontend");
+app.UseCors("AllowRedCurtainFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();

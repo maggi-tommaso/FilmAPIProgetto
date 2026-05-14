@@ -112,10 +112,8 @@
         <aside id="admin-sidebar" class="w-64 sidebar-glass flex-shrink-0 flex flex-col fixed md:relative inset-y-0 left-0 z-50 -translate-x-full md:translate-x-0 transition-transform duration-300">
           <div class="p-6">
             <a href="/index.html" class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-brand-gold rounded-lg flex items-center justify-center text-white">
-                <i class="fa-solid fa-film"></i>
-              </div>
-              <span class="text-xl font-bold text-brand-sidebar-text">CineBase</span>
+              <img src="/assets/images/logo-icon.png" alt="RedCurtain" class="h-8 w-auto" loading="lazy">
+              <span class="text-xl font-bold text-brand-sidebar-text">RedCurtain</span>
             </a>
           </div>
           <nav class="flex-1 px-4 space-y-1">
@@ -132,7 +130,7 @@
             <a data-admin-link href="/validazione-biglietti.html" class="flex items-center gap-3 px-4 py-3 rounded-xl"><i class="fa-solid fa-qrcode"></i>Validazione</a>
           </nav>
           <div class="p-4 border-t border-slate-800 space-y-1">
-            <button onclick="CineBaseTheme.toggle()" class="sidebar-theme-toggle w-full px-4 py-3 rounded-xl text-left">
+            <button onclick="RedCurtainTheme.toggle()" class="sidebar-theme-toggle w-full px-4 py-3 rounded-xl text-left">
               <i class="fa-solid fa-moon theme-toggle-icon-moon"></i>
               <i class="fa-solid fa-sun theme-toggle-icon-sun hidden"></i>
               <span class="theme-toggle-label">Cambia tema</span>

@@ -1,13 +1,13 @@
 /**
- * CineBase Theme Manager
+ * RedCurtain Theme Manager
  * 
  * Manages light/dark theme with:
  * - localStorage persistence
  * - System preference fallback (prefers-color-scheme)
- * - Exposes window.CineBaseTheme for external access
+ * - Exposes window.RedCurtainTheme for external access
  */
 (function () {
-  const STORAGE_KEY = 'cinebase-theme';
+  const STORAGE_KEY = 'RedCurtain-theme';
 
   function getSystemTheme() {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -39,7 +39,7 @@
   function getCurrentTheme() {
     const saved = getSavedTheme();
     if (saved) return saved;
-    return getSystemTheme();
+    return 'dark';
   }
 
   function toggleTheme() {
@@ -66,7 +66,7 @@
   });
 
   // Export API
-  window.CineBaseTheme = {
+  window.RedCurtainTheme = {
     toggle: toggleTheme,
     set: setTheme,
     get: getCurrentTheme,

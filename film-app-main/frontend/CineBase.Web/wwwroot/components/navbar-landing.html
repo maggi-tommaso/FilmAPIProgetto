@@ -1,108 +1,123 @@
-<!-- Tailwind Navbar per Landing Page -->
-<nav class="sticky top-0 z-50 glass-panel ambient-shadow-sm border-b border-brand-outline-variant/20">
-  <div class="container mx-auto px-4 h-20 flex items-center justify-between">
+<nav class="sticky top-0 z-50 bg-brand-surface/85 backdrop-blur-xl border-b border-brand-outline-variant/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/index.html" class="text-2xl font-bold text-brand-gold tracking-tight flex items-center gap-2">
-      <span class="text-3xl">🎬</span>
-      CineBase
+    <a href="/index.html" class="flex items-center gap-2.5 group">
+      <img src="/assets/images/logo-icon.png" alt="RedCurtain" class="h-7 w-auto" loading="lazy">
+      <span class="text-xl font-bold tracking-tight text-brand-on-surface group-hover:text-brand-red-light transition-colors">RedCurtain</span>
     </a>
-    
+
     <!-- Desktop Links -->
-    <div class="hidden md:flex items-center gap-4">
+    <div class="hidden md:flex items-center gap-3">
       <!-- Selected Cinema -->
-      <div id="navbar-cinema-display" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-brand-surface-container border border-brand-outline-variant/20">
-        <i class="fa-solid fa-location-dot text-brand-gold text-sm"></i>
-        <span id="navbar-selected-cinema" class="text-sm font-medium text-brand-on-surface max-w-32 truncate"></span>
+      <div id="navbar-cinema-display" class="hidden items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-surface-container border border-brand-outline-variant/30 transition-all duration-300">
+        <i class="fa-solid fa-location-dot text-brand-red text-xs"></i>
+        <span id="navbar-selected-cinema" class="text-sm font-medium text-brand-on-surface max-w-36 truncate"></span>
       </div>
-      <a href="/programmazione.html" class="btn-outline-brand text-sm tracking-widest">
-        Programmazione
+
+      <a href="/programmazione.html" class="btn-outline-brand text-sm !rounded-full !px-5 !py-1.5">
+        <i class="fa-solid fa-film mr-1.5 text-xs"></i>Programmazione
       </a>
-      <button onclick="CineBaseTheme.toggle()" class="theme-toggle-btn" title="Cambia tema">
+
+      <button onclick="RedCurtainTheme.toggle()" class="theme-toggle-btn" title="Cambia tema">
         <i class="fa-solid fa-moon theme-toggle-icon-moon text-lg"></i>
         <i class="fa-solid fa-sun theme-toggle-icon-sun text-lg" style="display:none"></i>
       </button>
 
-      <!-- Admin entry - shown only for PowerUser/Admin -->
-      <a href="/dashboard.html" id="admin-area-btn" class="hidden btn-gold text-sm tracking-widest admin-only">
-        Area Admin
+      <!-- Admin entry -->
+      <a href="/dashboard.html" id="admin-area-btn" class="hidden btn-gold-sm text-sm admin-only !rounded-full !px-5 !uppercase !tracking-wider">
+        <i class="fa-solid fa-shield-halved mr-1.5 text-xs"></i>Admin
       </a>
 
-      <!-- Auth Links - shown when NOT logged in -->
-      <a href="/login.html" id="login-btn" class="btn-outline-brand text-sm">
+      <!-- Logged out -->
+      <a href="/login.html" id="login-btn" class="btn-outline-brand text-sm !rounded-full !px-5 !py-1.5">
         Login
       </a>
-      <a href="/registrazione.html" id="register-btn" class="btn-gold text-sm">
+      <a href="/registrazione.html" id="register-btn" class="btn-gold-sm text-sm !rounded-full !px-5 !uppercase !tracking-wider">
         Registrati
       </a>
 
-      <!-- User Dropdown - shown when logged in -->
+      <!-- Logged in -->
       <div id="user-dropdown" class="hidden relative">
-        <button id="user-menu-toggle" class="flex items-center gap-2 text-brand-on-surface hover:text-brand-gold transition-colors">
+        <button id="user-menu-toggle" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-red/50 hover:text-brand-red-light transition-all duration-200">
+          <i class="fa-solid fa-circle-user text-lg"></i>
           <span id="user-name" class="font-semibold text-sm"></span>
-          <i class="fa-solid fa-chevron-down text-xs"></i>
+          <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
         </button>
-        <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-brand-surface-container rounded-xl shadow-lg border border-brand-outline-variant/20 py-2">
-          <a href="/profilo.html" class="block px-4 py-2 text-brand-on-surface hover:text-brand-gold hover:bg-brand-surface-container-high">
-            <i class="fa-solid fa-user mr-2"></i>Profilo
+        <div id="user-menu" class="hidden absolute right-0 mt-2 w-52 glass-panel rounded-xl shadow-2xl border border-brand-outline-variant/15 py-2 animate-fade-in">
+          <a href="/profilo.html" class="flex items-center gap-3 px-4 py-2.5 text-brand-on-surface hover:text-brand-red-light hover:bg-brand-red/5 transition-colors text-sm">
+            <i class="fa-solid fa-user w-4 text-center"></i>Profilo
           </a>
-          <a href="/profilo.html" class="block px-4 py-2 text-brand-on-surface hover:text-brand-gold hover:bg-brand-surface-container-high">
-            <i class="fa-solid fa-ticket mr-2"></i>Biglietti
+          <a href="/profilo.html" class="flex items-center gap-3 px-4 py-2.5 text-brand-on-surface hover:text-brand-red-light hover:bg-brand-red/5 transition-colors text-sm">
+            <i class="fa-solid fa-ticket w-4 text-center"></i>Biglietti
           </a>
-          <hr class="my-2 border-brand-outline-variant/30">
-          <button id="logout-btn" class="nav-menu-danger w-full text-left px-4 py-2">
-            <i class="fa-solid fa-sign-out-alt mr-2"></i>Logout
+          <hr class="my-1 border-brand-outline-variant/20">
+          <button id="logout-btn" class="nav-menu-danger flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm">
+            <i class="fa-solid fa-sign-out-alt w-4 text-center"></i>Logout
           </button>
         </div>
       </div>
     </div>
-    
-    <!-- Mobile Menu Toggle -->
+
+    <!-- Mobile Toggle -->
     <div class="md:hidden">
-      <button id="mobile-menu-toggle" class="p-2 text-brand-on-surface">
-        <i class="fa-solid fa-bars text-2xl"></i>
+      <button id="mobile-menu-toggle" class="p-2 rounded-lg text-brand-on-surface hover:bg-brand-surface-container-high transition-colors">
+        <i class="fa-solid fa-bars text-xl"></i>
       </button>
     </div>
   </div>
-  
+
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden glass-panel border-t border-brand-outline-variant/20">
-    <div class="px-4 py-4 space-y-4">
-      <!-- Selected Cinema Mobile -->
-      <div id="mobile-navbar-cinema-display" class="hidden items-center gap-2 px-3 py-2 rounded-xl bg-brand-surface-container border border-brand-outline-variant/20">
-        <i class="fa-solid fa-location-dot text-brand-gold"></i>
+  <div id="mobile-menu" class="hidden md:hidden bg-brand-surface/95 backdrop-blur-xl border-t border-brand-outline-variant/15">
+    <div class="px-4 py-5 space-y-4">
+      <!-- Cinema Display Mobile -->
+      <div id="mobile-navbar-cinema-display" class="hidden items-center gap-3 px-4 py-3 rounded-xl bg-brand-surface-container border border-brand-outline-variant/30">
+        <i class="fa-solid fa-location-dot text-brand-red"></i>
         <div>
-          <p class="text-xs text-brand-on-surface-variant">Cinema</p>
+          <p class="text-xs text-brand-on-surface-variant">Cinema selezionato</p>
           <span id="mobile-navbar-selected-cinema" class="text-sm font-medium text-brand-on-surface"></span>
         </div>
       </div>
 
-      <div class="space-y-1">
-        <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Navigazione</p>
-        <a href="/programmazione.html" class="block py-2 text-center rounded-xl btn-outline-brand">Programmazione</a>
-        <!-- Admin entry mobile - shown only for PowerUser/Admin -->
-        <a href="/dashboard.html" id="mobile-admin-area-btn" class="hidden block py-2 text-center rounded-xl btn-gold admin-only">Area Admin</a>
+      <div class="space-y-1.5">
+        <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant font-semibold mb-1">Navigazione</p>
+        <a href="/programmazione.html" class="flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-red/50 hover:text-brand-red-light transition-all text-sm font-medium">
+          <i class="fa-solid fa-film w-4"></i>Programmazione
+        </a>
+        <a href="/dashboard.html" id="mobile-admin-area-btn" class="hidden flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-red text-white hover:bg-brand-red-light transition-all text-sm font-semibold admin-only">
+          <i class="fa-solid fa-shield-halved w-4"></i>Area Admin
+        </a>
       </div>
 
-      <div class="border-t border-brand-outline-variant/20 pt-3">
-        <!-- Auth Links Mobile - shown when NOT logged in -->
+      <div class="border-t border-brand-outline-variant/15 pt-4">
         <div id="mobile-auth-links" class="space-y-2">
-          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Account</p>
-          <a href="/login.html" class="block py-2 text-center rounded-xl btn-outline-brand">Login</a>
-          <a href="/registrazione.html" class="block py-2 text-center rounded-xl btn-gold">Registrati</a>
+          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant font-semibold mb-1">Account</p>
+          <a href="/login.html" class="flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-red/50 transition-all text-sm font-medium">
+            <i class="fa-solid fa-right-to-bracket w-4"></i>Login
+          </a>
+          <a href="/registrazione.html" class="flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-red text-white hover:bg-brand-red-light transition-all text-sm font-semibold">
+            <i class="fa-solid fa-user-plus w-4"></i>Registrati
+          </a>
         </div>
 
-        <!-- User Menu Mobile - shown when logged in -->
         <div id="mobile-user-menu" class="hidden space-y-1">
-          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant">Account</p>
-          <p id="mobile-user-name" class="py-1 text-brand-gold font-semibold"></p>
-          <a href="/profilo.html" class="block py-2 text-brand-on-surface hover:text-brand-gold">Profilo</a>
-          <a href="/profilo.html" class="block py-2 text-brand-on-surface hover:text-brand-gold">Biglietti</a>
-          <button id="mobile-logout-btn" class="nav-menu-danger w-full text-left py-3 rounded-xl mt-2">Logout</button>
+          <p class="text-xs uppercase tracking-widest text-brand-on-surface-variant font-semibold mb-1">Account</p>
+          <p id="mobile-user-name" class="flex items-center gap-3 py-2 px-1 text-brand-red font-semibold text-sm">
+            <i class="fa-solid fa-circle-user w-4"></i><span></span>
+          </p>
+          <a href="/profilo.html" class="flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-red/50 transition-all text-sm">
+            <i class="fa-solid fa-user w-4"></i>Profilo
+          </a>
+          <a href="/profilo.html" class="flex items-center gap-3 py-3 px-4 rounded-xl bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-red/50 transition-all text-sm">
+            <i class="fa-solid fa-ticket w-4"></i>Biglietti
+          </a>
+          <button id="mobile-logout-btn" class="nav-menu-danger flex items-center gap-3 w-full text-left py-3 px-4 rounded-xl mt-1 text-sm">
+            <i class="fa-solid fa-sign-out-alt w-4"></i>Logout
+          </button>
         </div>
       </div>
 
-      <div class="border-t border-brand-outline-variant/20 pt-3">
-        <button onclick="CineBaseTheme.toggle()" class="w-full flex items-center gap-3 py-2 text-brand-on-surface hover:text-brand-gold transition-colors" title="Cambia tema">
+      <div class="border-t border-brand-outline-variant/15 pt-3">
+        <button onclick="RedCurtainTheme.toggle()" class="flex items-center gap-3 py-3 px-4 rounded-xl w-full bg-brand-surface-container border border-brand-outline-variant/30 text-brand-on-surface hover:border-brand-gold/50 hover:text-brand-gold transition-all text-sm" title="Cambia tema">
           <i class="fa-solid fa-moon theme-toggle-icon-moon text-lg"></i>
           <i class="fa-solid fa-sun theme-toggle-icon-sun text-lg" style="display:none"></i>
           <span>Cambia tema</span>
@@ -156,7 +171,8 @@
       if (mobileAuthLinks) mobileAuthLinks.classList.add('hidden');
       if (mobileUserMenu) {
         mobileUserMenu.classList.remove('hidden');
-        mobileUserName.textContent = user.nome || user.email || 'Utente';
+        const nameSpan = mobileUserName?.querySelector('span');
+        if (nameSpan) nameSpan.textContent = user.nome || user.email || 'Utente';
       }
     } else {
       if (loginBtn) loginBtn.classList.remove('hidden');

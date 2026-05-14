@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Verifica Email</title>
+  <title>RedCurtain â€” Verifica Email</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script src="/js/tailwind-config.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,15 +13,15 @@
 </head>
 <body class="bg-brand-surface text-brand-on-surface font-sans min-h-screen flex flex-col">
   <div class="flex-1 flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-md">
+    <div class="w-full max-w-md animate-fade-in">
       <div class="text-center mb-8">
         <a href="/index.html" class="text-3xl font-bold text-brand-gold tracking-tight inline-flex items-center gap-2">
-          <span class="text-4xl">🎬</span>CineBase
+          <img src="/assets/images/logo-icon.png" alt="RedCurtain" class="h-12 w-auto mb-2" loading="lazy">
         </a>
       </div>
       <div class="glass-panel card-elevated p-8 rounded-2xl text-center">
         <div id="loading-state">
-          <i class="fa-solid fa-spinner fa-spin text-3xl text-brand-gold mb-4"></i>
+          <i class="fa-solid fa-spinner fa-spin text-3xl text-brand-red mb-4"></i>
           <p class="text-brand-on-surface-variant">Verifica in corso...</p>
         </div>
         <div id="success-state" class="hidden">
@@ -37,7 +37,7 @@
           <a href="/login.html" class="text-brand-gold hover:text-brand-gold-light text-sm">Torna al Login</a>
         </div>
         <div id="already-verified-state" class="hidden">
-          <i class="fa-solid fa-check-circle text-4xl text-brand-gold mb-4 block"></i>
+          <i class="fa-solid fa-check-circle text-4xl text-brand-red mb-4 block"></i>
           <h1 class="text-xl font-bold text-brand-on-surface mb-2">Email Gia Verificata</h1>
           <p class="text-brand-on-surface-variant text-sm mb-6">Il tuo indirizzo email risulta gia verificato.</p>
           <a href="/login.html" class="btn-gold inline-block px-6 py-2 rounded-xl font-medium text-sm">Vai al Login</a>

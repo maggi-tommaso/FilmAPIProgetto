@@ -106,7 +106,7 @@ public class StripePaymentGateway : IStripePaymentGateway
             Amount = ToStripeAmount(request.Amount),
             Currency = request.Currency,
             PaymentMethodTypes = new List<string> { "card" },
-            Description = $"Ordine CineBase {request.OrderCode}",
+            Description = $"Ordine RedCurtain {request.OrderCode}",
             Metadata = new Dictionary<string, string>
             {
                 ["orderId"] = request.OrderId.ToString(),
@@ -225,7 +225,7 @@ public class StripePaymentGateway : IStripePaymentGateway
                         Currency = request.Currency,
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = $"Ordine CineBase {request.OrderCode}"
+                            Name = $"Ordine RedCurtain {request.OrderCode}"
                         }
                     },
                     Quantity = 1

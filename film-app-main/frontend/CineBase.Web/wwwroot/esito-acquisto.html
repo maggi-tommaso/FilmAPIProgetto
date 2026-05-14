@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CineBase - Esito Acquisto</title>
+  <title>RedCurtain â€” Esito Acquisto</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
@@ -21,10 +21,10 @@
 <body class="bg-brand-surface text-brand-on-surface font-sans">
   <div id="navbar-container"></div>
 
-  <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- Loading State -->
     <div id="loading-state" class="text-center py-16">
-      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-gold"></i>
+      <i class="fa-solid fa-spinner fa-spin text-4xl mb-4 text-brand-red"></i>
       <p class="text-brand-on-surface-variant">Caricamento esito acquisto...</p>
     </div>
 
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Main Content -->
-    <div id="main-content" class="hidden">
+    <div id="main-content" class="hidden animate-fade-in max-w-3xl mx-auto">
       <!-- Success Header -->
       <div id="success-header" class="hidden text-center mb-8">
         <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-500/15 mb-4">
@@ -64,7 +64,7 @@
           <i class="fa-solid fa-circle-xmark text-red-500 text-4xl"></i>
         </div>
         <h1 class="text-3xl font-bold text-brand-on-surface mb-2">Pagamento non riuscito</h1>
-        <p class="text-brand-on-surface-variant">Si è verificato un errore durante il pagamento</p>
+        <p class="text-brand-on-surface-variant">Si e verificato un errore durante il pagamento</p>
       </div>
 
       <!-- Order Details Card -->
@@ -94,7 +94,7 @@
       <div id="tickets-card" class="card-elevated p-6 mb-6">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-brand-on-surface">
-            <i class="fa-solid fa-ticket text-brand-gold mr-2"></i>Biglietti
+            <i class="fa-solid fa-ticket text-brand-red mr-2"></i>Biglietti
           </h2>
           <span id="tickets-count" class="text-sm text-brand-on-surface-variant"></span>
         </div>

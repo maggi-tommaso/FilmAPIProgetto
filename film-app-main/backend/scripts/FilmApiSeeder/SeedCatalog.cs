@@ -88,26 +88,26 @@ internal static class SeedCatalog
 
     public static IReadOnlyList<CinemaSeed> Cinemas { get; } =
     [
-        new("CBR001", "CineBase Roma", "Roma", "Via Ostiense 131/L", 41.8566, 12.4798, "06 94851201", 5, true, true),
-        new("CBM001", "CineBase Milano", "Milano", "Viale Sarca 228", 45.5141, 9.2139, "02 94751302", 5, true, true),
-        new("CBN001", "CineBase Napoli", "Napoli", "Via Nuova Poggioreale 158", 40.8524, 14.2936, "081 19364010", 4, true, false),
-        new("CBT001", "CineBase Torino Lingotto", "Torino", "Via Nizza 262", 45.0357, 7.6661, "011 19645001", 4, true, true),
-        new("CBB001", "CineBase Bologna Navile", "Bologna", "Via Cristoforo Colombo 7", 44.5205, 11.3418, "051 19645002", 4, true, false),
-        new("CBF001", "CineBase Firenze Novoli", "Firenze", "Via Forlanini 29", 43.8013, 11.2141, "055 19645003", 4, false, true),
-        new("CBV001", "CineBase Mestre Laguna", "Venezia", "Via Don Tosatto 22", 45.4937, 12.2476, "041 19645004", 4, true, false),
-        new("CBP001", "CineBase Palermo Forum", "Palermo", "Via Filippo Pecoraino 29", 38.0976, 13.3992, "091 19645005", 4, true, true),
-        new("CBC001", "CineBase Catania Etna", "Catania", "Via Cristoforo Colombo 46", 37.5074, 15.0830, "095 19645006", 4, false, true),
-        new("CBA001", "CineBase Bari Levante", "Bari", "Via Amendola 172/C", 41.1113, 16.8860, "080 19645007", 4, true, false),
-        new("CBV002", "CineBase Verona Arena", "Verona", "Viale del Lavoro 47", 45.4279, 10.9932, "045 19645008", 4, false, true),
-        new("CBG001", "CineBase Genova Porto", "Genova", "Via Milano 83R", 44.4162, 8.9105, "010 19645009", 4, true, false),
-        new("CBP002", "CineBase Padova Est", "Padova", "Via Venezia 61", 45.4128, 11.9095, "049 19645010", 4, false, true),
-        new("CBC002", "CineBase Cagliari Santa Gilla", "Cagliari", "Viale Monastir 128", 39.2389, 9.0985, "070 19645011", 3, true, false),
-        new("CBL001", "CineBase Lecce Salento", "Lecce", "Via San Cesario 126", 40.3423, 18.1773, "0832 19645012", 3, false, false),
-        new("CBP003", "CineBase Perugia Collestrada", "Perugia", "Via della Valtiera 181", 43.0968, 12.4380, "075 19645013", 3, true, false),
-        new("CBP004", "CineBase Parma Ducale", "Parma", "Via Emilia Est 7/A", 44.8094, 10.3521, "0521 19645014", 3, false, true),
-        new("CBT002", "CineBase Trieste Adriatico", "Trieste", "Via Flavia 23", 45.6341, 13.8019, "040 19645015", 3, true, false),
-        new("CBB002", "CineBase Bergamo Orio", "Bergamo", "Via Portico 71", 45.6702, 9.7038, "035 19645016", 3, false, true),
-        new("CBS001", "CineBase Salerno Arechi", "Salerno", "Via San Leonardo 120", 40.6521, 14.8044, "089 19645017", 3, true, false)
+        new("CBR001", "RedCurtain Roma", "Roma", "Via Ostiense 131/L", 41.8566, 12.4798, "06 94851201", 5, true, true),
+        new("CBM001", "RedCurtain Milano", "Milano", "Viale Sarca 228", 45.5141, 9.2139, "02 94751302", 5, true, true),
+        new("CBN001", "RedCurtain Napoli", "Napoli", "Via Nuova Poggioreale 158", 40.8524, 14.2936, "081 19364010", 4, true, false),
+        new("CBT001", "RedCurtain Torino Lingotto", "Torino", "Via Nizza 262", 45.0357, 7.6661, "011 19645001", 4, true, true),
+        new("CBB001", "RedCurtain Bologna Navile", "Bologna", "Via Cristoforo Colombo 7", 44.5205, 11.3418, "051 19645002", 4, true, false),
+        new("CBF001", "RedCurtain Firenze Novoli", "Firenze", "Via Forlanini 29", 43.8013, 11.2141, "055 19645003", 4, false, true),
+        new("CBV001", "RedCurtain Mestre Laguna", "Venezia", "Via Don Tosatto 22", 45.4937, 12.2476, "041 19645004", 4, true, false),
+        new("CBP001", "RedCurtain Palermo Forum", "Palermo", "Via Filippo Pecoraino 29", 38.0976, 13.3992, "091 19645005", 4, true, true),
+        new("CBC001", "RedCurtain Catania Etna", "Catania", "Via Cristoforo Colombo 46", 37.5074, 15.0830, "095 19645006", 4, false, true),
+        new("CBA001", "RedCurtain Bari Levante", "Bari", "Via Amendola 172/C", 41.1113, 16.8860, "080 19645007", 4, true, false),
+        new("CBV002", "RedCurtain Verona Arena", "Verona", "Viale del Lavoro 47", 45.4279, 10.9932, "045 19645008", 4, false, true),
+        new("CBG001", "RedCurtain Genova Porto", "Genova", "Via Milano 83R", 44.4162, 8.9105, "010 19645009", 4, true, false),
+        new("CBP002", "RedCurtain Padova Est", "Padova", "Via Venezia 61", 45.4128, 11.9095, "049 19645010", 4, false, true),
+        new("CBC002", "RedCurtain Cagliari Santa Gilla", "Cagliari", "Viale Monastir 128", 39.2389, 9.0985, "070 19645011", 3, true, false),
+        new("CBL001", "RedCurtain Lecce Salento", "Lecce", "Via San Cesario 126", 40.3423, 18.1773, "0832 19645012", 3, false, false),
+        new("CBP003", "RedCurtain Perugia Collestrada", "Perugia", "Via della Valtiera 181", 43.0968, 12.4380, "075 19645013", 3, true, false),
+        new("CBP004", "RedCurtain Parma Ducale", "Parma", "Via Emilia Est 7/A", 44.8094, 10.3521, "0521 19645014", 3, false, true),
+        new("CBT002", "RedCurtain Trieste Adriatico", "Trieste", "Via Flavia 23", 45.6341, 13.8019, "040 19645015", 3, true, false),
+        new("CBB002", "RedCurtain Bergamo Orio", "Bergamo", "Via Portico 71", 45.6702, 9.7038, "035 19645016", 3, false, true),
+        new("CBS001", "RedCurtain Salerno Arechi", "Salerno", "Via San Leonardo 120", 40.6521, 14.8044, "089 19645017", 3, true, false)
     ];
 
     public static IReadOnlyList<string> CategoriaNames { get; } =

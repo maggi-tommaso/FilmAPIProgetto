@@ -81,6 +81,48 @@ public class ProfiloService : IProfiloService
         return await GetCinemaPreferitoAsync(userId) ?? new CinemaPreferitoDTO { CinemaId = null, Cinema = null };
     }
 
+    public async Task<FilmPreferitoDTO?> GetFilmPreferitoAsync(int userId)
+    {
+        var user = await _context.Users
+            .Include(u => u.FilmPreferito)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user is null) return null;
+
+        if (user.FilmPreferito is null)
+        {
+            return new FilmPreferitoDTO { FilmId = null, Film = null };
+        }
+
+        return new FilmPreferitoDTO
+        {
+            FilmId = user.FilmPreferitoId,
+            Film = new FilmSintesiDTO
+            {
+                Id = user.FilmPreferito.Id,
+                Titolo = user.FilmPreferito.Titolo,
+                CopertinaPath = user.FilmPreferito.CopertinaPath
+            }
+        };
+    }
+
+    public async Task<FilmPreferitoDTO> SetFilmPreferitoAsync(int userId, int? filmId)
+    {
+        var user = await _context.Users.FindAsync(userId);
+        if (user is null) throw new InvalidOperationException("Utente non trovato");
+
+        if (filmId.HasValue)
+        {
+            var filmExists = await _context.Films.AnyAsync(f => f.Id == filmId.Value);
+            if (!filmExists) throw new ArgumentException("Film non trovato");
+        }
+
+        user.FilmPreferitoId = filmId;
+        await _context.SaveChangesAsync();
+
+        return await GetFilmPreferitoAsync(userId) ?? new FilmPreferitoDTO { FilmId = null, Film = null };
+    }
+
     private static UserInfoDTO MapToUserInfoDTO(User user)
     {
         return new UserInfoDTO

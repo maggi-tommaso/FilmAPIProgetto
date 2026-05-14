@@ -77,6 +77,55 @@ public static class ProfiloEndpoints
                 return Results.NotFound(ex.Message);
             }
         }).RequireAuthorization("Authenticated");
+
+        group.MapGet("/film-preferito", async (HttpContext context, IProfiloService service) =>
+        {
+            var userId = GetUserIdFromContext(context);
+            if (userId == null) return Results.Unauthorized();
+
+            var result = await service.GetFilmPreferitoAsync(userId.Value);
+            return result is null ? Results.NotFound() : Results.Ok(result);
+        }).RequireAuthorization("Authenticated");
+
+        group.MapPut("/film-preferito", async (HttpContext context, IProfiloService service) =>
+        {
+            var userId = GetUserIdFromContext(context);
+            if (userId == null) return Results.Unauthorized();
+
+            try
+            {
+                var result = await service.SetFilmPreferitoAsync(userId.Value, null);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
+        }).RequireAuthorization("Authenticated");
+
+        group.MapPut("/film-preferito/{filmId:int}", async (HttpContext context, int filmId, IProfiloService service) =>
+        {
+            var userId = GetUserIdFromContext(context);
+            if (userId == null) return Results.Unauthorized();
+
+            try
+            {
+                var result = await service.SetFilmPreferitoAsync(userId.Value, filmId);
+                return Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Results.NotFound(ex.Message);
+            }
+        }).RequireAuthorization("Authenticated");
     }
 
     private static int? GetUserIdFromContext(HttpContext context)
