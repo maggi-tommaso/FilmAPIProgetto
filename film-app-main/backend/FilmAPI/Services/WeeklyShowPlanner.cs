@@ -50,7 +50,28 @@ public class WeeklyShowPlanner
 
         foreach (var k in existingKeys) showKeys.Add(k);
 
+        var existingShows = await _db.Shows
+            .Where(s => s.StartAtUtc >= monday && s.StartAtUtc < sunday.AddDays(1))
+            .Select(s => new { s.SalaId, s.StartAtUtc, s.DurataMinutiSnapshot })
+            .ToListAsync();
+
         var showsToAdd = new List<Show>();
+
+        bool OverlapsExisting(int salaId, DateTime newStart, DateTime newEnd)
+        {
+            return existingShows.Any(es =>
+                es.SalaId == salaId
+                && es.StartAtUtc < newEnd
+                && es.StartAtUtc.AddMinutes(es.DurataMinutiSnapshot) > newStart);
+        }
+
+        bool OverlapsPlanned(int salaId, DateTime newStart, DateTime newEnd)
+        {
+            return showsToAdd.Any(s =>
+                s.SalaId == salaId
+                && s.StartAtUtc < newEnd
+                && s.StartAtUtc.AddMinutes(s.DurataMinutiSnapshot) > newStart);
+        }
 
         foreach (var cinema in cinemas)
         {
@@ -98,6 +119,9 @@ public class WeeklyShowPlanner
             {
                 var film = filmsForCinema[i % filmsForCinema.Count];
                 var slot = guaranteedSlots[i];
+                var showEnd = slot.UtcTime.AddMinutes(film.Durata + 15);
+                if (OverlapsExisting(slot.Sala.Id, slot.UtcTime, showEnd) || OverlapsPlanned(slot.Sala.Id, slot.UtcTime, showEnd))
+                    continue;
                 showsToAdd.Add(MakeShow(cinema.Id, slot.Sala, film, slot.UtcTime, slot.Date, slot.Hour));
             }
 
@@ -107,6 +131,9 @@ public class WeeklyShowPlanner
             {
                 var film = filmsForCinema.OrderBy(f => filmShowCount[f.Id]).ThenBy(_ => rng.Next()).First();
                 filmShowCount[film.Id]++;
+                var showEnd = slot.UtcTime.AddMinutes(film.Durata + 15);
+                if (OverlapsExisting(slot.Sala.Id, slot.UtcTime, showEnd) || OverlapsPlanned(slot.Sala.Id, slot.UtcTime, showEnd))
+                    continue;
                 showsToAdd.Add(MakeShow(cinema.Id, slot.Sala, film, slot.UtcTime, slot.Date, slot.Hour));
             }
         }
