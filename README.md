@@ -1,4 +1,4 @@
-# RESOCONTO TECNICO — CineBase (RedCurtain)
+# RESOCONTO TECNICO — (RedCurtain)
 
 > Progetto d'esame — Applicazione full-stack per la gestione di un circuito di cinema multisala con acquisto biglietti online.
 
