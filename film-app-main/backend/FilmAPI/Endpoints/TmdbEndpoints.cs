@@ -1,4 +1,5 @@
 using FilmAPI.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FilmAPI.Endpoints;
 
@@ -6,7 +7,7 @@ public static class TmdbEndpoints
 {
     public static void MapTmdbEndpoints(this WebApplication app)
     {
-        app.MapGet("/tmdb/search", async (string? title, ITmdbService service) =>
+        app.MapGet("/tmdb/search", async (string? title, [FromServices] ITmdbService service) =>
         {
             if (string.IsNullOrWhiteSpace(title))
                 return Results.BadRequest(new { message = "Parametro 'title' obbligatorio." });

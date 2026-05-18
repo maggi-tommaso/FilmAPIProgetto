@@ -118,6 +118,24 @@
             <p id="confirm-error" class="hidden text-brand-error text-xs mt-1.5"></p>
           </div>
 
+          <div class="space-y-3 pt-2 border-t border-brand-outline-variant/20">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="accept-privacy" name="acceptPrivacy" required
+                class="mt-0.5 h-4 w-4 rounded border-brand-outline-variant/40 text-brand-gold focus:ring-brand-gold/30">
+              <span class="text-sm text-brand-on-surface-variant">
+                Ho letto e accetto la <a href="/privacy.html" target="_blank" class="text-brand-gold hover:underline">Privacy Policy</a>
+              </span>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" id="accept-terms" name="acceptTerms" required
+                class="mt-0.5 h-4 w-4 rounded border-brand-outline-variant/40 text-brand-gold focus:ring-brand-gold/30">
+              <span class="text-sm text-brand-on-surface-variant">
+                Ho letto e accetto i <a href="/termini.html" target="_blank" class="text-brand-gold hover:underline">Termini di Servizio</a>
+              </span>
+            </label>
+            <p id="consent-error" class="hidden text-brand-error text-xs"></p>
+          </div>
+
           <button type="submit" id="submit-btn" class="btn-gold w-full py-3.5 text-base font-semibold rounded-xl mt-2">
             <span id="btn-text">Crea Account</span>
             <span id="btn-loader" class="hidden">

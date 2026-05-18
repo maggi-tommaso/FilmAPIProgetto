@@ -9,7 +9,7 @@ public static class RegistiEndpoints
 {
     public static void MapRegistiEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/registi").RequireAuthorization("PowerUserOrAdmin");
+        var group = app.MapGroup("/registi");
 
         group.MapGet("", async (int? page, int? pageSize, string? search, IRegistaService service) =>
         {
@@ -28,6 +28,12 @@ public static class RegistiEndpoints
             return result is null ? Results.NotFound() : Results.Ok(result);
         });
 
+        group.MapGet("/{id}/films", async (int id, IRegistaService service) =>
+        {
+            var result = await service.GetFilmsByRegistaIdAsync(id);
+            return Results.Ok(result);
+        });
+
         group.MapPost("", async (RegistaCreateDTO dto, IRegistaService service) =>
         {
             try
@@ -39,7 +45,11 @@ public static class RegistiEndpoints
             {
                 return Results.BadRequest(ex.Message);
             }
-        });
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
+        }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapPut("/{id}", async (int id, RegistaUpdateDTO dto, IRegistaService service) =>
         {
@@ -52,12 +62,23 @@ public static class RegistiEndpoints
             {
                 return Results.BadRequest(ex.Message);
             }
-        });
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
+        }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapDelete("/{id}", async (int id, IRegistaService service) =>
         {
-            var result = await service.DeleteAsync(id);
-            return result ? Results.NoContent() : Results.NotFound();
+            try
+            {
+                var result = await service.DeleteAsync(id);
+                return result ? Results.NoContent() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         });
 
         group.MapGet("/{id}/films", async (int id, IRegistaService service) =>
@@ -82,10 +103,10 @@ public static class RegistiEndpoints
                 var result = await filmService.CreateAsync(filmDto);
                 return Results.Created($"/films/{result.Id}", result);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
-                return Results.BadRequest(ex.Message);
+                return Results.Problem(ex.Message, statusCode: 500);
             }
-        });
+        }).RequireAuthorization("PowerUserOrAdmin");
     }
 }

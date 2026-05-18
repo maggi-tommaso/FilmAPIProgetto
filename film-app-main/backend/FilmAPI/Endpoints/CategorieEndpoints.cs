@@ -34,6 +34,10 @@ public static class CategorieEndpoints
             {
                 return Results.Conflict(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapPut("/{id}", async (int id, CategoriaUpdateDTO dto, ICategoriaService service) =>
@@ -51,12 +55,23 @@ public static class CategorieEndpoints
             {
                 return Results.Conflict(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapDelete("/{id}", async (int id, ICategoriaService service) =>
         {
-            var result = await service.DeleteAsync(id);
-            return result ? Results.NoContent() : Results.NotFound();
+            try
+            {
+                var result = await service.DeleteAsync(id);
+                return result ? Results.NoContent() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
     }
 }

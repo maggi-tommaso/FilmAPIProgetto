@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.RateLimiting;
 using FilmAPI.Data;
 using FilmAPI.Endpoints;
 using FilmAPI.Services;
@@ -50,11 +51,17 @@ var serverVersion = dbUseAutoDetect
     : ServerVersion.Parse(dbServerVersion);
 
 builder.Services.AddDbContext<FilmDbContext>(
-    dbContextOptions => dbContextOptions
-        .UseMySql(connectionString, serverVersion)
-        .LogTo(Console.WriteLine, LogLevel.Information)
-        .EnableSensitiveDataLogging()
-        .EnableDetailedErrors()
+    dbContextOptions =>
+    {
+        dbContextOptions
+            .UseMySql(connectionString, serverVersion)
+            .LogTo(Console.WriteLine, LogLevel.Information);
+
+        if (builder.Environment.IsDevelopment())
+        {
+            dbContextOptions.EnableSensitiveDataLogging().EnableDetailedErrors();
+        }
+    }
 );
 
 builder.Services.AddScoped<IRegistaService, RegistaService>();
@@ -87,7 +94,8 @@ builder.Services.AddHttpClient<MicrosoftExternalAuthProvider>();
 builder.Services.AddScoped<IExternalAuthService, ExternalAuthService>();
 builder.Services.AddScoped<INotificheService, NotificheService>();
 
-var tmdbBearerToken = builder.Configuration["TMDB:BearerToken"];
+var tmdbBearerToken = Environment.GetEnvironmentVariable("TMDB_BEARER_TOKEN")
+    ?? builder.Configuration["TMDB:BearerToken"];
 if (!string.IsNullOrWhiteSpace(tmdbBearerToken))
 {
     builder.Services.AddHttpClient<ITmdbService, TmdbService>(client =>
@@ -142,7 +150,8 @@ builder.Services.AddOpenApiDocument(config =>
     config.Version = "v1";
 });
 
-var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "SuperSecretKeyForRedCurtainJWTAuth2026!";
+var jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+    ?? throw new InvalidOperationException("JWT_SECRET environment variable is required but not set.");
 var jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "RedCurtainAPI";
 var jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "RedCurtainWeb";
 
@@ -182,12 +191,51 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+var rateLimitingDisabled = (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") ?? "false")
+    .Equals("true", StringComparison.OrdinalIgnoreCase);
+
+if (!rateLimitingDisabled)
+{
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+        options.AddPolicy("AuthRateLimit", context =>
+            RateLimitPartition.GetFixedWindowLimiter(
+                partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+                factory: _ => new FixedWindowRateLimiterOptions
+                {
+                    PermitLimit = 10,
+                    Window = TimeSpan.FromMinutes(1),
+                    QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                    QueueLimit = 0
+                }));
+    });
+}
+
 var app = builder.Build();
 
 app.UseCors("AllowRedCurtainFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+if (!rateLimitingDisabled)
+{
+    app.UseRateLimiter();
+}
 app.UseStaticFiles();
+
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+
+    headers["Content-Security-Policy"] = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; img-src 'self' data: https:; font-src 'self' https://cdnjs.cloudflare.com https://kit.fontawesome.com; connect-src 'self' http://localhost:* https:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'";
+    headers["X-Frame-Options"] = "DENY";
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=(), interest-cohort=()";
+
+    await next();
+});
 
 if (app.Environment.IsDevelopment())
 {

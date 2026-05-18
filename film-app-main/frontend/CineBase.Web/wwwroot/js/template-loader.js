@@ -36,7 +36,7 @@ async function loadLayoutComponents() {
 
   if (!navbarContainer && !footerContainer) return;
 
-  const landingPaths = new Set(['/', '/index.html', '/programmazione.html', '/scheda-film.html', '/my-cinemas.html', '/login.html', '/registrazione.html', '/profilo.html', '/acquista.html', '/pagamento.html', '/esito-acquisto.html', '/recupera-password.html', '/reimposta-password.html', '/social-login-complete.html']);
+  const landingPaths = new Set(['/', '/index.html', '/programmazione.html', '/scheda-film.html', '/my-cinemas.html', '/login.html', '/registrazione.html', '/profilo.html', '/acquista.html', '/pagamento.html', '/esito-acquisto.html', '/recupera-password.html', '/reimposta-password.html', '/social-login-complete.html', '/privacy.html', '/termini.html', '/verifica-email.html']);
   const adminShellPaths = new Set(['/films.html', '/registi.html', '/cinemas.html', '/shows.html', '/categorie.html', '/sale.html', '/ricarica-credito.html', '/validazione-biglietti.html', '/utenti.html']);
   if (adminShellPaths.has(window.location.pathname)) {
     document.dispatchEvent(new Event('components:loaded'));

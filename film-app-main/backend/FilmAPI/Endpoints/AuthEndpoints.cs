@@ -9,7 +9,15 @@ public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this WebApplication app)
     {
+        var rateLimitingDisabled = (Environment.GetEnvironmentVariable("DISABLE_RATE_LIMITING") ?? "false")
+            .Equals("true", StringComparison.OrdinalIgnoreCase);
+
         var group = app.MapGroup("/auth");
+
+        if (!rateLimitingDisabled)
+        {
+            group.RequireRateLimiting("AuthRateLimit");
+        }
 
         group.MapPost("/register", async (RegisterRequestDTO dto, IAuthService service) =>
         {
@@ -52,23 +60,37 @@ public static class AuthEndpoints
 
         group.MapPost("/logout", async (RefreshTokenRequestDTO dto, IAuthService service) =>
         {
-            var result = await service.LogoutAsync(dto.RefreshToken, dto.DeviceId);
-            return result ? Results.Ok() : Results.NotFound();
+            try
+            {
+                var result = await service.LogoutAsync(dto.RefreshToken, dto.DeviceId);
+                return result ? Results.Ok() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("Authenticated");
 
         group.MapGet("/me", async (HttpContext context, IAuthService service) =>
         {
-            var userIdClaim = context.User.FindFirst("sub")?.Value
-                ?? context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
-                ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+            try
             {
-                return Results.Unauthorized();
-            }
+                var userIdClaim = context.User.FindFirst("sub")?.Value
+                    ?? context.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value
+                    ?? context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var userInfo = await service.GetUserByIdAsync(userId);
-            return userInfo is null ? Results.Unauthorized() : Results.Ok(userInfo);
+                if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var userInfo = await service.GetUserByIdAsync(userId);
+                return userInfo is null ? Results.Unauthorized() : Results.Ok(userInfo);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("Authenticated");
 
         group.MapPost("/change-password", async (ChangePasswordRequestDTO dto, HttpContext context, IAuthService service) =>

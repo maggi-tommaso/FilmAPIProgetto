@@ -28,7 +28,8 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Password = "Password123!",
             Nome = "Mario",
             Cognome = "Rossi",
-            Telefono = "1234567890"
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
 
         var response = await client.PostAsJsonAsync("/auth/register", request);
@@ -55,7 +56,9 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Email = "duplicate@test.com",
             Password = "Password123!",
             Nome = "Mario",
-            Cognome = "Rossi"
+            Cognome = "Rossi",
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
 
         await client.PostAsJsonAsync("/auth/register", request);
@@ -75,7 +78,9 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Email = "login@test.com",
             Password = "Password123!",
             Nome = "Luigi",
-            Cognome = "Verdi"
+            Cognome = "Verdi",
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
         await client.PostAsJsonAsync("/auth/register", registerRequest);
 
@@ -106,7 +111,9 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Email = "wrong@test.com",
             Password = "Password123!",
             Nome = "Test",
-            Cognome = "User"
+            Cognome = "User",
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
         await client.PostAsJsonAsync("/auth/register", registerRequest);
 
@@ -132,7 +139,9 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Email = "refresh@test.com",
             Password = "Password123!",
             Nome = "Refresh",
-            Cognome = "Test"
+            Cognome = "Test",
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
         var registerResponse = await client.PostAsJsonAsync("/auth/register", registerRequest);
         var registerPayload = await registerResponse.Content.ReadFromJsonAsync<AuthResponseDTO>();
@@ -185,7 +194,9 @@ public class AuthIntegrationTests : IClassFixture<CustomWebApplicationFactory>
             Email = "logout@test.com",
             Password = "Password123!",
             Nome = "Logout",
-            Cognome = "Test"
+            Cognome = "Test",
+            AcceptTerms = true,
+            AcceptPrivacy = true
         };
         var registerResponse = await client.PostAsJsonAsync("/auth/register", registerRequest);
         var registerPayload = await registerResponse.Content.ReadFromJsonAsync<AuthResponseDTO>();

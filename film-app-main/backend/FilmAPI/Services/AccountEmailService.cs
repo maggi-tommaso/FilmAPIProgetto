@@ -21,12 +21,12 @@ public class AccountEmailService : IAccountEmailService
     public AccountEmailService(ILogger<AccountEmailService> logger)
     {
         _logger = logger;
-        _smtpHost = Environment.GetEnvironmentVariable("SMTP_HOST");
+        _smtpHost = ReadSetting("SMTP_HOST");
         _smtpPort = int.TryParse(Environment.GetEnvironmentVariable("SMTP_PORT"), out var port) ? port : 587;
-        _smtpUser = Environment.GetEnvironmentVariable("SMTP_USER");
-        _smtpPassword = Environment.GetEnvironmentVariable("SMTP_PASSWORD");
-        _fromEmail = Environment.GetEnvironmentVariable("SMTP_FROM_EMAIL");
-        _fromName = Environment.GetEnvironmentVariable("SMTP_FROM_NAME") ?? "RedCurtain";
+        _smtpUser = ReadSetting("SMTP_USER");
+        _smtpPassword = ReadSetting("SMTP_PASSWORD");
+        _fromEmail = ReadSetting("SMTP_FROM_EMAIL");
+        _fromName = ReadSetting("SMTP_FROM_NAME") ?? "RedCurtain";
     }
 
     public async Task SendPasswordResetAsync(User user, string resetUrl, CancellationToken ct = default)
@@ -88,6 +88,9 @@ public class AccountEmailService : IAccountEmailService
             return;
         }
 
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        cts.CancelAfter(TimeSpan.FromSeconds(15));
+
         try
         {
             using var message = new MimeMessage();
@@ -100,15 +103,16 @@ public class AccountEmailService : IAccountEmailService
             };
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(_smtpHost!, _smtpPort, SecureSocketOptions.StartTls, ct);
+            client.Timeout = 10000;
+            await client.ConnectAsync(_smtpHost!, _smtpPort, SecureSocketOptions.StartTls, cts.Token);
             if (!string.IsNullOrEmpty(_smtpUser))
             {
                 await client.AuthenticateAsync(
                     new NetworkCredential(_smtpUser, _smtpPassword),
-                    ct);
+                    cts.Token);
             }
-            await client.SendAsync(message, ct);
-            await client.DisconnectAsync(true, ct);
+            await client.SendAsync(message, cts.Token);
+            await client.DisconnectAsync(true, cts.Token);
 
             _logger.LogInformation("Account email sent to {To}: {Subject}", to, subject);
         }
@@ -122,5 +126,33 @@ public class AccountEmailService : IAccountEmailService
     {
         return !string.IsNullOrWhiteSpace(_smtpHost) &&
                !string.IsNullOrWhiteSpace(_fromEmail);
+    }
+
+    private static string? ReadSetting(string name)
+    {
+        var value = Environment.GetEnvironmentVariable(name);
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+
+        var trimmed = value.Trim();
+        return IsPlaceholder(trimmed) ? null : trimmed;
+    }
+
+    private static bool IsPlaceholder(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return true;
+
+        var lower = value.ToLowerInvariant();
+        if (lower.StartsWith('<') && lower.EndsWith('>'))
+            return true;
+        if (lower.Contains("change-me") || lower.Contains("changeme"))
+            return true;
+        if (lower.Contains("your-") && (lower.Contains("email") || lower.Contains("password") || lower.Contains("host") || lower.Contains("user")))
+            return true;
+        if (lower.Contains("placeholder") || lower.Contains("example") || lower.Contains("test"))
+            return true;
+
+        return false;
     }
 }

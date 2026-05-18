@@ -31,20 +31,49 @@ public static class CinemasEndpoints
 
         group.MapPost("", async (CinemaCreateDTO dto, ICinemaService service) =>
         {
-            var result = await service.CreateAsync(dto);
-            return Results.Created($"/cinemas/{result.Id}", result);
+            try
+            {
+                var result = await service.CreateAsync(dto);
+                return Results.Created($"/cinemas/{result.Id}", result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("AdminOnly");
 
         group.MapPut("/{id}", async (int id, CinemaUpdateDTO dto, ICinemaService service) =>
         {
-            var result = await service.UpdateAsync(id, dto);
-            return result is null ? Results.NotFound() : Results.Ok(result);
+            try
+            {
+                var result = await service.UpdateAsync(id, dto);
+                return result is null ? Results.NotFound() : Results.Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                return Results.BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("AdminOnly");
 
         group.MapDelete("/{id}", async (int id, ICinemaService service) =>
         {
-            var result = await service.DeleteAsync(id);
-            return result ? Results.NoContent() : Results.NotFound();
+            try
+            {
+                var result = await service.DeleteAsync(id);
+                return result ? Results.NoContent() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("AdminOnly");
     }
 }

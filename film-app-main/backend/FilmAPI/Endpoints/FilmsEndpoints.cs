@@ -39,6 +39,10 @@ public static class FilmsEndpoints
             {
                 return Results.BadRequest(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapPut("/{id}", async (int id, FilmUpdateDTO dto, IFilmService service) =>
@@ -52,12 +56,23 @@ public static class FilmsEndpoints
             {
                 return Results.BadRequest(ex.Message);
             }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
 
         group.MapDelete("/{id}", async (int id, IFilmService service) =>
         {
-            var result = await service.DeleteAsync(id);
-            return result ? Results.NoContent() : Results.NotFound();
+            try
+            {
+                var result = await service.DeleteAsync(id);
+                return result ? Results.NoContent() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("PowerUserOrAdmin");
     }
 }

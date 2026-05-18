@@ -10,4 +10,6 @@ public interface IProfiloService
     Task<CinemaPreferitoDTO> SetCinemaPreferitoAsync(int userId, int? cinemaId);
     Task<FilmPreferitoDTO?> GetFilmPreferitoAsync(int userId);
     Task<FilmPreferitoDTO> SetFilmPreferitoAsync(int userId, int? filmId);
+    Task<bool> DeleteAccountAsync(int userId);
+    Task<AccountExportDTO?> ExportAccountDataAsync(int userId);
 }

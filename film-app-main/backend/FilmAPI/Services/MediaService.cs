@@ -19,7 +19,7 @@ public class MediaService : IMediaService
         ".webp"
     };
 
-    private const long MaxFileSizeBytes = 5 * 1024 * 1024;
+    private const long MaxFileSizeBytes = 10 * 1024 * 1024;
     private readonly IWebHostEnvironment _environment;
 
     public MediaService(IWebHostEnvironment environment)

@@ -8,7 +8,8 @@ public static class CheckoutEndpoints
 {
     public static void MapCheckoutEndpoints(this WebApplication app)
     {
-        var checkoutGroup = app.MapGroup("/checkout");
+        var checkoutGroup = app.MapGroup("/checkout")
+            .DisableAntiforgery();
 
         checkoutGroup.MapGet("/shows/{showId}/seat-map", async (
             int showId,
@@ -87,12 +88,19 @@ public static class CheckoutEndpoints
             ClaimsPrincipal user,
             ISeatHoldService service) =>
         {
-            var userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
-            if (userId == 0)
-                return Results.Unauthorized();
+            try
+            {
+                var userId = int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier) ?? "0");
+                if (userId == 0)
+                    return Results.Unauthorized();
 
-            var result = await service.ReleaseHoldAsync(holdToken, userId);
-            return result ? Results.NoContent() : Results.NotFound();
+                var result = await service.ReleaseHoldAsync(holdToken, userId);
+                return result ? Results.NoContent() : Results.NotFound();
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message, statusCode: 500);
+            }
         }).RequireAuthorization("Authenticated");
 
         checkoutGroup.MapPost("/orders", async (

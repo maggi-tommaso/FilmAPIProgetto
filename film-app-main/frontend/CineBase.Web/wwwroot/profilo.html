@@ -27,17 +27,6 @@
       <p class="text-sm text-brand-on-surface-variant mt-1">Gestisci i tuoi dati, biglietti, ordini e credito</p>
     </div>
 
-    <!-- NOTIFICHE - DEBUG -->
-    <div id="sezione-notifiche" style="display:block !important; visibility:visible !important; opacity:1 !important; background:#1a1a2e; border:3px solid #e94560; padding:20px; margin-bottom:20px; border-radius:12px; color:white;">
-      <h2 style="color:#e94560; font-size:22px; margin-bottom:12px;">
-        <i class="fa-solid fa-bell" style="color:#e94560;"></i> NOTIFICHE
-        <span id="notifiche-badge" style="display:none; background:red; color:white; padding:2px 8px; border-radius:50%; margin-left:8px; font-size:12px;">0</span>
-      </h2>
-      <div id="notifiche-content">
-        <p style="color:#aaa;">Caricamento notifiche...</p>
-      </div>
-    </div>
-
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <!-- Dati Personali -->
       <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
@@ -96,6 +85,20 @@
           </div>
         </div>
 
+        <!-- Notifiche -->
+        <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
+          <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-4">
+            <i class="fa-solid fa-bell text-brand-red mr-2"></i>Notifiche
+            <span id="notifiche-badge" class="hidden ml-2 bg-brand-red text-white text-xs rounded-full px-2 py-0.5"></span>
+          </h2>
+          <div id="notifiche-content">
+            <div class="text-center py-4 text-brand-on-surface-variant">
+              <i class="fa-solid fa-spinner fa-spin text-xl mb-2"></i>
+              <p class="text-sm">Caricamento...</p>
+            </div>
+          </div>
+        </div>
+
         <!-- Credito -->
         <div class="card-elevated p-6 border border-transparent hover:border-brand-red/50 transition-all duration-200">
           <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-4">
@@ -139,6 +142,26 @@
           <p>Caricamento biglietti...</p>
         </div>
       </div>
+    </div>
+
+    <!-- Privacy e Dati -->
+    <div class="mt-8 card-elevated p-6 border border-brand-outline-variant/20">
+      <h2 class="text-xl font-bold text-brand-on-surface tracking-tight mb-4">
+        <i class="fa-solid fa-lock text-brand-red mr-2"></i>Privacy e Dati Personali
+      </h2>
+      <p class="text-sm text-brand-on-surface-variant mb-6">
+        In conformita con il GDPR, puoi esportare i tuoi dati in formato JSON o richiedere l&apos;eliminazione permanente
+        del tuo account. L&apos;eliminazione e irreversibile e comporta la rimozione di tutti i dati personali associati.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <button id="btn-export-data" class="btn-ghost px-5 py-2.5 text-sm font-medium">
+          <i class="fa-solid fa-download mr-2"></i>Esporta i miei dati (JSON)
+        </button>
+        <button id="btn-delete-account" class="px-5 py-2.5 text-sm font-medium rounded-xl border border-brand-error/40 text-brand-error hover:bg-brand-error hover:text-white transition-all duration-200">
+          <i class="fa-solid fa-trash-can mr-2"></i>Elimina Account
+        </button>
+      </div>
+      <p id="privacy-action-result" class="hidden mt-4 text-sm"></p>
     </div>
 
   </main>

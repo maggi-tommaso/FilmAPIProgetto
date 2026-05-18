@@ -126,6 +126,24 @@ public static class ProfiloEndpoints
                 return Results.NotFound(ex.Message);
             }
         }).RequireAuthorization("Authenticated");
+
+        group.MapDelete("/me", async (HttpContext context, IProfiloService service) =>
+        {
+            var userId = GetUserIdFromContext(context);
+            if (userId == null) return Results.Unauthorized();
+
+            var deleted = await service.DeleteAccountAsync(userId.Value);
+            return deleted ? Results.NoContent() : Results.NotFound();
+        }).RequireAuthorization("Authenticated");
+
+        group.MapGet("/me/export", async (HttpContext context, IProfiloService service) =>
+        {
+            var userId = GetUserIdFromContext(context);
+            if (userId == null) return Results.Unauthorized();
+
+            var data = await service.ExportAccountDataAsync(userId.Value);
+            return data is null ? Results.NotFound() : Results.Ok(data);
+        }).RequireAuthorization("Authenticated");
     }
 
     private static int? GetUserIdFromContext(HttpContext context)

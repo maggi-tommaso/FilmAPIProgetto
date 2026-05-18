@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadCinemaSelect();
   setupProfiloForm();
+  setupPrivacyActions();
 });
 
 async function loadProfilo() {
@@ -561,6 +562,76 @@ async function submitRating(filmId, rating) {
     showToast(result.messaggio || 'Valutazione salvata!', 'success');
   } catch (error) {
     handleApiError(error);
+  }
+}
+
+function setupPrivacyActions() {
+  var exportBtn = document.getElementById('btn-export-data');
+  var deleteBtn = document.getElementById('btn-delete-account');
+  var resultEl = document.getElementById('privacy-action-result');
+
+  if (exportBtn) {
+    exportBtn.addEventListener('click', async function() {
+      exportBtn.disabled = true;
+      exportBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Esportazione...';
+      try {
+        var response = await fetch(API_BASE_URL + '/profilo/me/export', {
+          headers: { 'Authorization': 'Bearer ' + Auth.getAccessToken() }
+        });
+        if (!response.ok) throw new Error('Errore durante l\'esportazione');
+        var data = await response.json();
+        var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'redcurtain-export-dati-' + new Date().toISOString().slice(0, 10) + '.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast('Dati esportati con successo', 'success');
+      } catch (error) {
+        if (resultEl) {
+          resultEl.textContent = 'Errore durante l\'esportazione: ' + error.message;
+          resultEl.className = 'mt-4 text-sm text-brand-error';
+          resultEl.classList.remove('hidden');
+        }
+      } finally {
+        exportBtn.disabled = false;
+        exportBtn.innerHTML = '<i class="fa-solid fa-download mr-2"></i>Esporta i miei dati (JSON)';
+      }
+    });
+  }
+
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async function() {
+      if (!confirm('Sei sicuro di voler eliminare il tuo account? Questa azione e irreversibile e tutti i tuoi dati personali verranno rimossi permanentemente. Premi OK per confermare.')) {
+        return;
+      }
+      if (!confirm('ULTIMA CONFERMA: tutti i tuoi biglietti, ordini e dati saranno cancellati. Procedere?')) {
+        return;
+      }
+      deleteBtn.disabled = true;
+      deleteBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Eliminazione...';
+      try {
+        var response = await fetch(API_BASE_URL + '/profilo/me', {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Bearer ' + Auth.getAccessToken() }
+        });
+        if (!response.ok) throw new Error('Errore durante l\'eliminazione');
+        Auth.clearAuth();
+        showToast('Account eliminato con successo', 'success');
+        setTimeout(function() {
+          window.location.href = '/index.html';
+        }, 2000);
+      } catch (error) {
+        if (resultEl) {
+          resultEl.textContent = 'Errore durante l\'eliminazione: ' + error.message;
+          resultEl.className = 'mt-4 text-sm text-brand-error';
+          resultEl.classList.remove('hidden');
+        }
+        deleteBtn.disabled = false;
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can mr-2"></i>Elimina Account';
+      }
+    });
   }
 }
 

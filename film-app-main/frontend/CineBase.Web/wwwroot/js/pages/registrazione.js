@@ -210,6 +210,19 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    const acceptPrivacy = document.getElementById('accept-privacy')?.checked;
+    const acceptTerms = document.getElementById('accept-terms')?.checked;
+    const consentError = document.getElementById('consent-error');
+
+    if (!acceptPrivacy || !acceptTerms) {
+      if (consentError) {
+        consentError.textContent = 'Devi accettare la Privacy Policy e i Termini di Servizio per registrarti';
+        consentError.classList.remove('hidden');
+      }
+      return;
+    }
+    if (consentError) consentError.classList.add('hidden');
+
     setLoading(true);
 
     try {
@@ -217,7 +230,9 @@ document.addEventListener('DOMContentLoaded', () => {
         email,
         password,
         nome,
-        cognome
+        cognome,
+        acceptPrivacy: true,
+        acceptTerms: true
       };
 
       if (telefono) {

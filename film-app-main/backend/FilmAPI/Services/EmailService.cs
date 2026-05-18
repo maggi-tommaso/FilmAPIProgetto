@@ -50,6 +50,9 @@ public class EmailService : IEmailService
             };
         }
 
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        cts.CancelAfter(TimeSpan.FromSeconds(15));
+
         try
         {
             var smtpHost = _smtpHost!;
@@ -72,10 +75,11 @@ public class EmailService : IEmailService
             message.Body = bodyBuilder.ToMessageBody();
 
             using var client = new SmtpClient();
-            await client.ConnectAsync(smtpHost, _smtpPort, SecureSocketOptions.StartTls, cancellationToken);
-            await client.AuthenticateAsync(smtpUser, smtpPassword, cancellationToken);
-            await client.SendAsync(message, cancellationToken);
-            await client.DisconnectAsync(true, cancellationToken);
+            client.Timeout = 10000;
+            await client.ConnectAsync(smtpHost, _smtpPort, SecureSocketOptions.StartTls, cts.Token);
+            await client.AuthenticateAsync(smtpUser, smtpPassword, cts.Token);
+            await client.SendAsync(message, cts.Token);
+            await client.DisconnectAsync(true, cts.Token);
 
             return new EmailSendResult
             {
@@ -166,7 +170,20 @@ public class EmailService : IEmailService
 
     private static bool IsPlaceholder(string value)
     {
-        return value.StartsWith('<') && value.EndsWith('>');
+        if (string.IsNullOrWhiteSpace(value))
+            return true;
+
+        var lower = value.ToLowerInvariant();
+        if (lower.StartsWith('<') && lower.EndsWith('>'))
+            return true;
+        if (lower.Contains("change-me") || lower.Contains("changeme"))
+            return true;
+        if (lower.Contains("your-") && (lower.Contains("email") || lower.Contains("password") || lower.Contains("host") || lower.Contains("user")))
+            return true;
+        if (lower.Contains("placeholder") || lower.Contains("example") || lower.Contains("test"))
+            return true;
+
+        return false;
     }
 
     private static string FormatShowDateTime(DateTime startAtUtc)

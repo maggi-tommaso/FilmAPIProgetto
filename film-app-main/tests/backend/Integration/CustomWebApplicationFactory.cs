@@ -28,6 +28,8 @@ public sealed class CustomWebApplicationFactory : WebApplicationFactory<Program>
     {
         Environment.SetEnvironmentVariable("DB_USE_AUTODETECT", "false");
         Environment.SetEnvironmentVariable("DB_SERVER_VERSION", "10.11.0-mariadb");
+        Environment.SetEnvironmentVariable("JWT_SECRET", "TestSecretKeyForIntegrationTests1234567890!");
+        Environment.SetEnvironmentVariable("DISABLE_RATE_LIMITING", "true");
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)

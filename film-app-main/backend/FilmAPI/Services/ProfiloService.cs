@@ -123,6 +123,68 @@ public class ProfiloService : IProfiloService
         return await GetFilmPreferitoAsync(userId) ?? new FilmPreferitoDTO { FilmId = null, Film = null };
     }
 
+    public async Task<bool> DeleteAccountAsync(int userId)
+    {
+        var user = await _context.Users
+            .Include(u => u.RefreshTokens)
+            .Include(u => u.ActionTokens)
+            .Include(u => u.ExternalLogins)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user is null) return false;
+
+        _context.RefreshTokens.RemoveRange(user.RefreshTokens);
+        _context.AccountActionTokens.RemoveRange(user.ActionTokens);
+        _context.UserExternalLogins.RemoveRange(user.ExternalLogins);
+        _context.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<AccountExportDTO?> ExportAccountDataAsync(int userId)
+    {
+        var user = await _context.Users
+            .Include(u => u.CinemaPreferito)
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user is null) return null;
+
+        var ordini = await _context.Ordini
+            .Where(o => o.UserId == userId)
+            .OrderByDescending(o => o.CreatedAtUtc)
+            .Select(o => new OrdineExportDTO
+            {
+                Id = o.Id,
+                CodiceOrdine = o.CodiceOrdine,
+                CreatedAtUtc = o.CreatedAtUtc,
+                TotaleLordo = o.TotaleLordo,
+                Stato = o.Stato.ToString()
+            })
+            .ToListAsync();
+
+        var biglietti = await _context.Biglietti
+            .Where(b => b.UserId == userId)
+            .OrderByDescending(b => b.Ordine!.CreatedAtUtc)
+            .Select(b => new BigliettoExportDTO
+            {
+                Id = b.Id,
+                CodiceBiglietto = b.CodiceBiglietto,
+                Stato = b.Stato.ToString(),
+                FilmTitolo = b.Show != null && b.Show.Film != null ? b.Show.Film.Titolo : "N/D",
+                ShowStartAtUtc = b.Show != null ? b.Show.StartAtUtc : default
+            })
+            .ToListAsync();
+
+        return new AccountExportDTO
+        {
+            User = MapToUserInfoDTO(user),
+            Ordini = ordini,
+            Biglietti = biglietti,
+            ExportTimestampUtc = DateTime.UtcNow
+        };
+    }
+
     private static UserInfoDTO MapToUserInfoDTO(User user)
     {
         return new UserInfoDTO
@@ -133,7 +195,10 @@ public class ProfiloService : IProfiloService
             Cognome = user.Cognome,
             Telefono = user.Telefono,
             Ruolo = user.Ruolo.ToString(),
-            DataRegistrazione = user.DataRegistrazione
+            DataRegistrazione = user.DataRegistrazione,
+            EmailVerified = user.EmailVerifiedAtUtc != null,
+            PrivacyConsentAtUtc = user.PrivacyConsentAtUtc,
+            TermsAcceptedAtUtc = user.TermsAcceptedAtUtc
         };
     }
 }

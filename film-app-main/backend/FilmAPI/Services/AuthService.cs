@@ -34,7 +34,8 @@ public class AuthService : IAuthService
         _tokenService = tokenService;
         _accountEmail = accountEmail;
         _audit = audit;
-        _jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET") ?? "SuperSecretKeyForRedCurtainJWTAuth2026!";
+        _jwtSecret = Environment.GetEnvironmentVariable("JWT_SECRET")
+            ?? throw new InvalidOperationException("JWT_SECRET environment variable is required but not set.");
         _jwtIssuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "RedCurtainAPI";
         _jwtAudience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "RedCurtainWeb";
         _accessTokenExpiryMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_ACCESS_TOKEN_EXPIRY_MINUTES") ?? "15");
@@ -44,6 +45,21 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDTO> RegisterAsync(RegisterRequestDTO dto)
     {
+        if (!dto.AcceptTerms || !dto.AcceptPrivacy)
+        {
+            throw new InvalidOperationException("E necessario accettare i Termini di Servizio e la Privacy Policy per registrarsi.");
+        }
+
+        if (string.IsNullOrWhiteSpace(dto.Password) || dto.Password.Length < 8)
+        {
+            throw new ArgumentException("La password deve essere di almeno 8 caratteri.");
+        }
+
+        if (!System.Text.RegularExpressions.Regex.IsMatch(dto.Password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$"))
+        {
+            throw new ArgumentException("La password deve contenere almeno una maiuscola, una minuscola e un numero.");
+        }
+
         var normalizedEmail = dto.Email.Trim().ToUpperInvariant();
         var exists = await _context.Users.AnyAsync(u => u.NormalizedEmail == normalizedEmail);
         if (exists)
@@ -51,6 +67,7 @@ public class AuthService : IAuthService
             throw new InvalidOperationException("Email gia registrata");
         }
 
+        var now = DateTime.UtcNow;
         var user = new User
         {
             Email = dto.Email.Trim(),
@@ -61,9 +78,12 @@ public class AuthService : IAuthService
             Cognome = dto.Cognome,
             Telefono = dto.Telefono,
             Ruolo = UserRole.User,
-            DataRegistrazione = DateTime.UtcNow,
+            DataRegistrazione = now,
             CreditoResiduo = 0,
-            AuthVersion = 1
+            AuthVersion = 1,
+            FailedLoginAttempts = 0,
+            PrivacyConsentAtUtc = now,
+            TermsAcceptedAtUtc = now
         };
 
         _context.Users.Add(user);
@@ -96,11 +116,25 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Credenziali non valide");
         }
 
+        if (user.LockedOutUntilUtc.HasValue && user.LockedOutUntilUtc.Value > DateTime.UtcNow)
+        {
+            var remainingSeconds = (int)(user.LockedOutUntilUtc.Value - DateTime.UtcNow).TotalSeconds;
+            throw new UnauthorizedAccessException($"Account temporaneamente bloccato. Riprova tra {remainingSeconds} secondi.");
+        }
+
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
         {
+            user.FailedLoginAttempts++;
+            if (user.FailedLoginAttempts >= 5)
+            {
+                user.LockedOutUntilUtc = DateTime.UtcNow.AddMinutes(15);
+            }
+            await _context.SaveChangesAsync();
             throw new UnauthorizedAccessException("Credenziali non valide");
         }
 
+        user.FailedLoginAttempts = 0;
+        user.LockedOutUntilUtc = null;
         user.LastLoginAtUtc = DateTime.UtcNow;
         user.LastLoginProvider = "local";
 
@@ -240,7 +274,9 @@ public class AuthService : IAuthService
             Telefono = user.Telefono,
             Ruolo = user.Ruolo.ToString(),
             DataRegistrazione = user.DataRegistrazione,
-            EmailVerified = user.EmailVerifiedAtUtc != null
+            EmailVerified = user.EmailVerifiedAtUtc != null,
+            PrivacyConsentAtUtc = user.PrivacyConsentAtUtc,
+            TermsAcceptedAtUtc = user.TermsAcceptedAtUtc
         };
     }
 
@@ -408,6 +444,10 @@ public class AuthService : IAuthService
 
     public async Task<AuthResponseDTO> GenerateTokensAsync(User user, string? deviceId)
     {
+        user.FailedLoginAttempts = 0;
+        user.LockedOutUntilUtc = null;
+        user.LastLoginAtUtc = DateTime.UtcNow;
+
         var accessToken = GenerateAccessToken(user);
         var refreshToken = await GenerateRefreshTokenAsync(user.Id, deviceId);
         await _context.SaveChangesAsync();

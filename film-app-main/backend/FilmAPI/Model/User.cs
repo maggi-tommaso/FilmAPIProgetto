@@ -35,6 +35,14 @@ public class User
 
     public bool IsDisabled { get; set; }
 
+    public int FailedLoginAttempts { get; set; }
+
+    public DateTime? LockedOutUntilUtc { get; set; }
+
+    public DateTime? PrivacyConsentAtUtc { get; set; }
+
+    public DateTime? TermsAcceptedAtUtc { get; set; }
+
     [Required]
     [MaxLength(100)]
     public string Nome { get; set; } = string.Empty;

@@ -54,7 +54,10 @@ function renderCategorie(categorie) {
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
-  return div.innerHTML.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  return div.innerHTML
+    .replace(/\\/g, '&#92;')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '\\"');
 }
 
 function setupFormSubmit() {
@@ -69,7 +72,7 @@ function setupFormSubmit() {
     const editId = form.dataset.editId;
 
     if (!nome) {
-      showToast('Il nome della categoria e obbligatorio', 'error');
+      showToast('Il nome della categoria e obbligatorio', 'danger');
       return;
     }
 

@@ -37,6 +37,12 @@ public class RegisterRequestDTO
 
     [MaxLength(128)]
     public string? DeviceId { get; set; }
+
+    [Required]
+    public bool AcceptTerms { get; set; }
+
+    [Required]
+    public bool AcceptPrivacy { get; set; }
 }
 
 public class AuthResponseDTO
@@ -57,6 +63,34 @@ public class UserInfoDTO
     public string Ruolo { get; set; } = string.Empty;
     public DateTime DataRegistrazione { get; set; }
     public bool EmailVerified { get; set; }
+    public DateTime? PrivacyConsentAtUtc { get; set; }
+    public DateTime? TermsAcceptedAtUtc { get; set; }
+}
+
+public class AccountExportDTO
+{
+    public UserInfoDTO User { get; set; } = new();
+    public List<OrdineExportDTO> Ordini { get; set; } = new();
+    public List<BigliettoExportDTO> Biglietti { get; set; } = new();
+    public DateTime ExportTimestampUtc { get; set; } = DateTime.UtcNow;
+}
+
+public class OrdineExportDTO
+{
+    public int Id { get; set; }
+    public string CodiceOrdine { get; set; } = string.Empty;
+    public DateTime CreatedAtUtc { get; set; }
+    public decimal TotaleLordo { get; set; }
+    public string Stato { get; set; } = string.Empty;
+}
+
+public class BigliettoExportDTO
+{
+    public int Id { get; set; }
+    public string CodiceBiglietto { get; set; } = string.Empty;
+    public string Stato { get; set; } = string.Empty;
+    public string FilmTitolo { get; set; } = string.Empty;
+    public DateTime ShowStartAtUtc { get; set; }
 }
 
 public class RefreshTokenRequestDTO
